@@ -4,16 +4,22 @@ import { AssetPlaceholder } from '../components/common/AssetPlaceholder';
 import { Panel } from '../components/common/Panel';
 import { RedactedText } from '../components/common/RedactedText';
 import { StatBar } from '../components/common/StatBar';
-import { armors, operators } from '../data';
+import { archiveDocuments, armors, operators } from '../data';
+import { isDocumentAvailable } from '../state/narrative';
 import { useProgress } from '../state/ProgressContext';
 
 export default function OperatorDetailPage() {
   const { operatorId } = useParams();
   const operator = operators.find((item) => item.id === operatorId);
-  const { progress, update } = useProgress();
+  const { progress, update, dispatchEffects } = useProgress();
   useEffect(() => {
     if (operator && !progress.completedObjectives.includes(`view-${operator.id}`)) update({ completedObjectives: [...progress.completedObjectives, `view-${operator.id}`] });
   }, [operator, progress.completedObjectives, update]);
+  useEffect(() => {
+    if (operator?.id === 'crimson' && progress.completedObjectives.includes('detect-seven-signatures') && !progress.unlockedSecrets.includes('message-future-crimson')) dispatchEffects([
+      { type:'unlock-secret', id:'message-future-crimson' }, { type:'transmission', id:'crimson-future' }, { type:'narrative-event', id:'future-message-found' },
+    ]);
+  }, [operator, progress.completedObjectives, progress.unlockedSecrets, dispatchEffects]);
   if (!operator) return <div className="page"><h1>OPÉRATEUR INTROUVABLE</h1><Link to="/operators">RETOUR AUX DOSSIERS</Link></div>;
   const armor = armors.find((item) => item.id === operator.armorId);
   return <article className={`page operator-detail operator-${operator.id}`}>
@@ -26,6 +32,9 @@ export default function OperatorDetailPage() {
       <Panel title="NUIT ZÉRO" code="0.Z" className="span-2"><div className="event-strip">{operator.nightZero.map((item,index) => <div key={item}><span>0{index + 1}</span><p>{item}</p></div>)}</div><Link className="button-link" to="/timeline">OUVRIR LA CHRONOLOGIE →</Link></Panel>
       <Panel title="RELATIONS" code="LINK">{operator.relationships.map((relation) => <div className="relation" key={relation.target}><strong>{relation.target}</strong><p>{relation.detail}</p></div>)}</Panel>
       <Panel title="SECRETS" code={`${operator.secrets.filter((secret) => progress.unlockedSecrets.includes(secret.id)).length}/${operator.secrets.length}`}>{operator.secrets.map((secret) => <p key={secret.id}><RedactedText revealed={progress.unlockedSecrets.includes(secret.id)}>{secret.label}</RedactedText></p>)}</Panel>
+      {operator.id === 'a7' && <Panel title="SIGNATURES NEURONALES" code={progress.completedObjectives.includes('detect-seven-signatures') ? '7 DÉTECTÉES' : '1 PRÉSUMÉE'} className="span-2">{progress.completedObjectives.includes('detect-seven-signatures') ? <><p className="feature-callout">SEPT SIGNATURES NEURONALES DÉTECTÉES</p><p>Aucune ne possède l’intégralité des souvenirs. Une seule prétend être originale.</p><ul className="signature-list">{['A7-01 // DÉTRUITE','A7-02 // ABSENTE','A7-03 // ARCHIVÉE','A7-04 // ACTIVE','A7-05 // CORROMPUE','A7-06 // INCONNUE','A7-07 // OBSERVE'].map((item) => <li key={item}>{item}</li>)}</ul><Link className="button-link" to="/investigation">RELIER AUX PREUVES →</Link></> : <><p>Une signature unique est présumée. Le journal de restauration suggère une méthode d’analyse supplémentaire.</p><code>TERMINAL // echo a7</code></>}</Panel>}
+      {operator.id === 'crimson' && <Panel title="FIL MNÉSIQUE // SAUVEGARDES" code={progress.unlockedSecrets.includes('message-future-crimson') ? 'MESSAGE REÇU' : 'ANALYSE'} className="span-2"><StatBar label="Intégrité du Fil" value={61} max={100} color="red" /><p>La sauvegarde A7-04 a été sélectionnée manuellement à 22:24. La sauvegarde la plus récente a été rejetée.</p><div className="button-row"><Link className="button-link" to="/archives/restauration-2224">JOURNAL RESTAURATION 22:24 →</Link>{progress.unlockedSecrets.includes('message-future-crimson') && <Link className="button-link" to="/archives/message-future-crimson">MESSAGE À LA PROCHAINE VERSION →</Link>}</div></Panel>}
+      <Panel title="DOCUMENTS ASSOCIÉS" code="ARCH" className="span-2"><div className="reference-links">{archiveDocuments.filter((document) => document.references?.some((reference) => reference.type === 'operator' && reference.id === operator.id) && isDocumentAvailable(document,progress)).map((document) => <Link key={document.id} to={`/archives/${document.id}`}>{document.code} // {document.title} →</Link>)}</div></Panel>
       <Panel title="CITATIONS INTERCEPTÉES" code="VOX" className="span-2"><div className="quotes">{operator.quotes.map((quote) => <blockquote key={quote}>« {quote} »</blockquote>)}</div></Panel>
     </div>
   </article>;

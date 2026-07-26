@@ -6,7 +6,7 @@ Expérience narrative cyberpunk statique en français. Le visiteur infiltre les 
 
 ## Aperçu
 
-Les captures définitives seront ajoutées dans `docs/screenshots/`. La V1 utilise des silhouettes SVG et schémas techniques originaux, conçus pour être remplacés sans modifier les données narratives.
+Les captures définitives seront ajoutées dans `docs/screenshots/`. La V2 utilise des silhouettes SVG et schémas techniques originaux, conçus pour être remplacés sans modifier les données narratives.
 
 ## Fonctionnalités
 
@@ -14,13 +14,15 @@ Les captures définitives seront ajoutées dans `docs/screenshots/`. La V1 utili
 - carte SVG accessible des cinq niveaux de VANTA ;
 - dossiers A7/Crimson, 18 armures filtrables et 8 factions reliées ;
 - chronologie A.Z./P.Z. et Nuit Zéro minute par minute ;
-- terminal à commandes, historique et déblocages ;
-- archives censurées, objectifs et progression locale importable/exportable ;
+- Chapitre 01 jouable : consulter, déchiffrer, comparer et relier les preuves de la Nuit Zéro ;
+- terminal contextuel, lecteur de documents paginé et comparateur officiel/classifié ;
+- tableau d’enquête SVG doublé d’une vue textuelle accessible ;
+- objectifs narratifs, contact NX-S et progression locale importable/exportable ;
 - son synthétique opt-in, responsive mobile/ultrawide et effets réduits.
 
 ## Stack
 
-React 19, TypeScript strict, Vite, React Router (`HashRouter`), CSS personnalisé, Vitest, React Testing Library et ESLint. Aucun backend, CDN, tracking ou appel réseau au runtime.
+React 19, TypeScript strict, Vite, React Router (`HashRouter`), CSS personnalisé, Vitest, React Testing Library, Playwright et ESLint. Aucun backend, CDN, tracking ou appel réseau au runtime.
 
 ## Installation et commandes
 
@@ -37,19 +39,29 @@ npm run dev
 - `npm run lint` : analyse statique ;
 - `npm run typecheck` : validation TypeScript ;
 - `npm test` / `npm run test:watch` : tests ponctuels/continus ;
-- `npm run check` : lint, types, tests et build.
+- `npm run test:e2e` : parcours Chromium complet du Chapitre 01 ;
+- `npm run test:e2e:ui` : ouvre l’interface Playwright ;
+- `npm run check` : lint, types, tests unitaires et build (E2E séparé).
 
 ## Structure
 
-`src/data/` contient le canon narratif, `src/pages/` les écrans, `src/components/` les briques réutilisables, `src/state/` la progression, `src/services/` le terminal et `src/styles/` le design system. `public/assets/` accueille les médias futurs.
+`src/data/` contient le canon, les documents, objectifs et preuves. `src/components/archive/` rend les blocs typés ; `src/components/investigation/` affiche le graphe. `src/state/` gère migration et effets narratifs, `src/services/` le terminal. Voir [`docs/narrative-system.md`](docs/narrative-system.md).
 
 ## Étendre le contenu
 
 Pour ajouter un opérateur, une armure ou une faction, compléter respectivement `operators.ts`, `armors.ts` ou `factions.ts` avec un identifiant stable en kebab-case. Ajouter les références croisées, puis exécuter `npm test` : les tests d’intégrité contrôlent unicité, statistiques et liens.
 
+## Documents et chapitres
+
+Ajouter un document dans `src/data/archives.ts` sans JSX, avec pages et blocs typés. Déclarer ses indices, effets et références, puis compléter les nœuds et relations de `chapterZero.ts`. Un chapitre définit ses objectifs et conditions déterministes ; les tests d’intégrité doivent rester verts.
+
 ## Progression locale
 
-La clé `nexus-archives:v1` stocke uniquement progression, réglages et historique du terminal. Les imports JSON sont validés. La réinitialisation est disponible dans Réglages. Aucun cookie ni donnée personnelle n’est utilisé.
+La clé stable `nexus-archives:v1` contient un état de schéma V2. `migrateV1ToV2` préserve documents, secrets, historique et réglages. Les imports JSON sont validés et limités en taille. Aucun cookie ni donnée personnelle n’est utilisé.
+
+## Tester le Chapitre 01
+
+Après `npx playwright install chromium`, lancer `npm run test:e2e`. Le scénario réinitialise le stockage, ouvre le rapport, déchiffre Z-2219, consulte la restauration, compare les versions, analyse A7, établit la synthèse et vérifie l’accès TACTIQUE après rechargement.
 
 ## Accessibilité
 
@@ -65,9 +77,9 @@ Navigation clavier, lien d’évitement, focus visible, régions sémantiques, c
 
 Vite utilise `base: "/nexus-archives/"` et le routage par hash. Ne pas créer de branche `gh-pages`.
 
-## Assets et limites de la V1
+## Assets et limites de la V2
 
-Consulter `public/assets/README.md` pour les futurs portraits, armures, factions et sons. La V1 emploie des visuels abstraits, ne comporte ni backend, ni multijoueur, ni synchronisation cloud.
+Consulter `public/assets/README.md` pour les futurs médias. La V2 couvre un chapitre linéaire, sans backend, embranchements irréversibles, multijoueur ni synchronisation cloud.
 
 ## Sécurité, fiction et licence
 
@@ -78,6 +90,6 @@ Sauf mention contraire, le contenu narratif et visuel est réservé à son auteu
 ## Roadmap
 
 - remplacer les placeholders par des illustrations originales finales ;
-- enrichir les documents déchiffrables et les embranchements ;
+- développer le Chapitre 02 autour du Dossier des Sept Corps ;
 - réaliser un audit manuel multi-navigateurs et lecteur d’écran ;
 - ajouter une suite visuelle de non-régression.

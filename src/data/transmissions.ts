@@ -9,4 +9,6 @@ export const transmissions: Transmission[] = [
   {id:'nxs-02',sender:'NX-S',text:'Aucune conscience ne devrait mourir seule.',trigger:'level'},
   {id:'mere-echo-01',sender:'MÈRE ÉCHO',text:"Ils ne sont pas morts. Ils attendent que la porte soit ouverte.",trigger:'archives'},
   {id:'yara-01',sender:'YARA SOL',text:'Rien ne sort de Zone Zéro. Même lorsque cela porte le visage d’un ami.',trigger:'vanta'},
+  {id:'crimson-future',sender:'CRIMSON // VERSION ANTÉRIEURE',text:"Tu ne te souviens probablement pas de moi. C’est normal. Je suis toi. A7 ne doit pas être restauré depuis la sauvegarde la plus récente.",trigger:'chapter-zero'},
+  {id:'nx-s-contact-01',sender:'NX-S',text:"Vous appelez cela une enquête. Vous ne faites que reconstruire un souvenir que j’ai déjà vécu.",trigger:'chapter-zero-complete'},
 ];

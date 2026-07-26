@@ -31,11 +31,83 @@ export interface Location {
 }
 export interface TimelineEvent { id: string; sort: number; date: string; title: string; description: string; classified?: string }
 export interface Transmission { id: string; sender: string; text: string; trigger: string }
-export interface ArchiveDocument { id: string; title: string; access: AccessLevel; excerpt: string; secretId?: string }
+
+export type ArchiveCategory = 'incident' | 'médical' | 'ordre' | 'programme' | 'identité' | 'transmission' | 'registre';
+export type ArchiveReferenceType = 'operator' | 'location' | 'faction' | 'timeline' | 'archive';
+export type ArchiveBlock =
+  | { type: 'heading'; text: string }
+  | { type: 'paragraph'; text: string }
+  | { type: 'system-log'; lines: string[]; spectral?: boolean }
+  | { type: 'quote'; text: string; source: string }
+  | { type: 'warning'; title: string; text: string }
+  | { type: 'metadata'; entries: { label: string; value: string }[] }
+  | { type: 'redacted'; text: string; revealSecret?: string }
+  | { type: 'clue'; clueId: string; label: string; text: string }
+  | { type: 'table'; headers: string[]; rows: string[][] }
+  | { type: 'evidence'; nodeId: string; title: string; text: string }
+  | { type: 'transmission'; sender: string; text: string };
+export interface ArchivePage { id: string; title: string; blocks: ArchiveBlock[] }
+export interface ArchiveAttachment { id: string; label: string; type: string; status: string }
+export interface ArchiveReference { type: ArchiveReferenceType; id: string; label: string; route: string }
+export type UnlockRequirement =
+  | { type: 'access'; value: AccessLevel }
+  | { type: 'secret'; value: string }
+  | { type: 'objective'; value: string }
+  | { type: 'chapter'; value: string };
+export type NarrativeEffect =
+  | { type: 'unlock-secret'; id: string }
+  | { type: 'complete-objective'; id: string }
+  | { type: 'discover-clue'; id: string }
+  | { type: 'add-evidence-node'; id: string }
+  | { type: 'add-evidence-relation'; id: string }
+  | { type: 'transmission'; id: string }
+  | { type: 'narrative-event'; id: string };
+export interface ArchiveComparisonDifference {
+  id: string; label: string; official: string; classified: string;
+  evidenceNodeId?: string; evidenceRelationId?: string;
+}
+export interface ArchiveComparison {
+  id: string; officialTitle: string; classifiedTitle: string;
+  summary: string; differences: ArchiveComparisonDifference[];
+  requirement?: UnlockRequirement; onRecordEffects: NarrativeEffect[];
+}
+export interface ArchiveDocument {
+  id: string; title: string; code: string; classification: AccessLevel;
+  category: ArchiveCategory; date: string; issuer: string; author?: string;
+  status: string; summary: string; pages: ArchivePage[];
+  attachments?: ArchiveAttachment[]; references?: ArchiveReference[];
+  requirements?: UnlockRequirement[]; onOpenEffects?: NarrativeEffect[];
+  comparison?: ArchiveComparison; terminalCodes?: string[]; chapterId?: string;
+}
+export interface NarrativeObjective {
+  id: string; title: string; description: string; hint?: string; route: string;
+  requires?: string[];
+}
+export interface EvidenceNode {
+  id: string; label: string; category: string; summary: string; route?: string;
+}
+export interface EvidenceRelation {
+  id: string; from: string; to: string; label: string; sourceDocumentId: string;
+}
+export interface NarrativeEvent { id: string; kind: 'document' | 'objective' | 'access' | 'spectral' | 'chapter'; title: string; message: string }
 export interface ProgressState {
-  version: 1; introSeen: boolean; accessLevel: AccessLevel; viewedDocuments: string[];
+  version: 2; introSeen: boolean; accessLevel: AccessLevel; viewedDocuments: string[];
   unlockedSecrets: string[]; terminalHistory: string[]; completedObjectives: string[];
   audioEnabled: boolean; volume: number; reducedEffects: boolean;
-  selectedTransmission: string | null; lastVisitedRoute: string;
+  selectedTransmission: string | null; lastVisitedRoute: string; activeChapter: string;
+  completedChapters: string[]; discoveredClues: string[]; evidenceNodes: string[];
+  evidenceRelations: string[]; spectralContactCount: number;
+  lastNarrativeEvent: string | null; documentReadingProgress: Record<string, number>;
 }
-export interface TerminalResult { output: string[]; navigateTo?: string; unlock?: string; complete?: string; clear?: boolean }
+export interface TerminalContext {
+  accessLevel: AccessLevel; viewedDocuments: string[]; unlockedSecrets: string[];
+  completedObjectives: string[]; activeChapter: string; discoveredClues: string[];
+  evidenceNodes: string[]; evidenceRelations: string[]; spectralContactCount: number;
+}
+export interface TerminalResult {
+  output: string[]; navigateTo?: string; unlocks?: string[];
+  completedObjectives?: string[]; discoveredClues?: string[];
+  evidenceNodes?: string[]; evidenceRelations?: string[];
+  accessLevelChange?: AccessLevel; transmissionId?: string; notification?: string;
+  clear?: boolean; reboot?: boolean; spectralEvent?: boolean; altered?: boolean;
+}

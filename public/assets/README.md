@@ -9,6 +9,12 @@ Ce dossier reçoit uniquement les médias locaux validés pour publication. Tous
 - `images/armor-{id}.webp` : visuel d’armure, par exemple `armor-ombre.webp` ;
 - `images/faction-{id}.svg` : symbole original de faction ;
 - `images/vanta-map-hires.webp` : carte détaillée optionnelle ;
+- `images/archive-zero-report.webp` : image du rapport Nuit Zéro ;
+- `images/zone-zero-surveillance.webp` : capture de Zone Zéro ;
+- `images/crimson-surveillance.webp` : portrait de surveillance de Crimson ;
+- `images/a7-medical-schema.svg` : schéma médical d’A7 ;
+- `images/armor-ombre-restoration.webp` : armure après restauration ;
+- `images/zero-evacuation-tunnel.svg` : carte du tunnel d’évacuation ;
 - `images/nexus-logo.svg` : identité finale originale ;
 - `audio/transmission-{id}.ogg` : transmission localisée ;
 - `audio/ambient-terminal.ogg` : ambiance discrète en boucle.

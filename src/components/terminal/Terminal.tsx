@@ -12,28 +12,28 @@ export function Terminal() {
   const [historyIndex, setHistoryIndex] = useState(-1);
   const counter = useRef(1);
   const navigate = useNavigate();
-  const { progress, update, unlock } = useProgress();
+  const { progress, update, applyCommandResult } = useProgress();
   const play = useAudio(progress.audioEnabled, progress.volume);
 
   const submit = (event: FormEvent) => {
     event.preventDefault();
     const command = input.trim();
     if (!command) return;
-    const result = executeCommand(command);
+    const result = executeCommand(command, progress);
     if (result.clear) setLines([]); else setLines((current) => [...current, { id: counter.current++, command, output: result.output }]);
     const history = [...progress.terminalHistory.filter((item) => item !== command), command].slice(-40);
     update({ terminalHistory: history });
-    if (result.unlock) unlock(result.unlock, result.complete);
+    applyCommandResult(result);
     if (result.navigateTo) {
       const destination = result.navigateTo;
       window.setTimeout(() => { void navigate(destination); }, 350);
     }
-    setInput(''); setHistoryIndex(-1); play(command.includes('nx-s') ? 'spectral' : 'terminal');
+    setInput(''); setHistoryIndex(-1); play(result.altered || command.includes('nx-s') ? 'spectral' : 'terminal');
   };
   const keyDown = (event: KeyboardEvent<HTMLInputElement>) => {
     if (event.key === 'ArrowUp') { event.preventDefault(); const next = Math.min(historyIndex + 1, progress.terminalHistory.length - 1); setHistoryIndex(next); setInput(progress.terminalHistory.at(-(next + 1)) ?? ''); }
     if (event.key === 'ArrowDown') { event.preventDefault(); const next = historyIndex - 1; setHistoryIndex(next); setInput(next < 0 ? '' : progress.terminalHistory.at(-(next + 1)) ?? ''); }
     if (event.key === 'Tab') { event.preventDefault(); const matches = terminalCommands.filter((item) => item.startsWith(input.toLowerCase())); if (matches.length === 1) setInput(matches[0]!); }
   };
-  return <section className="terminal-window" aria-label="Terminal interactif NEXUS" onClick={(event) => event.currentTarget.querySelector('input')?.focus()}><header><span>TERMINAL://OMEGA-7</span><span>CHIFFREMENT INSTABLE</span></header><div className="terminal-output" role="log" aria-live="polite">{lines.map((line) => <div className="terminal-line" key={line.id}>{line.command && <p><span>OMEGA-7@NEXUS:~$</span> {line.command}</p>}{line.output.map((output,index) => <p className={output.includes('NX-S') ? 'spectral-text' : ''} key={`${line.id}-${index}`}>{output}</p>)}</div>)}</div><form onSubmit={submit}><label htmlFor="terminal-input">COMMANDE</label><span aria-hidden="true">OMEGA-7@NEXUS:~$</span><input id="terminal-input" autoComplete="off" autoCapitalize="none" spellCheck={false} value={input} onChange={(event) => setInput(event.target.value)} onKeyDown={keyDown} /></form></section>;
+  return <section className="terminal-window" aria-label="Terminal interactif NEXUS" onClick={(event) => event.currentTarget.querySelector('input')?.focus()}><header><span>TERMINAL://OMEGA-7</span><span>{progress.spectralContactCount ? 'SOURCE SPECTRALE CONNECTÉE' : 'CHIFFREMENT INSTABLE'}</span></header><div className="terminal-output" role="log" aria-live="polite">{lines.map((line) => <div className="terminal-line" key={line.id}>{line.command && <p><span>OMEGA-7@NEXUS:~$</span> {line.command}</p>}{line.output.map((output,index) => <p className={output.includes('NX-S') || output.includes('TERMINAL LOCAL') ? 'spectral-text' : ''} key={`${line.id}-${index}`}>{output}</p>)}</div>)}</div>{progress.spectralContactCount > 0 && <p className="terminal-altered"><span aria-hidden="true">◇</span> SORTIE POTENTIELLEMENT ALTÉRÉE PAR UNE SOURCE SPECTRALE</p>}<form onSubmit={submit}><label htmlFor="terminal-input">COMMANDE</label><span aria-hidden="true">OMEGA-7@NEXUS:~$</span><input id="terminal-input" autoComplete="off" autoCapitalize="none" spellCheck={false} value={input} onChange={(event) => setInput(event.target.value)} onKeyDown={keyDown} /></form></section>;
 }

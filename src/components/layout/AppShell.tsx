@@ -2,10 +2,11 @@ import { useEffect, useState } from 'react';
 import { NavLink, Outlet, useLocation } from 'react-router-dom';
 import { useProgress } from '../../state/ProgressContext';
 import { useAudio } from '../../hooks/useAudio';
+import { NarrativeNotification } from '../feedback/NarrativeNotification';
 
 const navItems = [
   ['/dashboard','Tableau de bord'], ['/vanta','VANTA'], ['/operators','Opérateurs'], ['/armors','Armures'],
-  ['/factions','Factions'], ['/timeline','Chronologie'], ['/terminal','Terminal'], ['/archives','Archives'],
+  ['/factions','Factions'], ['/timeline','Chronologie'], ['/terminal','Terminal'], ['/archives','Archives'], ['/investigation','Enquête'],
 ] as const;
 
 export function AppShell() {
@@ -15,7 +16,7 @@ export function AppShell() {
   const { progress, update } = useProgress();
   const play = useAudio(progress.audioEnabled, progress.volume);
 
-  useEffect(() => { setMenuOpen(false); update({ lastVisitedRoute: location.pathname }); }, [location.pathname, update]);
+  useEffect(() => { setMenuOpen(false); update({ lastVisitedRoute: location.pathname }); document.getElementById('main-content')?.focus(); }, [location.pathname, update]);
   useEffect(() => { const timer = window.setInterval(() => setTime(new Date()), 30000); return () => window.clearInterval(timer); }, []);
 
   return (
@@ -36,6 +37,7 @@ export function AppShell() {
       </aside>
       <main id="main-content" className="main-content" tabIndex={-1}><Outlet /></main>
       <footer className="technical-footer"><span>NXS-OS 6.14.02</span><span>SESSION NON AUTORISÉE</span><span>AUCUNE TÉLÉMÉTRIE EXTERNE</span></footer>
+      <NarrativeNotification />
       <div className="scanline" aria-hidden="true" />
     </div>
   );

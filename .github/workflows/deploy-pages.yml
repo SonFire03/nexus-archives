@@ -7,15 +7,13 @@ on:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: pages
   cancel-in-progress: true
 
 jobs:
-  build:
+  validation:
     runs-on: ubuntu-latest
     steps:
       - name: Récupérer le dépôt
@@ -42,12 +40,33 @@ jobs:
         with:
           path: dist
 
+  e2e:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v4
+      - name: Installer Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+      - name: Installer les dépendances
+        run: npm ci
+      - name: Installer Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Parcours Chapitre 01
+        run: npm run test:e2e
+
   deploy:
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    needs: build
+    needs: [validation, e2e]
     steps:
       - name: Déployer
         id: deployment

@@ -14,7 +14,7 @@ Use these standard scripts:
 
 - `npm install` installs locked dependencies.
 - `npm run dev` starts the local Vite server.
-- `npm test` runs the Vitest suite.
+- `npm test` runs the Vitest suite; `npm run test:e2e` runs the Chromium narrative journey.
 - `npm run build` type-checks and creates the production bundle.
 - `npm run preview` serves the production build locally.
 
@@ -30,8 +30,8 @@ Use Vitest, adding React Testing Library when component behavior requires DOM in
 
 ## Commit & Pull Request Guidelines
 
-There is no commit history yet. Use clear, focused, imperative commits, for example `Add archive dossier navigation`. Never rewrite history or force-push. Keep unrelated features unchanged unless the PR explains why modification was necessary. PRs should summarize user-visible changes, link relevant issues, list tests and `npm run build`, and include desktop/mobile screenshots for visual work.
+Use clear, focused, imperative commits, for example `Add archive dossier navigation`. Never rewrite history or force-push. Keep unrelated features unchanged unless the PR explains why modification was necessary. PRs should summarize user-visible changes, link relevant issues, list tests and `npm run build`, and include desktop/mobile screenshots for visual work.
 
 ## Security & Deployment
 
-Never commit API keys, secrets, or local environment files. V1 has no backend; do not introduce one without explicit agreement. Keep routing, assets, and generated URLs compatible with static GitHub Pages hosting.
+Never commit API keys, secrets, or local environment files. The project has no backend; do not introduce one without explicit agreement. Keep routing, assets, and generated URLs compatible with static GitHub Pages hosting.

@@ -1,4 +1,4 @@
-import { armors, factions, locations, operators, timeline, validateData } from '.';
+import { archiveDocuments, armors, evidenceNodes, evidenceRelations, factions, locations, operators, timeline, validateData } from '.';
 
 describe('intégrité du canon NEXUS', () => {
   it('utilise des identifiants uniques et des relations valides', () => { expect(validateData()).toEqual([]); });
@@ -8,4 +8,7 @@ describe('intégrité du canon NEXUS', () => {
     expect(operators.every((operator) => armors.some((armor) => armor.id === operator.armorId))).toBe(true);
     expect(factions.every((faction) => faction.relationships.every((relation) => factions.some((target) => target.id === relation.targetId)))).toBe(true);
   });
+  it('utilise des identifiants uniques pour tous les documents', () => { expect(new Set(archiveDocuments.map((item) => item.id)).size).toBe(archiveDocuments.length); });
+  it('relie uniquement des nœuds d’enquête valides', () => { const ids=new Set(evidenceNodes.map((item) => item.id)); expect(evidenceRelations.every((relation) => ids.has(relation.from) && ids.has(relation.to))).toBe(true); });
+  it('associe chaque indice à son document source', () => { const clues=archiveDocuments.flatMap((document) => document.pages.flatMap((page) => page.blocks.filter((block) => block.type === 'clue').map((block) => ({document,block})))); expect(clues.every(({document,block}) => document.onOpenEffects?.some((effect) => effect.type === 'discover-clue' && effect.id === block.clueId))).toBe(true); });
 });
