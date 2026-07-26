@@ -1,30 +1,61 @@
 import { Link } from 'react-router-dom';
+import { MetricCard } from '../components/dashboard/MetricCard';
+import { NetworkIntegrityGauge } from '../components/dashboard/NetworkIntegrityGauge';
+import { ObjectiveList } from '../components/dashboard/ObjectiveList';
+import { OperatorCard } from '../components/dashboard/OperatorCard';
+import { PrimaryObjectivePanel } from '../components/dashboard/PrimaryObjectivePanel';
+import { SpectralActivityChart } from '../components/dashboard/SpectralActivityChart';
+import { Icon } from '../components/common/Icon';
 import { Panel } from '../components/common/Panel';
-import { StatBar } from '../components/common/StatBar';
+import { StatusBadge } from '../components/common/StatusBadge';
 import { TransmissionCard } from '../components/common/TransmissionCard';
-import { chapterZeroObjectives, locations, operators, transmissions, archiveDocuments } from '../data';
+import { archiveDocuments, chapterZeroObjectives, locations, operators, transmissions } from '../data';
 import { useProgress } from '../state/ProgressContext';
 
-const incidents = ['Armure autonome repérée // PROFONDEURS','Communication chiffrée de Crimson','Rupture de confinement // ZONE ZÉRO','Activité du Chœur Zéro','Signal A7 détecté // INSTABLE'];
+const incidents = [
+  {time:'−02 MIN',category:'AUTONOME',title:'Armure autonome repérée',sector:'Profondeurs',level:'CRITIQUE'},
+  {time:'−09 MIN',category:'TRANSMISSION',title:'Communication chiffrée de Crimson',sector:'Station K-13',level:'ÉLEVÉ'},
+  {time:'−16 MIN',category:'CONFINEMENT',title:'Rupture de confinement',sector:'Zone Zéro',level:'OMEGA'},
+  {time:'−23 MIN',category:'SPECTRAL',title:'Activité du Chœur Zéro',sector:'Cimetière',level:'ÉLEVÉ'},
+  {time:'−30 MIN',category:'BIOMÉTRIE',title:'Signal A7 détecté',sector:'Indéterminé',level:'INSTABLE'},
+];
+
+const sectorState: Record<string,string> = { couronne:'SURVEILLÉ',voile:'SURVEILLÉ',profondeurs:'CRITIQUE',cimetiere:'INTERDIT',zero:'INTERDIT' };
 
 export default function DashboardPage() {
   const { progress } = useProgress();
   const nextObjective = chapterZeroObjectives.find((objective) => !progress.completedObjectives.includes(objective.id));
-  const chapterObjectives = progress.completedObjectives.filter((id) => chapterZeroObjectives.some((objective) => objective.id === id));
-  const chapterProgress = Math.round((chapterObjectives.length / chapterZeroObjectives.length) * 100);
+  const completed = progress.completedObjectives.filter((id) => chapterZeroObjectives.some((objective) => objective.id === id));
+  const chapterProgress = Math.round((completed.length / chapterZeroObjectives.length) * 100);
   const lastDocument = [...progress.viewedDocuments].reverse().map((id) => archiveDocuments.find((document) => document.id === id)).find(Boolean);
+  const contacted = progress.spectralContactCount > 0;
+
   return <div className="page dashboard-page">
-    <header className="dashboard-hero"><div><p className="eyebrow">CENTRE DE COMMANDE // CHAPITRE 01</p><h1>SITUATION <span>CRITIQUE</span></h1><p>L’enquête sur la Nuit Zéro révèle des contradictions dans le récit du Directoire.</p></div><div className="alert-glyph" aria-label="Niveau d’alerte critique"><span>!</span><strong>OMEGA-7</strong><small>{progress.completedChapters.includes('chapter-zero') ? 'CONTACT NX-S CONFIRMÉ' : 'ENQUÊTE EN COURS'}</small></div></header>
-    <section className="priority-objective"><div><p className="eyebrow">OBJECTIF PRIORITAIRE // {chapterObjectives.length}/8</p><h2>{nextObjective?.title.toUpperCase() ?? 'CHAPITRE 01 TERMINÉ'}</h2><p>{nextObjective?.description ?? 'Le dossier des Sept Corps est maintenant disponible.'}</p></div><div><span>PROGRESSION {chapterProgress} %</span><div><i style={{width:`${chapterProgress}%`}} /></div>{nextObjective ? <Link className="button-primary" to={nextObjective.route}>SUIVRE LA PISTE →</Link> : <Link className="button-primary" to="/archives/dossier-sept-corps">CHAPITRE SUIVANT →</Link>}</div></section>
-    <div className="dashboard-grid">
-      <Panel title="STATUT DE VANTA" code="SYS.01"><div className="metric-row"><strong>CRITIQUE</strong><span>NIVEAU D’ALERTE</span></div><StatBar label="Intégrité réseau" value={72} max={100} /><div className="split-metrics"><span><strong>4/5</strong>SECTEURS OPÉRATIONNELS</span><span><strong>███ 218</strong>POPULATION SUIVIE</span></div></Panel>
-      <Panel title="ACTIVITÉ SPECTRALE" code="NX-S" className="spectral-panel"><div className="spectral-wave" aria-hidden="true">{Array.from({length:20},(_,i) => <i key={i} />)}</div><p><strong>{progress.spectralContactCount ? 'CONTACT CONFIRMÉ' : 'NIVEAU ÉLEVÉ'}</strong></p><p>{progress.spectralContactCount ? 'Source présente sur le terminal local.' : 'Plusieurs impulsions détectées.'}</p><small>DERNIÈRE ORIGINE : CIMETIÈRE NUMÉRIQUE</small></Panel>
-      <Panel title="ÉTAT DE L’ENQUÊTE" code={`${progress.evidenceNodes.length} NŒUDS`}><dl className="data-list"><div><dt>DERNIÈRE PREUVE</dt><dd>{progress.evidenceNodes.at(-1)?.toUpperCase() ?? 'AUCUNE'}</dd></div><div><dt>DERNIER DOCUMENT</dt><dd>{lastDocument?.title ?? 'AUCUN'}</dd></div><div><dt>RELATIONS</dt><dd>{progress.evidenceRelations.length}</dd></div><div><dt>STATUT</dt><dd>{progress.completedChapters.includes('chapter-zero') ? 'CLOS // COMPROMIS' : 'ACTIF'}</dd></div></dl><Link className="button-link" to="/investigation">OUVRIR LE TABLEAU D’ENQUÊTE →</Link></Panel>
-      <Panel title="OBJECTIFS DU CHAPITRE" code={`${chapterObjectives.length}/8`}><ul className="objective-list">{chapterZeroObjectives.map((objective) => <li key={objective.id} className={progress.completedObjectives.includes(objective.id) ? 'complete' : objective.id === nextObjective?.id ? 'active' : ''}><span aria-hidden="true">{progress.completedObjectives.includes(objective.id) ? '✓' : '○'}</span>{objective.title}</li>)}</ul></Panel>
-      <Panel title="OPÉRATEURS RECHERCHÉS" code="DIR.44" className="span-2"><div className="operator-strip">{operators.map((operator) => <Link key={operator.id} to={`/operators/${operator.id}`}><span>{operator.matricule}</span><strong>{operator.name} // {operator.callsign}</strong><small>{operator.realStatus} · MENACE {operator.threat}</small><b>OUVRIR LE DOSSIER →</b></Link>)}</div></Panel>
-      <Panel title="SECTEURS" code="MAP.05"><ul className="sector-list">{locations.map((location) => <li key={location.id}><Link to={`/vanta?zone=${location.id}`}><span>0{location.level}</span><strong>{location.name}</strong><em>{location.danger}</em></Link></li>)}</ul></Panel>
-      <Panel title="INCIDENTS RÉCENTS" code="LIVE"><ol className="incident-list">{incidents.map((incident,index) => <li key={incident}><time>−{index * 7 + 2} MIN</time><span>{incident}</span></li>)}</ol></Panel>
-      <Panel title="TRANSMISSIONS" code="CH.07" className="span-2"><TransmissionCard transmission={progress.spectralContactCount ? transmissions.find((item) => item.id === 'nx-s-contact-01')! : transmissions[2]!} /><TransmissionCard transmission={transmissions[3]!} /></Panel>
+    <header className="dashboard-hero"><div className="dashboard-hero__copy"><p className="eyebrow">CENTRE DE COMMANDE // CHAPITRE 01</p><h1>SITUATION <span>CRITIQUE</span></h1><p>L’enquête sur la Nuit Zéro révèle des contradictions dans le récit du Directoire.</p><div className="dashboard-hero__sync"><StatusBadge tone="critical">ALERTE OMEGA-7</StatusBadge><StatusBadge tone="success">4 SECTEURS ACTIFS</StatusBadge><span>DERNIÈRE SYNCHRONISATION // 00:14</span></div></div><div className="threat-module" aria-label="Niveau de menace Omega 7, enquête en cours"><Icon name="alert" size={34} /><div><small>NIVEAU DE MENACE</small><strong>OMEGA-7</strong><span>{progress.completedChapters.includes('chapter-zero') ? 'CONTACT NX-S CONFIRMÉ' : 'ENQUÊTE EN COURS'}</span></div><i aria-hidden="true" /></div></header>
+
+    <PrimaryObjectivePanel objective={nextObjective} completed={completed.length} total={chapterZeroObjectives.length} percentage={chapterProgress} />
+
+    <section className="dashboard-metrics" aria-label="Indicateurs opérationnels">
+      <MetricCard icon="alert" label="ALERTE VANTA" value="CRITIQUE" detail="Zone Zéro sous confinement renforcé" code="VNT-05"><span className="metric-trend is-critical">↑ +2 incidents</span></MetricCard>
+      <MetricCard icon="network" label="INTÉGRITÉ RÉSEAU" value="72%" detail="4 nœuds stables sur 5" code="NET-72" tone="success"><span className="metric-trend">−3% depuis 00:14</span></MetricCard>
+      <MetricCard icon="spectral" label="ACTIVITÉ SPECTRALE" value={contacted ? 'CONTACT' : 'ÉLEVÉE'} detail="Origine : Cimetière numérique" code="NX-S" tone="spectral"><span className="metric-trend is-spectral">3 impulsions critiques</span></MetricCard>
+      <MetricCard icon="investigation" label="ÉTAT DE L’ENQUÊTE" value={`${progress.evidenceNodes.length} PREUVES`} detail={`${progress.evidenceRelations.length} relations confirmées`} code="INV-01" tone="cyan"><Link to="/investigation">OUVRIR LE TABLEAU →</Link></MetricCard>
+    </section>
+
+    <div className="dashboard-command-grid">
+      <Panel title="STATUT DE VANTA" eyebrow="MÉGALOPOLE // CINQ NIVEAUX" code="SYS.VANTA" tone="critical" className="dashboard-vanta"><div className="vanta-overview"><div><div className="vanta-overview__alert"><span>NIVEAU D’ALERTE</span><strong>CRITIQUE</strong><small>PROTOCOLE DE CONTINUITÉ ACTIF</small></div><dl><div><dt>SECTEURS OPÉRATIONNELS</dt><dd>4 / 5</dd></div><div><dt>POPULATION SUIVIE</dt><dd>███ 218</dd></div><div><dt>INCIDENTS ACTIFS</dt><dd>05</dd></div><div><dt>COUVRE-FEU</dt><dd>22:00</dd></div></dl></div><NetworkIntegrityGauge value={72} /></div><div className="vanta-levels" aria-label="État des cinq niveaux de VANTA">{locations.map((location) => <Link key={location.id} to={`/vanta?zone=${location.id}`}><span>0{location.level}</span><i className={`is-${location.color}`} /><strong>{location.name}</strong><small>{sectorState[location.id]}</small></Link>)}</div></Panel>
+
+      <Panel title="OBJECTIFS DU CHAPITRE" eyebrow="ENQUÊTE NUIT ZÉRO" code={`${completed.length} / 8 TERMINÉS`} tone="warning" className="dashboard-objectives"><ObjectiveList objectives={chapterZeroObjectives} completedIds={progress.completedObjectives} activeId={nextObjective?.id} /></Panel>
+
+      <Panel title="OPÉRATEURS RECHERCHÉS" eyebrow="DIRECTIVE DE CAPTURE" code="DIR.44" tone="nexus" className="dashboard-operators"><div className="operator-list">{operators.map((operator) => <OperatorCard key={operator.id} operator={operator} />)}</div></Panel>
+
+      <Panel title="SECTEURS" eyebrow="SURVEILLANCE VANTA" code="MAP.05" className="dashboard-sectors"><ul className="sector-monitor">{locations.map((location) => <li key={location.id}><Link to={`/vanta?zone=${location.id}`}><span>{String(location.level).padStart(2,'0')}</span><div><strong>{location.name}</strong><small>FACTION // {location.dominantFaction.replaceAll('-',' ').toUpperCase()}</small></div><em>{sectorState[location.id]}<small>MENACE {location.danger}</small></em></Link></li>)}</ul></Panel>
+
+      <Panel title="INCIDENTS RÉCENTS" eyebrow="FLUX TEMPS RÉEL" code="LIVE.05" tone="warning" className="dashboard-incidents"><ol className="incident-feed">{incidents.map((incident) => <li key={incident.title}><time>{incident.time}</time><span className="incident-feed__marker" aria-hidden="true" /><div><small>{incident.category} // {incident.sector.toUpperCase()}</small><strong>{incident.title}</strong></div><em>{incident.level}</em></li>)}</ol></Panel>
+
+      <Panel title="TRANSMISSIONS INTERCEPTÉES" eyebrow="CANAL OMEGA-07" code="02 NON LUES" tone="nexus" className="dashboard-transmissions"><div className="transmission-stack"><TransmissionCard transmission={contacted ? transmissions.find((item) => item.id === 'nx-s-contact-01')! : transmissions[2]!} /><TransmissionCard transmission={transmissions[3]!} /></div></Panel>
+
+      <Panel title="ACTIVITÉ SPECTRALE" eyebrow="ANALYSE NX-S" code="SPECTRE.03" tone="spectral" className="dashboard-spectral"><SpectralActivityChart contacted={contacted} /><dl className="spectral-summary"><div><dt>DERNIÈRE ORIGINE</dt><dd>CIMETIÈRE NUMÉRIQUE</dd></div><div><dt>ÉTAT DU SIGNAL</dt><dd>{contacted ? 'SOURCE LOCALE' : 'NON LOCALISABLE'}</dd></div><div><dt>DERNIÈRE PREUVE</dt><dd>{progress.evidenceNodes.at(-1)?.toUpperCase() ?? 'AUCUNE'}</dd></div><div><dt>DERNIER DOCUMENT</dt><dd>{lastDocument?.title ?? 'AUCUN'}</dd></div></dl><Link className="button-secondary" to="/terminal">ANALYSER DANS LE TERMINAL →</Link></Panel>
     </div>
   </div>;
 }

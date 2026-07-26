@@ -1,0 +1,20 @@
+body { background:var(--color-bg-void); }
+body::after { content:""; position:fixed; inset:0; z-index:-2; pointer-events:none; background:radial-gradient(circle at 72% 15%,rgba(240,90,50,.055),transparent 34%),radial-gradient(circle at 15% 82%,rgba(82,140,255,.025),transparent 30%),linear-gradient(135deg,var(--color-bg-base),var(--color-bg-void) 56%); }
+#root { min-height:100vh; }
+.app-shell { grid-template-columns:var(--sidebar) minmax(0,1fr); grid-template-rows:var(--topbar) 1fr 34px; transition:grid-template-columns .2s ease; }
+.app-shell.sidebar-collapsed { --sidebar:var(--sidebar-closed); }
+.main-content { position:relative; background-image:linear-gradient(rgba(255,255,255,.012) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.009) 1px,transparent 1px); background-size:48px 48px; }
+.main-content::before { content:""; position:fixed; inset:var(--topbar) 0 34px var(--sidebar); z-index:-1; pointer-events:none; background:linear-gradient(115deg,transparent 0 60%,rgba(255,255,255,.009)); transition:left .2s ease; }
+.page { width:min(100%,var(--content-max)); min-height:calc(100vh - var(--topbar)); margin-inline:auto; padding:clamp(20px,2vw,40px); }
+.page-header { max-width:none; grid-template-columns:minmax(0,1.3fr) minmax(300px,.7fr); gap:var(--space-8); margin-bottom:var(--space-6); padding:0 0 var(--space-5); border-color:var(--color-border-default); }
+.page-header__title { grid-column:1; }
+.page-header .eyebrow,.page-header h1 { grid-column:auto; }
+.page-header__title h1 { margin:0; }
+.page-header__status { display:inline-flex; margin-top:var(--space-3); border-left:2px solid var(--color-nexus); padding-left:var(--space-3); color:var(--color-text-secondary); font-size:.78rem; }
+.page-header > p:last-of-type { grid-column:2; grid-row:1; align-self:end; margin:0; }
+.page-header__actions { grid-column:1/-1; display:flex; gap:var(--space-2); }
+.technical-footer { min-height:34px; background:rgba(5,6,9,.96); color:var(--color-text-muted); font-size:.68rem; }
+@media (min-width:2800px) {
+  .page { width:min(calc(100% - 8vw),var(--content-max)); }
+  .main-content { background-size:64px 64px; }
+}

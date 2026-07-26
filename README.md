@@ -6,7 +6,7 @@ Expérience narrative cyberpunk statique en français. Le visiteur infiltre les 
 
 ## Aperçu
 
-Les captures définitives seront ajoutées dans `docs/screenshots/`. La V2 utilise des silhouettes SVG et schémas techniques originaux, conçus pour être remplacés sans modifier les données narratives.
+L’interface Omega V3 emploie un shell de centre de commandement, une grille responsive jusqu’à 5120 px et des silhouettes SVG originales. Les captures de contrôle sont produites par Playwright comme pièces jointes de test ; les visuels narratifs finaux pourront les remplacer sans modifier les données.
 
 ## Fonctionnalités
 
@@ -18,6 +18,8 @@ Les captures définitives seront ajoutées dans `docs/screenshots/`. La V2 utili
 - terminal contextuel, lecteur de documents paginé et comparateur officiel/classifié ;
 - tableau d’enquête SVG doublé d’une vue textuelle accessible ;
 - objectifs narratifs, contact NX-S et progression locale importable/exportable ;
+- barre de commandement, navigation latérale réductible et tiroir mobile accessible ;
+- panneaux, métriques, jauge réseau et graphe spectral déterministe du système Omega V3 ;
 - son synthétique opt-in, responsive mobile/ultrawide et effets réduits.
 
 ## Stack
@@ -45,7 +47,7 @@ npm run dev
 
 ## Structure
 
-`src/data/` contient le canon, les documents, objectifs et preuves. `src/components/archive/` rend les blocs typés ; `src/components/investigation/` affiche le graphe. `src/state/` gère migration et effets narratifs, `src/services/` le terminal. Voir [`docs/narrative-system.md`](docs/narrative-system.md).
+`src/data/` contient le canon, les documents, objectifs et preuves. `src/components/layout/` et `src/components/navigation/` composent le shell Omega ; `src/components/dashboard/` porte les visualisations métier. `src/components/archive/` rend les blocs typés et `src/components/investigation/` affiche le graphe. Les tokens et couches visuelles sont centralisés dans `src/styles/`. `src/state/` gère migration et effets narratifs, `src/services/` le terminal. Voir [`docs/narrative-system.md`](docs/narrative-system.md).
 
 ## Étendre le contenu
 
@@ -61,11 +63,11 @@ La clé stable `nexus-archives:v1` contient un état de schéma V2. `migrateV1To
 
 ## Tester le Chapitre 01
 
-Après `npx playwright install chromium`, lancer `npm run test:e2e`. Le scénario réinitialise le stockage, ouvre le rapport, déchiffre Z-2219, consulte la restauration, compare les versions, analyse A7, établit la synthèse et vérifie l’accès TACTIQUE après rechargement.
+Après `npx playwright install chromium`, lancer `npm run test:e2e`. Le scénario réinitialise le stockage, ouvre le rapport, déchiffre Z-2219, consulte la restauration, compare les versions, analyse A7, établit la synthèse et vérifie l’accès TACTIQUE après rechargement. La même suite contrôle le shell, le tiroir mobile, les pages majeures, l’absence de débordement et neuf formats de 390 × 844 à 5120 × 1440.
 
 ## Accessibilité
 
-Navigation clavier, lien d’évitement, focus visible, régions sémantiques, carte textuelle, sorties terminal annoncées et censure compréhensible sont intégrés. `prefers-reduced-motion` désactive les animations non essentielles. Le son est désactivé par défaut.
+Navigation clavier, lien d’évitement, focus visible, régions sémantiques, carte textuelle, descriptions de graphiques, sorties terminal annoncées et censure compréhensible sont intégrés. Le tiroir mobile restitue le focus à sa fermeture. `prefers-reduced-motion` désactive les animations non essentielles. Le son est désactivé par défaut.
 
 ## Déploiement GitHub Pages
 

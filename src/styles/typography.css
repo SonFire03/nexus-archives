@@ -1,0 +1,11 @@
+body { color:var(--color-text-primary); font-size:15px; line-height:1.58; text-rendering:optimizeLegibility; }
+h1,h2,h3,h4 { color:var(--color-text-primary); font-family:var(--font-display); }
+p { max-width:70ch; }
+.eyebrow { color:var(--color-nexus-bright); font-size:.75rem; line-height:1.3; letter-spacing:.16em; }
+.page-header h1 { font-size:clamp(2.6rem,4vw,5.2rem); line-height:.92; }
+.page-header > p:last-of-type { color:var(--color-text-secondary); font-size:clamp(.9rem,1vw,1rem); line-height:1.65; }
+.panel p,.panel li { line-height:1.55; }
+.panel li { color:var(--color-text-secondary); font-size:.88rem; }
+.data-list dt,.stat-bar__label,.filters label,.archive-file dt,.document-header dt,.document-metadata dt,.terminal-aside dt { font-size:.72rem; line-height:1.35; }
+.data-list dd,.archive-file dd,.document-header dd,.document-metadata dd,.terminal-aside dd { font-size:.84rem; }
+@media (min-width:1920px) { body { font-size:16px; } }

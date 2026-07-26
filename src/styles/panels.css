@@ -1,0 +1,23 @@
+.panel { border-color:var(--color-border-default); border-radius:var(--radius-xs); clip-path:polygon(0 0,calc(100% - 14px) 0,100% 14px,100% 100%,0 100%); background:linear-gradient(145deg,rgba(20,25,35,.96),rgba(12,15,21,.98)); box-shadow:inset 0 1px rgba(255,255,255,.025),inset 0 -18px 40px rgba(0,0,0,.14); }
+.panel::before { width:44px; height:2px; background:var(--panel-accent,var(--color-border-strong)); }
+.panel::after { content:""; position:absolute; top:0; right:0; width:14px; height:14px; border-top:1px solid var(--panel-accent,var(--color-border-strong)); transform:rotate(45deg) translate(5px,-5px); }
+.panel--nexus { --panel-accent:var(--color-nexus); }
+.panel--spectral { --panel-accent:var(--color-spectral); }
+.panel--warning { --panel-accent:var(--color-orange); }
+.panel--critical { --panel-accent:var(--color-danger); }
+.panel--success { --panel-accent:var(--color-green); }
+.panel__header { min-height:58px; gap:var(--space-4); padding:var(--space-3) var(--space-5); border-color:var(--color-border-subtle); background:linear-gradient(90deg,rgba(255,255,255,.018),transparent 60%); }
+.panel__header > div:first-child { display:grid; gap:2px; }
+.panel__header h2 { font-size:.94rem; line-height:1.2; letter-spacing:.08em; }
+.panel__eyebrow { color:var(--color-text-muted); font-size:.67rem; letter-spacing:.1em; }
+.panel__meta { display:flex; align-items:center; gap:var(--space-3); color:var(--color-text-muted); }
+.panel__meta code { color:var(--panel-accent,var(--color-text-muted)); font-size:.7rem; }
+.panel__body { padding:var(--space-5); }
+.panel.is-interactive:hover { border-color:var(--panel-accent,var(--color-border-strong)); background:var(--color-bg-panel-hover); transform:translateY(-1px); }
+.status-indicator { display:inline-flex; min-height:28px; align-items:center; gap:8px; border:1px solid currentColor; padding:4px 9px; color:var(--color-text-secondary); font:700 .7rem var(--font-mono); letter-spacing:.06em; white-space:nowrap; }
+.status-indicator > i { width:6px; height:6px; background:currentColor; border-radius:50%; }
+.status-indicator.tone-nexus,.status-indicator.tone-critical { color:var(--color-nexus-bright); }
+.status-indicator.tone-spectral { color:var(--color-spectral-bright); }
+.status-indicator.tone-warning { color:var(--color-orange); }
+.status-indicator.tone-success { color:var(--color-green); }
+.status-indicator.has-pulse > i { box-shadow:0 0 0 3px color-mix(in srgb,currentColor 20%,transparent); }

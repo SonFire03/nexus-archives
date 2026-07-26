@@ -1,8 +1,8 @@
-import { Link } from 'react-router-dom';
-import { AssetPlaceholder } from '../components/common/AssetPlaceholder';
+import { OperatorCard } from '../components/dashboard/OperatorCard';
 import { PageHeader } from '../components/common/PageHeader';
+import { StatusBadge } from '../components/common/StatusBadge';
 import { operators } from '../data';
 
 export default function OperatorsPage() {
-  return <div className="page"><PageHeader eyebrow="INDEX // PERSONNEL COMPROMIS" title="DOSSIERS OPÉRATEURS">Les agents de cinquième génération restent reliés au réseau même après révocation.</PageHeader><div className="card-grid">{operators.map((operator) => <article className="dossier-card" key={operator.id}><AssetPlaceholder label={operator.matricule} /><div><p className="eyebrow">{operator.matricule}</p><h2>{operator.name} <span>// {operator.callsign}</span></h2><p>{operator.description}</p><dl><div><dt>STATUT</dt><dd>{operator.realStatus}</dd></div><div><dt>COMPATIBILITÉ</dt><dd>{operator.compatibility} %</dd></div><div><dt>MENACE</dt><dd>{operator.threat}</dd></div></dl><Link className="button-link" to={`/operators/${operator.id}`}>OUVRIR LE DOSSIER →</Link></div></article>)}</div></div>;
+  return <div className="page operators-index"><PageHeader eyebrow="INDEX // PERSONNEL COMPROMIS" title="DOSSIERS OPÉRATEURS" status="2 CIBLES OMEGA ACTIVES">Les agents de cinquième génération restent reliés au réseau même après révocation.</PageHeader><section className="operator-index-summary" aria-label="État des opérateurs"><StatusBadge tone="critical">CAPTURER VIVANTS</StatusBadge><StatusBadge tone="nexus">DIRECTIVE DIR.44</StatusBadge><span>LOCALISATIONS RECALCULÉES // 00:14</span></section><div className="operator-list operator-list--index">{operators.map((operator) => <OperatorCard key={operator.id} operator={operator} />)}</div></div>;
 }
