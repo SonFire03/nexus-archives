@@ -1,0 +1,13 @@
+@keyframes boot-in { from { opacity:0; transform:translateY(4px); } }
+@keyframes spectral-pulse { 50% { opacity:.35; transform:scaleY(.5); } }
+@keyframes threat-in { from { clip-path:inset(0 100% 0 0); } }
+.boot-log p { animation:boot-in .25s ease-out both; }
+.spectral-wave i { animation:spectral-pulse 2.8s ease-in-out 2; animation-delay:calc(var(--index, 1) * 30ms); }
+.stat-bar__fill { animation:threat-in .7s ease-out both; }
+.panel,.armor-card,.dossier-card,.faction-card { transition:border-color .18s,transform .18s; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior:auto; }
+  *,*::before,*::after { animation-duration:.001ms!important; animation-iteration-count:1!important; transition-duration:.001ms!important; }
+  .scanline { display:none; }
+}
+.reduced-effects *,.reduced-effects *::before,.reduced-effects *::after { animation:none!important; transition:none!important; }.reduced-effects .scanline { display:none; }

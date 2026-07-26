@@ -6,11 +6,11 @@ NEXUS // ARCHIVES OMEGA is a cyberpunk narrative site built with React, strict T
 
 ## Project Structure & Module Organization
 
-The repository awaits its initial scaffold. Organize implementation under `src/`: reusable UI in `src/components/`, views in `src/pages/`, narrative data in `src/content/` as JSON or TypeScript modules, styles in `src/styles/`, and imported media in `src/assets/`. Place static files in `public/` and tests beside their subjects as `*.test.ts` or `*.test.tsx`. Avoid embedding substantial narrative copy in components.
+Organize implementation under `src/`: reusable UI in `src/components/`, views in `src/pages/`, narrative data in `src/data/` as TypeScript modules, styles in `src/styles/`, and shared types in `src/types/`. Place static files in `public/` and tests beside their subjects as `*.test.ts` or `*.test.tsx`. Avoid embedding substantial narrative copy in components.
 
 ## Build, Test, and Development Commands
 
-After the Vite project is scaffolded, keep these standard scripts available:
+Use these standard scripts:
 
 - `npm install` installs locked dependencies.
 - `npm run dev` starts the local Vite server.

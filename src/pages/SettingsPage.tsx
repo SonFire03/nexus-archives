@@ -1,0 +1,17 @@
+import { useRef, useState, type ChangeEvent } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { PageHeader } from '../components/common/PageHeader';
+import { Panel } from '../components/common/Panel';
+import { useAudio } from '../hooks/useAudio';
+import { useProgress } from '../state/ProgressContext';
+
+export default function SettingsPage() {
+  const { progress, update, reset, exportProgress, importProgress } = useProgress();
+  const [message, setMessage] = useState('');
+  const inputRef = useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
+  const play = useAudio(progress.audioEnabled, progress.volume);
+  const download = () => { const blob = new Blob([exportProgress()], { type: 'application/json' }); const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = 'nexus-progression.json'; link.click(); URL.revokeObjectURL(link.href); };
+  const importFile = (event: ChangeEvent<HTMLInputElement>) => { const file = event.target.files?.[0]; if (!file) return; void file.text().then((text) => setMessage(importProgress(text) ? 'PROGRESSION IMPORTÉE.' : 'FICHIER INVALIDE — IMPORT ANNULÉ.')); };
+  return <div className="page"><PageHeader eyebrow="CONFIGURATION LOCALE // AUCUNE TÉLÉMÉTRIE" title="RÉGLAGES DU TERMINAL">Toutes les préférences restent dans le stockage local de ce navigateur.</PageHeader><div className="settings-grid"><Panel title="EFFETS VISUELS" code="A11Y"><label className="switch-row"><span><strong>EFFETS RÉDUITS</strong><small>Désactive scans, glitchs et transitions longues.</small></span><input type="checkbox" checked={progress.reducedEffects} onChange={(event) => update({ reducedEffects: event.target.checked })} /></label><p>La préférence système <code>prefers-reduced-motion</code> est toujours prioritaire.</p></Panel><Panel title="AUDIO" code="LOCAL"><label className="switch-row"><span><strong>ACTIVER LE SON</strong><small>Désactivé par défaut. Nécessite une interaction.</small></span><input type="checkbox" checked={progress.audioEnabled} onChange={(event) => update({ audioEnabled: event.target.checked })} /></label><label>VOLUME<input type="range" min="0" max="1" step="0.05" value={progress.volume} onChange={(event) => update({ volume: Number(event.target.value) })} /></label><button className="button-ghost" disabled={!progress.audioEnabled} onClick={() => play('spectral')}>TESTER UNE IMPULSION</button></Panel><Panel title="INTRODUCTION" code="BOOT"><p>La séquence complète n’est lue automatiquement qu’une fois.</p><button className="button-ghost" onClick={() => { update({ introSeen: false }); void navigate('/'); }}>REJOUER L’INTRODUCTION</button></Panel><Panel title="DONNÉES LOCALES" code="JSON"><p>Exportez ou importez une progression validée. Aucune donnée personnelle n’est requise.</p><div className="button-row"><button className="button-ghost" onClick={download}>EXPORTER JSON</button><button className="button-ghost" onClick={() => inputRef.current?.click()}>IMPORTER JSON</button><input ref={inputRef} className="visually-hidden" type="file" accept="application/json" onChange={importFile} /></div>{message && <p role="status">{message}</p>}<button className="button-danger" onClick={() => { if (window.confirm('Réinitialiser toute la progression locale ?')) { reset(); setMessage('PROGRESSION RÉINITIALISÉE.'); } }}>RÉINITIALISER LA PROGRESSION</button></Panel></div></div>;
+}

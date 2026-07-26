@@ -1,0 +1,21 @@
+:root {
+  --nexus-black: #050506;
+  --nexus-panel: #0b0c0f;
+  --nexus-panel-raised: #111218;
+  --nexus-red: #ef2929;
+  --nexus-red-bright: #ff4141;
+  --nexus-red-dark: #741111;
+  --nexus-white: #f0eee7;
+  --nexus-muted: #98989f;
+  --nexus-border: #292a31;
+  --nexus-blue: #36a9ff;
+  --nexus-cyan: #62dff5;
+  --nexus-orange: #ff7b26;
+  --nexus-green: #45d487;
+  --nexus-violet: #a56cff;
+  --font-display: "Arial Narrow", "Roboto Condensed", "Helvetica Neue", sans-serif;
+  --font-mono: ui-monospace, "Cascadia Code", "JetBrains Mono", monospace;
+  --sidebar: 244px;
+  --topbar: 72px;
+  color-scheme: dark;
+}

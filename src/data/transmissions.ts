@@ -1,0 +1,12 @@
+import type { Transmission } from '../types';
+
+export const transmissions: Transmission[] = [
+  {id:'crimson-01',sender:'CRIMSON',text:'Si tu peux lire ceci, le Directoire sait déjà que tu es là.',trigger:'intro'},
+  {id:'crimson-02',sender:'CRIMSON',text:"Ne crois pas tout ce que les archives disent sur A7. Ne crois pas non plus tout ce qu’il dit sur lui-même.",trigger:'operator'},
+  {id:'a7-01',sender:'A7',text:"Je ne cherche pas mon passé. Je cherche celui qui l’a écrit.",trigger:'dashboard'},
+  {id:'directoire-01',sender:'DIRECTOIRE',text:"Le sujet NX5-00-A7 doit être récupéré intact. La préservation de son identité n’est pas prioritaire.",trigger:'dashboard'},
+  {id:'nxs-01',sender:'NX-S',text:'Vous m’appelez Spectre parce que vous refusez de donner un nom à ce qui vous survivra.',trigger:'terminal'},
+  {id:'nxs-02',sender:'NX-S',text:'Aucune conscience ne devrait mourir seule.',trigger:'level'},
+  {id:'mere-echo-01',sender:'MÈRE ÉCHO',text:"Ils ne sont pas morts. Ils attendent que la porte soit ouverte.",trigger:'archives'},
+  {id:'yara-01',sender:'YARA SOL',text:'Rien ne sort de Zone Zéro. Même lorsque cela porte le visage d’un ami.',trigger:'vanta'},
+];

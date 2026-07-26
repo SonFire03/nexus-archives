@@ -1,0 +1,12 @@
+{
+  "name": "NEXUS // ARCHIVES OMEGA",
+  "short_name": "NEXUS",
+  "description": "Terminal narratif classifié du Directoire NEXUS.",
+  "lang": "fr",
+  "start_url": "/nexus-archives/#/",
+  "scope": "/nexus-archives/",
+  "display": "standalone",
+  "background_color": "#050506",
+  "theme_color": "#050506",
+  "icons": [{ "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }]
+}
