@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { brandImages } from '../data';
 import { useProgress } from '../state/ProgressContext';
 
 const bootLines = ['NEXUS SECURE NETWORK','INITIALISATION DU NEURO-LINK','CHARGEMENT DES ARCHIVES OMEGA',"VÉRIFICATION DE L’IDENTITÉ",'SIGNATURE BIOMÉTRIQUE ABSENTE','UTILISATEUR NON RECONNU','INTRUSION DÉTECTÉE','TENTATIVE DE LOCALISATION','LOCALISATION IMPOSSIBLE','ACCÈS TEMPORAIRE : OMEGA-7'];
@@ -25,7 +26,7 @@ export default function BootPage() {
     <main className="boot-page">
       <a className="skip-link" href="#boot-actions">Aller aux actions</a>
       <div className="boot-grid" aria-hidden="true" />
-      <header className="boot-mark"><span>N</span><div>NEXUS<small>DIRECTOIRE // RÉSEAU SÉCURISÉ</small></div></header>
+      <header className="boot-mark"><img src={brandImages.logo} alt="" width="52" height="52" /><div>NEXUS<small>DIRECTOIRE // RÉSEAU SÉCURISÉ</small></div></header>
       {!intercepted ? <>
         <div className="boot-log" role="status" aria-live="polite">{bootLines.slice(0, visible).map((line,index) => <p key={line} className={line.includes('INTRUSION') ? 'danger' : ''}><span>{String(index + 1).padStart(2,'0')}</span>{line}<em>{index < visible - 1 ? 'OK' : '...'}</em></p>)}</div>
         <section className={`boot-title ${visible < bootLines.length ? 'is-locked' : ''}`} aria-label="Accès aux archives">

@@ -91,7 +91,7 @@
   .span-2 { grid-column:span 1; }
   .operator-strip,.quotes,.event-strip { grid-template-columns:1fr; }
   .operator-header,.detail-hero { grid-template-columns:1fr; }
-  .operator-header .asset-placeholder,.detail-hero .asset-placeholder { min-height:360px; }
+  .operator-header .asset-placeholder,.detail-hero .asset-placeholder,.operator-header > .asset-image,.detail-hero > .asset-image { min-height:360px; }
   .archive-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
   .filters { align-items:stretch; flex-wrap:wrap; }
   .filters label { flex:1 1 180px; }
@@ -149,6 +149,7 @@
   .map-stage { min-height:420px; }
   .text-map ol { grid-template-columns:1fr; }
   .faction-card { grid-template-columns:1fr; }
+  .faction-card__image { width:100%; height:180px; }
   .terminal-window form { grid-template-columns:auto 1fr; }
   .terminal-window form span { font-size:.72rem; }
   .zero-total { align-items:start; flex-direction:column; }

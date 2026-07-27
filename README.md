@@ -20,6 +20,7 @@ L’interface Omega V3 emploie un shell de centre de commandement, une grille re
 - objectifs narratifs, contact NX-S et progression locale importable/exportable ;
 - barre de commandement, navigation latérale réductible et tiroir mobile accessible ;
 - panneaux, métriques, jauge réseau et graphe spectral déterministe du système Omega V3 ;
+- 45 illustrations WebP locales pour les opérateurs, armures, factions, secteurs et archives ;
 - son synthétique opt-in, responsive mobile/ultrawide et effets réduits.
 
 ## Stack
@@ -48,6 +49,8 @@ npm run dev
 ## Structure
 
 `src/data/` contient le canon, les documents, objectifs et preuves. `src/components/layout/` et `src/components/navigation/` composent le shell Omega ; `src/components/dashboard/` porte les visualisations métier. `src/components/archive/` rend les blocs typés et `src/components/investigation/` affiche le graphe. Les tokens et couches visuelles sont centralisés dans `src/styles/`. `src/state/` gère migration et effets narratifs, `src/services/` le terminal. Voir [`docs/narrative-system.md`](docs/narrative-system.md).
+
+Le registre `src/data/visualAssets.ts` centralise les chemins compatibles avec le `base` Vite. Les PNG maîtres restent dans `assets-source/images/`, ignoré par Git, tandis que seuls les WebP optimisés de `public/assets/images/` sont déployés.
 
 ## Étendre le contenu
 

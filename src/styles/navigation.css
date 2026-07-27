@@ -1,6 +1,6 @@
 .top-command-bar { position:sticky; top:0; z-index:100; grid-column:1/-1; display:grid; grid-template-columns:var(--sidebar) minmax(0,1fr) auto; min-height:var(--topbar); border-bottom:1px solid var(--color-border-default); background:rgba(5,6,9,.97); box-shadow:0 8px 24px rgba(0,0,0,.22); transition:grid-template-columns .2s ease; }
 .command-brand { display:grid; grid-template-columns:44px 1fr; align-content:center; min-width:0; border-right:1px solid var(--color-border-default); padding:0 var(--space-4); }
-.command-brand > span { grid-row:1/3; display:grid; place-items:center; color:var(--color-nexus); font:900 2rem var(--font-display); }
+.command-brand > img { grid-row:1/3; width:38px; height:38px; align-self:center; object-fit:cover; border:1px solid rgba(240,90,50,.28); }
 .command-brand strong { overflow:hidden; font:900 1.08rem var(--font-display); letter-spacing:.16em; white-space:nowrap; }
 .command-brand small { overflow:hidden; color:var(--color-text-muted); font-size:.64rem; letter-spacing:.12em; white-space:nowrap; }
 .command-status { min-width:0; display:flex; align-items:center; gap:clamp(12px,2vw,34px); padding:0 var(--space-6); }
@@ -42,7 +42,7 @@
 .sidebar-toggle { width:100%; display:flex; align-items:center; justify-content:center; gap:var(--space-2); margin-top:var(--space-3); border:1px solid var(--color-border-default); background:transparent; color:var(--color-text-secondary); }
 .sidebar-toggle:hover { border-color:var(--color-border-strong); background:var(--color-bg-panel-hover); }
 .sidebar-collapsed .command-brand { grid-template-columns:1fr; padding:0; }
-.sidebar-collapsed .command-brand > span { grid-row:auto; }
+.sidebar-collapsed .command-brand > img { grid-row:auto; justify-self:center; }
 .sidebar-collapsed .command-brand strong,.sidebar-collapsed .command-brand small,.command-sidebar.is-collapsed .nav-label,.command-sidebar.is-collapsed .nav-index,.command-sidebar.is-collapsed .nav-marker,.command-sidebar.is-collapsed .chapter-rail,.command-sidebar.is-collapsed .sidebar-spectral span,.command-sidebar.is-collapsed .sidebar-spectral > i,.command-sidebar.is-collapsed .sidebar-toggle span { display:none; }
 .command-sidebar.is-collapsed nav a { grid-template-columns:1fr; justify-items:center; padding:0; }
 .command-sidebar.is-collapsed .command-sidebar__footer { padding:8px; }

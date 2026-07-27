@@ -3,6 +3,7 @@ dist/
 coverage/
 playwright-report/
 test-results/
+assets-source/
 *.local
 .env
 .env.*

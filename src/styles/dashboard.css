@@ -86,6 +86,9 @@
 .operator-card { display:grid; grid-template-columns:82px minmax(0,1fr) minmax(155px,.55fr); min-height:132px; overflow:hidden; border:1px solid var(--color-border-subtle); background:rgba(5,6,9,.38); }
 .operator-card:hover { border-color:var(--color-nexus-dark); background:var(--color-bg-panel-hover); }
 .operator-card__visual { position:relative; display:grid; place-items:center; overflow:hidden; border-right:1px solid var(--color-border-subtle); color:var(--color-nexus-bright); background:radial-gradient(circle,rgba(240,90,50,.13),transparent 58%); }
+.operator-card__visual.asset-image { border-width:0 1px 0 0; }
+.operator-card__visual img { object-position:center 16%; filter:saturate(.85) contrast(1.05); transition:filter .18s,transform .18s; }
+.operator-card:hover .operator-card__visual img { filter:saturate(1) contrast(1.08); transform:scale(1.025); }
 .operator-card__visual span { z-index:1; font:900 1.5rem var(--font-display); }
 .operator-card__visual i { position:absolute; width:40px; height:65px; border:1px solid currentColor; transform:skew(-8deg); opacity:.45; }
 .operator-card__visual i:last-child { width:62px; height:30px; top:55%; }

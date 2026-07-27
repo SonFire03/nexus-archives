@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { AssetPlaceholder } from '../components/common/AssetPlaceholder';
+import { AssetImage } from '../components/common/AssetImage';
 import { Panel } from '../components/common/Panel';
 import { RedactedText } from '../components/common/RedactedText';
 import { StatBar } from '../components/common/StatBar';
-import { archiveDocuments, armors, operators } from '../data';
+import { archiveDocuments, armors, operatorImages, operators } from '../data';
 import { isDocumentAvailable } from '../state/narrative';
 import { useProgress } from '../state/ProgressContext';
 
@@ -23,7 +23,7 @@ export default function OperatorDetailPage() {
   if (!operator) return <div className="page"><h1>OPÉRATEUR INTROUVABLE</h1><Link to="/operators">RETOUR AUX DOSSIERS</Link></div>;
   const armor = armors.find((item) => item.id === operator.armorId);
   return <article className={`page operator-detail operator-${operator.id}`}>
-    <header className="operator-header"><div><p className="eyebrow">DOSSIER {operator.matricule} // CLASSIFICATION {operator.threat}</p><h1>{operator.name}<span>{operator.callsign}</span></h1><p>{operator.description}</p></div><AssetPlaceholder label={operator.matricule} /></header>
+    <header className="operator-header"><div><p className="eyebrow">DOSSIER {operator.matricule} // CLASSIFICATION {operator.threat}</p><h1>{operator.name}<span>{operator.callsign}</span></h1><p>{operator.description}</p></div><AssetImage src={operatorImages[operator.id]} alt={`Portrait classifié de ${operator.name}, ${operator.callsign}`} label={operator.matricule} variant="operator" eager /></header>
     <div className="detail-grid">
       <Panel title="IDENTITÉ" code="BIO"><dl className="data-list"><div><dt>NOM CIVIL</dt><dd>{operator.civilName}</dd></div><div><dt>SEXE</dt><dd>{operator.gender}</dd></div><div><dt>ÂGE ESTIMÉ</dt><dd>{operator.age}</dd></div><div><dt>TAILLE</dt><dd>{operator.height}</dd></div><div><dt>STATUT OFFICIEL</dt><dd>{operator.officialStatus}</dd></div><div><dt>STATUT RÉEL</dt><dd>{operator.realStatus}</dd></div><div><dt>ORDRE</dt><dd>{operator.order}</dd></div></dl></Panel>
       <Panel title="ÉTAT NEURAL" code="LIVE"><StatBar label="Compatibilité NEXUS" value={operator.compatibility} max={100} color={operator.id === 'crimson' ? 'red' : 'blue'} /><StatBar label="Stabilité identitaire" value={operator.id === 'a7' ? 31 : 58} max={100} /><StatBar label={operator.id === 'crimson' ? 'Niveau REDLINE' : 'Corruption NX-S'} value={operator.id === 'a7' ? 67 : 42} max={100} color={operator.id === 'a7' ? 'blue' : 'red'} /><p className="warning">Toute connexion prolongée fragmente davantage l’identité.</p></Panel>

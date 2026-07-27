@@ -1,4 +1,8 @@
 /* Index et cartes */
+.asset-image { position:relative; min-width:0; overflow:hidden; border:1px solid var(--color-border-default); background:linear-gradient(135deg,var(--color-bg-void),var(--color-bg-panel)); }
+.asset-image img { width:100%; height:100%; display:block; object-fit:cover; }
+.asset-image > span { position:absolute; right:8px; bottom:7px; border-left:2px solid var(--color-nexus); padding:3px 6px; background:rgba(5,6,9,.82); color:var(--color-text-secondary); font-size:.58rem; letter-spacing:.08em; }
+.boot-mark > img { width:52px; height:52px; border:1px solid rgba(240,90,50,.36); object-fit:cover; }
 .operator-index-summary { display:flex; align-items:center; flex-wrap:wrap; gap:var(--space-2); margin-bottom:var(--space-4); }
 .operator-index-summary > span:last-child { margin-left:auto; color:var(--color-text-muted); font-size:.75rem; }
 .operator-list--index { grid-template-columns:repeat(2,minmax(0,1fr)); }
@@ -8,10 +12,12 @@
 .dossier-card > div > p:not(.eyebrow),.armor-card > p,.archive-file p,.faction-card p { color:var(--color-text-secondary); font-size:.88rem; }
 .dossier-card dt,.armor-card dt,.archive-file header,.archive-file > small { font-size:.7rem; }
 .dossier-card dd,.armor-card dd { font-size:.8rem; }
-.armor-card { min-height:430px; padding:var(--space-5); }
+.armor-card { min-height:580px; padding:var(--space-5); }
 .armor-card header { font-size:.75rem; }
 .armor-card h2 { font-size:2.2rem; }
-.armor-schematic { border:1px solid var(--color-border-subtle); background-color:rgba(5,6,9,.34); }
+.armor-card__image { height:230px; margin:var(--space-3) 0 var(--space-4); }
+.armor-card__image img { object-position:center 23%; }
+.armor-card__image > span,.operator-card__visual > span,.faction-card__image > span { display:none; }
 .archive-file { min-height:300px; padding:var(--space-5); }
 .archive-file h2 { font-size:1.45rem; }
 .archive-file dl { border-color:var(--color-border-subtle); }
@@ -19,6 +25,10 @@
 .archive-status div { background:var(--color-bg-panel); }
 .archive-status span { color:var(--color-text-secondary); font-size:.7rem; }
 .archive-status strong { font-size:1.7rem; }
+.archive-file__image,.archive-file__classified { height:145px; margin:var(--space-3) 0; }
+.archive-file__image img { object-position:center; }
+.archive-file__classified { display:grid; place-items:center; border:1px dashed var(--color-border-default); color:var(--color-text-disabled); background:repeating-linear-gradient(135deg,rgba(255,255,255,.018) 0 8px,transparent 8px 16px); font-size:.68rem; letter-spacing:.14em; }
+.archive-file .archive-category { margin-top:var(--space-2)!important; }
 
 /* Dossiers détaillés */
 .operator-header,.detail-hero { border-bottom:1px solid var(--color-border-default); padding-bottom:var(--space-5); }
@@ -26,6 +36,12 @@
 .operator-header p:not(.eyebrow),.detail-hero p:not(.eyebrow) { color:var(--color-text-secondary); font-size:1rem; }
 .asset-placeholder { border-color:var(--color-border-default); background-color:var(--color-bg-elevated); }
 .asset-placeholder small { font-size:.68rem; }
+.operator-header,.detail-hero { align-items:center; }
+.operator-header > .asset-image,.detail-hero > .asset-image { min-height:380px; max-height:460px; }
+.operator-header > .asset-image img { object-position:center 16%; }
+.detail-hero > .asset-image--armor img { object-fit:contain; }
+.detail-hero > .asset-image--faction { min-height:360px; }
+.detail-hero > .asset-image--faction img { object-fit:cover; }
 .detail-grid { grid-template-columns:repeat(12,minmax(0,1fr)); }
 .detail-grid > .panel { grid-column:span 6; }
 .detail-grid > .panel.span-2 { grid-column:span 12; }
@@ -33,12 +49,17 @@
 .relation strong { font-size:.8rem; }
 .quotes blockquote { background:rgba(5,6,9,.36); font-size:1rem; line-height:1.55; }
 .reference-links a,.zone-evidence a { min-height:42px; display:flex; align-items:center; border-color:var(--color-border-default); padding:.75rem; font-size:.78rem; }
+.faction-card { grid-template-columns:130px 1fr; align-items:start; }
+.faction-card__image { width:116px; height:116px; }
+.faction-card__image img { object-fit:cover; }
 
 /* Carte VANTA */
 .map-layout,.relationship-graph { gap:var(--space-4); }
 .map-stage,.map-side,.text-map,.relationship-graph { border-color:var(--color-border-default); background:var(--color-bg-elevated); }
 .map-side { padding:var(--space-5); }
 .map-side p,.graph-text li { color:var(--color-text-secondary); font-size:.86rem; }
+.zone-detail__image { aspect-ratio:3/2; margin-bottom:var(--space-4); }
+.zone-detail__image img { object-position:center; }
 .text-map button { min-height:86px; border-color:var(--color-border-default); padding:var(--space-4); font-size:.82rem; }
 .text-map button span { font-size:.7rem; }
 .graph-text h3,.relationship-graph > h2 { font-size:.86rem; }
@@ -84,6 +105,8 @@
 .document-sidecar strong,.document-sidecar a { font-size:.76rem; }
 .document-sidecar span,.document-sidecar small { font-size:.68rem; }
 .document-sequence { font-size:.76rem; }
+.document-cover { max-height:390px; margin-top:var(--space-4); border-color:var(--color-orange); }
+.document-cover img { aspect-ratio:16/7; object-position:center; }
 .classified-comparison { background:linear-gradient(145deg,#15100c,var(--color-bg-elevated)); }
 .comparison-summary { color:var(--color-text-secondary); font-size:.92rem; }
 .comparison-columns article > p,.comparison-columns article small { font-size:.7rem; }

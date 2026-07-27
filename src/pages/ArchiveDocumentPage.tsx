@@ -2,7 +2,8 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { ArchiveBlockRenderer } from '../components/archive/ArchiveBlockRenderer';
 import { ClassifiedComparison } from '../components/archive/ClassifiedComparison';
-import { archiveDocuments } from '../data';
+import { AssetImage } from '../components/common/AssetImage';
+import { archiveDocuments, archiveImages } from '../data';
 import { isDocumentAvailable, requirementMet } from '../state/narrative';
 import { useProgress } from '../state/ProgressContext';
 
@@ -36,6 +37,7 @@ export default function ArchiveDocumentPage() {
   return <article className="page archive-document">
     <nav className="document-breadcrumb" aria-label="Fil d’Ariane"><Link to="/archives">ARCHIVES</Link><span>/</span><span>{document.code}</span></nav>
     <header className="document-header"><div><p className="eyebrow">{document.code} // {document.classification}</p><h1 ref={titleRef} tabIndex={-1}>{document.title}</h1><p>{document.summary}</p></div><dl><div><dt>DATE</dt><dd>{document.date}</dd></div><div><dt>ÉMETTEUR</dt><dd>{document.issuer}</dd></div><div><dt>AUTEUR</dt><dd>{document.author ?? 'NON ATTRIBUÉ'}</dd></div><div><dt>STATUT</dt><dd>{document.status}</dd></div></dl></header>
+    <AssetImage src={archiveImages[document.id]} alt={`Illustration classifiée du document ${document.title}`} label={document.code} variant="archive" className="document-cover" eager />
     <div className="document-layout">
       <aside className="document-toc"><h2>SOMMAIRE</h2><ol>{document.pages.map((item,index) => <li key={item.id}><button className={index === pageIndex ? 'active' : ''} aria-current={index === pageIndex ? 'page' : undefined} onClick={() => goToPage(index)}><span>0{index + 1}</span>{item.title}</button></li>)}</ol>{comparisonAvailable && <a href="#comparison">ANALYSE CONTRADICTOIRE</a>}<p>LECTURE {Math.round(((pageIndex + 1) / document.pages.length) * 100)} %</p></aside>
       <section className="document-reader" aria-labelledby="document-page-title"><header><span>PAGE {String(pageIndex + 1).padStart(2,'0')} / {String(document.pages.length).padStart(2,'0')}</span><span>{document.code}</span></header><h2 id="document-page-title">{page.title}</h2>{page.blocks.map((block,index) => <ArchiveBlockRenderer key={`${page.id}-${index}`} block={block} unlockedSecrets={progress.unlockedSecrets} />)}<footer><button className="button-ghost" disabled={pageIndex === 0} onClick={() => goToPage(pageIndex - 1)}>← PAGE PRÉCÉDENTE</button><button className="button-ghost" disabled={pageIndex === document.pages.length - 1} onClick={() => goToPage(pageIndex + 1)}>PAGE SUIVANTE →</button></footer></section>

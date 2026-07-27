@@ -13,6 +13,7 @@ async function prepare(page: Page, route: string) {
 }
 
 async function attachScreenshot(page: Page, testInfo: TestInfo, name: string) {
+  await page.locator('img').evaluateAll(async (images) => Promise.all(images.map(async (image) => { if (image instanceof HTMLImageElement) { image.loading='eager'; await image.decode().catch(() => undefined); } })));
   const body = await page.screenshot({ animations:'disabled',path:`/tmp/nexus-v3-final-${name}.png` });
   await testInfo.attach(name,{body,contentType:'image/png'});
 }
@@ -40,7 +41,7 @@ test.describe('captures UI Omega V3', () => {
     await page.getByRole('button',{name:'Réduire la navigation'}).click();
     await expect(page.getByRole('button',{name:'Déployer la navigation'})).toHaveAttribute('aria-pressed','true');
     await attachScreenshot(page,testInfo,'sidebar-reduite');
-    for (const [route,name,heading] of [['/archives','archives','ARCHIVES CLASSIFIÉES'],['/operators/a7','dossier-a7','A7'],['/terminal','terminal','TERMINAL OMEGA'],['/investigation','enquete','TABLEAU D’ENQUÊTE']] as const) {
+    for (const [route,name,heading] of [['/archives','archives','ARCHIVES CLASSIFIÉES'],['/operators/a7','dossier-a7','A7'],['/armors','armures','CHÂSSIS ET ARMURES'],['/factions','factions','FACTIONS ACTIVES'],['/vanta?zone=zero','vanta-zone-zero','VANTA'],['/terminal','terminal','TERMINAL OMEGA'],['/investigation','enquete','TABLEAU D’ENQUÊTE']] as const) {
       await page.goto(`/nexus-archives/#${route}`);
       await expect(page.getByRole('heading',{name:new RegExp(heading)}).first()).toBeVisible();
       await attachScreenshot(page,testInfo,name);
@@ -70,5 +71,30 @@ test.describe('captures UI Omega V3', () => {
       await expect(page.locator('.fatal-error')).toHaveCount(0);
     }
     expect(failures).toEqual([]);
+  });
+
+  test('les médias WebP publiés se chargent et possèdent des dimensions', async ({ page }) => {
+    await page.setViewportSize({width:1440,height:900});
+    for (const route of ['/operators/a7','/armors','/factions','/vanta?zone=zero','/archives','/archives/rapport-nuit-zero']) {
+      await prepare(page,route);
+      const images = page.locator('.asset-image img');
+      await expect(images.first()).toBeVisible();
+      await page.locator('body').evaluate((body) => window.scrollTo(0,body.scrollHeight));
+      await page.waitForTimeout(150);
+      expect(await images.evaluateAll((elements) => elements.every((element) => element instanceof HTMLImageElement && element.complete && element.naturalWidth > 0 && element.currentSrc.endsWith('.webp')))).toBe(true);
+    }
+  });
+
+  test('les pages illustrées restent lisibles sans débordement sur mobile', async ({ page },testInfo) => {
+    await page.setViewportSize({width:390,height:844});
+    for (const route of ['/operators/a7','/armors','/factions','/vanta?zone=zero','/archives']) {
+      await prepare(page,route);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+      await expect(page.locator('.asset-image img').first()).toBeVisible();
+    }
+    await prepare(page,'/operators/a7');
+    await attachScreenshot(page,testInfo,'dossier-a7-mobile');
+    await prepare(page,'/armors');
+    await attachScreenshot(page,testInfo,'armures-mobile');
   });
 });

@@ -6,6 +6,7 @@ export { timeline } from './timeline';
 export { transmissions } from './transmissions';
 export { archiveDocuments } from './archives';
 export { chapterZeroObjectives, evidenceNodes, evidenceRelations, narrativeEvents, chapterCompletionRequirements } from './chapterZero';
+export { brandImages, operatorImages, armorImages, factionImages, locationImages, archiveImages } from './visualAssets';
 
 import { operators } from './operators';
 import { armors } from './armors';
