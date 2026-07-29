@@ -4,11 +4,11 @@ import { AssetImage } from '../components/common/AssetImage';
 import { PageHeader } from '../components/common/PageHeader';
 import { RedactedText } from '../components/common/RedactedText';
 import { TransmissionCard } from '../components/common/TransmissionCard';
-import { archiveDocuments, archiveImages, chapterFiveObjectives, chapterFourObjectives, chapterThreeObjectives, chapterTwoObjectives, chapterZeroObjectives, transmissions } from '../data';
+import { archiveDocuments, archiveImages, chapterFiveObjectives, chapterFourObjectives, chapterSixObjectives, chapterThreeObjectives, chapterTwoObjectives, chapterZeroObjectives, transmissions } from '../data';
 import { isDocumentAvailable } from '../state/narrative';
 import { useProgress } from '../state/ProgressContext';
 
-const chapterLabel = (chapterId?: string) => chapterId === 'chapter-five' ? '05' : chapterId === 'chapter-four' ? '04' : chapterId === 'chapter-three' ? '03' : chapterId === 'chapter-two' ? '02' : chapterId === 'chapter-zero' ? '01' : '—';
+const chapterLabel = (chapterId?: string) => chapterId === 'chapter-six' ? '06' : chapterId === 'chapter-five' ? '05' : chapterId === 'chapter-four' ? '04' : chapterId === 'chapter-three' ? '03' : chapterId === 'chapter-two' ? '02' : chapterId === 'chapter-zero' ? '01' : '—';
 
 export default function ArchivesPage() {
   const { progress } = useProgress();
@@ -20,7 +20,7 @@ export default function ArchivesPage() {
     return (category === 'toutes' || document.category === category)
       && (state === 'tous' || (state === 'lu' && viewed) || (state === 'non-lu' && available && !viewed) || (state === 'verrouille' && !available));
   }),[category,state,progress]);
-  const objectives = progress.activeChapter === 'chapter-five' ? chapterFiveObjectives : progress.activeChapter === 'chapter-four' ? chapterFourObjectives : progress.activeChapter === 'chapter-three' ? chapterThreeObjectives : progress.activeChapter === 'chapter-two' ? chapterTwoObjectives : chapterZeroObjectives;
+  const objectives = progress.activeChapter === 'chapter-six' ? chapterSixObjectives : progress.activeChapter === 'chapter-five' ? chapterFiveObjectives : progress.activeChapter === 'chapter-four' ? chapterFourObjectives : progress.activeChapter === 'chapter-three' ? chapterThreeObjectives : progress.activeChapter === 'chapter-two' ? chapterTwoObjectives : chapterZeroObjectives;
   const percentage = Math.round((progress.completedObjectives.filter((id) => objectives.some((objective) => objective.id === id)).length / objectives.length) * 100);
   const chapterNumber = chapterLabel(progress.activeChapter);
   const visibleTransmissions = transmissions.filter((item) => {
@@ -36,6 +36,7 @@ export default function ArchivesPage() {
     if (item.id === 'draven-hunt') return progress.completedObjectives.includes('open-omega-capture-order');
     if (item.id === 'crimson-extraction') return progress.completedObjectives.includes('authenticate-crimson-channel');
     if (item.id === 'nxs-exit') return progress.completedChapters.includes('chapter-five') && progress.narrativeChoices['omega7-extraction']==='spectral';
+    if (['mother-echo-names','sera-nox-names','directoire-breach'].includes(item.id)) return progress.selectedTransmission===item.id;
     return true;
   });
 

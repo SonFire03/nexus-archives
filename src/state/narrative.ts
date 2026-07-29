@@ -5,6 +5,7 @@ import { chapterTwoChoices, chapterTwoCompletionRequirements, type ChapterTwoCho
 import { chapterThreeChoices, chapterThreeCompletionRequirements, type ChapterThreeChoice } from '../data/chapterThree';
 import { chapterFourChoices, chapterFourCompletionRequirements, type ChapterFourChoice } from '../data/chapterFour';
 import { chapterFiveChoices, chapterFiveCompletionRequirements, type ChapterFiveChoice } from '../data/chapterFive';
+import { chapterSixChoices, chapterSixCompletionRequirements, type ChapterSixChoice } from '../data/chapterSix';
 
 export function requirementMet(requirement: UnlockRequirement, progress: ProgressState): boolean {
   if (requirement.type === 'access') return accessOrder.indexOf(progress.accessLevel) >= accessOrder.indexOf(requirement.value);
@@ -127,7 +128,7 @@ export function completeChapterFive(progress: ProgressState, choice: ChapterFive
   if (progress.completedChapters.includes('chapter-five') || !canCompleteChapterFive(progress) || !chapterFiveChoices.some((item) => item.id === choice)) return progress;
   const next: ProgressState = {
     ...progress,
-    activeChapter:'chapter-five',
+    activeChapter:'chapter-six',
     completedObjectives:mergeUnique(progress.completedObjectives,['choose-extraction']),
     completedChapters:mergeUnique(progress.completedChapters,['chapter-five']),
     unlockedSecrets:mergeUnique(progress.unlockedSecrets,['chapter-five-decision','omega7-extracted']),
@@ -136,6 +137,27 @@ export function completeChapterFive(progress: ProgressState, choice: ChapterFive
     selectedTransmission:choice==='spectral'?'nxs-exit':'crimson-extraction',
     spectralContactCount:progress.spectralContactCount+(choice==='spectral'?1:0),
     lastNarrativeEvent:'chapter-five-complete',
+  };
+  return {...next,accessLevel:deriveAccessLevel(next)};
+}
+
+export function canCompleteChapterSix(progress: ProgressState): boolean {
+  return chapterSixCompletionRequirements.every((id) => progress.completedObjectives.includes(id));
+}
+
+export function completeChapterSix(progress: ProgressState, choice: ChapterSixChoice): ProgressState {
+  if (progress.completedChapters.includes('chapter-six') || !canCompleteChapterSix(progress) || !chapterSixChoices.some((item) => item.id === choice)) return progress;
+  const next: ProgressState = {
+    ...progress,
+    activeChapter:'chapter-six',
+    completedObjectives:mergeUnique(progress.completedObjectives,['decide-victims-ledger']),
+    completedChapters:mergeUnique(progress.completedChapters,['chapter-six']),
+    unlockedSecrets:mergeUnique(progress.unlockedSecrets,['chapter-six-decision','names-63218-restored']),
+    narrativeChoices:{...progress.narrativeChoices,'victims-ledger':choice},
+    narrativeFlags:mergeUnique(progress.narrativeFlags,[`victims-${choice}`]),
+    selectedTransmission:choice==='choir'?'mother-echo-names':choice==='analog'?'sera-nox-names':'directoire-breach',
+    spectralContactCount:progress.spectralContactCount+(choice==='choir'?1:0),
+    lastNarrativeEvent:'chapter-six-complete',
   };
   return {...next,accessLevel:deriveAccessLevel(next)};
 }

@@ -22,4 +22,7 @@ export const transmissions: Transmission[] = [
   {id:'draven-hunt',sender:'KAEL DRAVEN // HUNT-314',text:'OMEGA-7, vous n’êtes pas un intrus. Vous êtes un témoin non indexé. Cela peut être corrigé.',trigger:'chapter-five'},
   {id:'crimson-extraction',sender:'CRIMSON // R-9',text:'Ils ne suivent pas ta position. Ils suivent tes choix. Pour une fois, choisis vite.',trigger:'chapter-five'},
   {id:'nxs-exit',sender:'NX-S // CANAL MORT',text:'Je peux vous rendre introuvable. Je ne peux pas promettre que vous resterez seul.',trigger:'chapter-five'},
+  {id:'mother-echo-names',sender:'MÈRE ÉCHO // CHŒUR ZÉRO',text:'Prononce les noms. Pas les numéros. Nous devons savoir lesquels de nos souvenirs ont appartenu à quelqu’un.',trigger:'chapter-six-complete'},
+  {id:'sera-nox-names',sender:'SERA NOX // ARCHIVISTE DES ABSENTS',text:'Une archive analogique ne promet pas la vérité immédiate. Elle promet seulement que personne ne pourra l’effacer à distance.',trigger:'chapter-six-complete'},
+  {id:'directoire-breach',sender:'DIRECTOIRE // ALERTE PUBLIQUE',text:'La diffusion de données nominatives relatives à Zone Zéro constitue une attaque contre la stabilité de VANTA.',trigger:'chapter-six-complete'},
 ];

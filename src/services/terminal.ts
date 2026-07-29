@@ -3,6 +3,7 @@ import { chapterTwoObjectives } from '../data/chapterTwo';
 import { chapterThreeObjectives } from '../data/chapterThree';
 import { chapterFourObjectives } from '../data/chapterFour';
 import { chapterFiveObjectives } from '../data/chapterFive';
+import { chapterSixObjectives } from '../data/chapterSix';
 import type { TerminalContext, TerminalResult } from '../types';
 
 export const terminalCommands = [
@@ -18,6 +19,8 @@ export const terminalCommands = [
   'open truth directive','map mirror network','broadcast truth','preserve truth','fragment truth',
   'decrypt hunt-314','open harbinger log','counter trace','authenticate crimson',
   'open extraction plan','sever harbinger','follow crimson','join free ghosts','merge nx-s',
+  'decrypt cendre-63218','open ash chain','reconstruct ash','verify draven',
+  'open victims ledger','sever ash command','broadcast names','return names','protect names',
 ];
 
 export const emptyTerminalContext: TerminalContext = {
@@ -42,6 +45,7 @@ const directRoutes: Record<string, string> = {
   'analyze voice':'/spectral-analysis', 'analyser voix':'/spectral-analysis',
   'reconstruct truth':'/truth-reconstruction', 'reconstruire verite':'/truth-reconstruction',
   'counter trace':'/counter-trace', 'contre traque':'/counter-trace',
+  'reconstruct ash':'/ash-protocol', 'reconstruire cendre':'/ash-protocol',
 };
 
 const isDecryptZero = (command: string) => ['decrypt z 2219','decrypt z2219','decrypt zero','decrypt nuit zero'].includes(command);
@@ -51,11 +55,11 @@ export function executeCommand(raw: string, context: TerminalContext = emptyTerm
   if (!command) return { output: [] };
   if (command === 'clear') return { output: [], clear: true };
   if (command === 'help') return { output: ['COMMANDES DISPONIBLES', terminalCommands.join(' · ')] };
-  if (command === 'status') { const chapter=context.activeChapter==='chapter-zero'?'01 // NUIT ZÉRO':context.activeChapter==='chapter-two'?'02 // LES SEPT CORPS':context.activeChapter==='chapter-three'?'03 // L’ENFANT DU CIMETIÈRE':context.activeChapter==='chapter-four'?'04 // VÉRITÉ ORIGINALE':'05 // TRAQUE OMEGA'; return { output: [`CHAPITRE : ${chapter}`,`ACCÈS : ${context.accessLevel}`,`PREUVES : ${context.evidenceNodes.length} NŒUDS // ${context.evidenceRelations.length} RELATIONS`,context.spectralContactCount ? 'ACTIVITÉ SPECTRALE : TERMINAL COMPROMIS' : 'ACTIVITÉ SPECTRALE : INSTABLE'] }; }
+  if (command === 'status') { const chapter=context.activeChapter==='chapter-zero'?'01 // NUIT ZÉRO':context.activeChapter==='chapter-two'?'02 // LES SEPT CORPS':context.activeChapter==='chapter-three'?'03 // L’ENFANT DU CIMETIÈRE':context.activeChapter==='chapter-four'?'04 // VÉRITÉ ORIGINALE':context.activeChapter==='chapter-five'?'05 // TRAQUE OMEGA':'06 // LES NOMS DE CENDRE'; return { output: [`CHAPITRE : ${chapter}`,`ACCÈS : ${context.accessLevel}`,`PREUVES : ${context.evidenceNodes.length} NŒUDS // ${context.evidenceRelations.length} RELATIONS`,context.spectralContactCount ? 'ACTIVITÉ SPECTRALE : TERMINAL COMPROMIS' : 'ACTIVITÉ SPECTRALE : INSTABLE'] }; }
   if (command === 'whoami') return { output: ['IDENTITÉ : INCONNUE', `AUTORISATION : ${context.accessLevel}`, 'LOCALISATION : IMPOSSIBLE'] };
   if (command === 'access') return { output: [`NIVEAU ACTUEL : ${context.accessLevel}`, context.accessLevel === 'CIVIL' ? 'CONDITION TACTIQUE : TERMINER L’ENQUÊTE NUIT ZÉRO' : context.accessLevel === 'TACTIQUE' ? 'CONDITION OMEGA : STATUER SUR LE CORPS A7-04' : context.accessLevel === 'OMEGA' ? 'CONDITION NOIR ABSOLU : STATUER SUR LA PORTE DE CONTINUITÉ' : 'ACCÈS NOIR ABSOLU CONFIRMÉ'] };
   if (command === 'objectives') {
-    const objectives = context.activeChapter === 'chapter-five' ? chapterFiveObjectives : context.activeChapter === 'chapter-four' ? chapterFourObjectives : context.activeChapter === 'chapter-three' ? chapterThreeObjectives : context.activeChapter === 'chapter-two' ? chapterTwoObjectives : chapterZeroObjectives;
+    const objectives = context.activeChapter === 'chapter-six' ? chapterSixObjectives : context.activeChapter === 'chapter-five' ? chapterFiveObjectives : context.activeChapter === 'chapter-four' ? chapterFourObjectives : context.activeChapter === 'chapter-three' ? chapterThreeObjectives : context.activeChapter === 'chapter-two' ? chapterTwoObjectives : chapterZeroObjectives;
     const next = objectives.find((objective) => !context.completedObjectives.includes(objective.id));
     return { output: next ? [`OBJECTIF PRIORITAIRE : ${next.title.toUpperCase()}`, next.description.toUpperCase(), next.hint?.toUpperCase() ?? 'AUCUN INDICE DISPONIBLE'] : ['TOUS LES OBJECTIFS DU CHAPITRE SONT TERMINÉS.'] };
   }
@@ -101,6 +105,25 @@ export function executeCommand(raw: string, context: TerminalContext = emptyTerm
   }
   const extractionDecisions:Record<string,string>={'follow crimson':'crimson','suivre crimson':'crimson','join free ghosts':'ghosts','rejoindre fantomes libres':'ghosts','merge nx s':'spectral','disappear nx s':'spectral','disparaitre nx s':'spectral'};
   if (extractionDecisions[command]) return context.completedObjectives.includes('sever-harbinger-network')?{output:['ROUTE D’EXTRACTION CHARGÉE','CONFIRMATION LOCALE REQUISE.'],navigateTo:`/chapter-five?decision=${extractionDecisions[command]}`}:{output:['EXTRACTION INDISPONIBLE','HARBINGER ENCORE ACTIF.']};
+  if (['decrypt cendre 63218','decrypt cendre63218','decrypt ash 63218'].includes(command)) {
+    if (!context.discoveredClues.includes('clue-cendre-63218')) return {output:['CODE CENDRE-63218 INCONNU','CONSULTEZ LE RÉSIDU OPÉRATIONNEL APRÈS EXTRACTION.']};
+    if (context.completedObjectives.includes('decrypt-cendre-63218')) return {output:['CENDRE-63218 DÉJÀ DÉCHIFFRÉ','CHAÎNE ASH-CHAIN-2244 DISPONIBLE.']};
+    return {output:['CENDRE-63218 DÉCHIFFRÉ','21:17 — AUTORISATION CONTINUITÉ','21:23 — SORTIES VERROUILLÉES','21:41 — SYNCHRONISATION COLLECTIVE','22:44 — COMMANDE CENDRE','CHAÎNE ASH-CHAIN-2244 RÉCUPÉRÉE'],unlocks:['document-ash-command-chain'],completedObjectives:['decrypt-cendre-63218'],evidenceNodes:['chaine-cendre'],notification:'ash-chain-recovered'};
+  }
+  if (['open ash chain','open chaine cendre','open command chain'].includes(command)) return context.unlockedSecrets.includes('document-ash-command-chain')?{output:['OUVERTURE : CHAÎNE DE COMMANDEMENT CENDRE'],navigateTo:'/archives/chaine-commandement-cendre'}:{output:['ACCÈS REFUSÉ','DÉCHIFFREMENT CENDRE-63218 REQUIS.']};
+  if (['verify draven','authenticate draven','authentifier draven'].includes(command)) {
+    if (!context.solvedPuzzles.includes('ash-command-sequence')) return {output:['BIOMÉTRIE NON VÉRIFIABLE','SÉQUENCE CENDRE NON STABILISÉE.']};
+    if (context.completedObjectives.includes('verify-draven-authority')) return {output:['AUTORITÉ DRAVEN DÉJÀ CONFIRMÉE','REGISTRE Z0-NAMES-63218 DISPONIBLE.']};
+    return {output:['VÉRIFICATION BIOMÉTRIQUE…','OPÉRATEUR : KAEL DRAVEN','ARMURE : NX-B4 BASTION','COMMANDE : CENDRE // 22:44','AUTORITÉ HUMAINE : CONFIRMÉE','REGISTRE DES IDENTITÉS RESTAURÉ'],unlocks:['document-victims-ledger','victims-list'],completedObjectives:['verify-draven-authority'],evidenceNodes:['autorite-draven','registre-63218'],evidenceRelations:['draven-declenche-cendre','chaine-authentifie-draven'],notification:'draven-authority-confirmed'};
+  }
+  if (['open victims ledger','open liste 63218','open restored names'].includes(command)) return context.unlockedSecrets.includes('document-victims-ledger')?{output:['OUVERTURE : REGISTRE RESTAURÉ — 63 218 IDENTITÉS'],navigateTo:'/archives/liste-63218-dechiffree'}:{output:['ACCÈS REFUSÉ','AUTORITÉ DRAVEN NON CONFIRMÉE.']};
+  if (['sever ash command','revoke ash command','revoquer cendre'].includes(command)) {
+    if (!context.completedObjectives.includes('read-victims-ledger')) return {output:['RÉVOCATION REFUSÉE','REGISTRE DES IDENTITÉS NON CONSULTÉ.']};
+    if (context.completedObjectives.includes('sever-ash-command')) return {output:['DERNIER ORDRE DÉJÀ RÉVOQUÉ','63 218 SIGNATURES RETIRÉES DES CIBLES.']};
+    return {output:['RÉVOCATION LOCALE CENDRE…','ARMURES NX-C8 : DÉSYNCHRONISÉES','63 218 SIGNATURES : RETIRÉES','IDENTITÉS : PRÉSERVÉES','DERNIER ORDRE : RÉVOQUÉ'],completedObjectives:['sever-ash-command'],narrativeFlags:['ash-command-severed'],notification:'ash-command-severed'};
+  }
+  const victimsDecisions:Record<string,string>={'broadcast names':'broadcast','diffuser noms':'broadcast','return names':'choir','restituer noms':'choir','protect names':'analog','proteger noms':'analog'};
+  if (victimsDecisions[command]) return context.completedObjectives.includes('sever-ash-command')?{output:['DIRECTIVE DU REGISTRE CHARGÉE','CONFIRMATION LOCALE REQUISE.'],navigateTo:`/chapter-six?decision=${victimsDecisions[command]}`}:{output:['DIRECTIVE INDISPONIBLE','DERNIER ORDRE CENDRE ENCORE ACTIF.']};
   if (['trace mirror 00','trace mirror00','trace original truth'].includes(command)) {
     if (!context.discoveredClues.includes('clue-mirror-00')) return {output:['CHECKSUM INCONNU','CONSULTEZ VÉRITÉ ORIGINALE.']};
     if (context.completedObjectives.includes('trace-mirror-00')) return {output:['CHECKSUM MIRROR-00 DÉJÀ TRACÉ','REGISTRE MIRROR-LEDGER-17 DISPONIBLE.']};

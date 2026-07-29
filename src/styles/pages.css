@@ -295,6 +295,41 @@
 .extraction-options span { color:var(--color-cyan); font:.72rem var(--font-data); }
 .extraction-options strong { margin:var(--space-4) 0; font-size:1.15rem; }
 
+/* Chapitre 06 — Les Noms de Cendre */
+.ash-origin { display:grid; grid-template-columns:1fr 2fr 1fr; border:1px solid var(--color-orange); background:linear-gradient(90deg,rgba(255,156,66,.08),var(--color-bg-panel)); margin-bottom:var(--space-5); }
+.ash-origin > * { padding:var(--space-4); margin:0; }
+.ash-origin span,.ash-origin em { font:normal .72rem var(--font-data); color:var(--color-text-muted); font-style:normal; }
+.ash-origin em { text-align:right; }
+.ash-origin strong { color:var(--color-orange); }
+.ash-workspace { display:grid; grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr); gap:var(--space-5); align-items:start; }
+.ash-fragments { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--space-3); }
+.ash-fragments button,.victims-options button { min-height:140px; padding:var(--space-4); text-align:left; border:1px solid var(--color-border-default); background:var(--color-bg-base); color:var(--color-text-primary); }
+.ash-fragments button:hover,.ash-fragments button:focus-visible,.victims-options button:hover,.victims-options button:focus-visible { border-color:var(--color-orange); background:var(--color-bg-panel-hover); }
+.ash-fragments span,.victims-options span { display:block; color:var(--color-orange); font:.72rem var(--font-data); margin-bottom:var(--space-2); }
+.ash-fragments strong,.victims-options strong { font-size:1rem; }
+.ash-fragments p,.victims-options p { color:var(--color-text-secondary); }
+.ash-proposed { display:grid; gap:var(--space-2); padding:0; list-style:none; }
+.ash-proposed li { display:grid; grid-template-columns:42px 1fr auto; align-items:center; gap:var(--space-3); padding:var(--space-3); border-left:2px solid var(--color-orange); background:var(--color-bg-base); }
+.ash-proposed li > span { color:var(--color-orange); font-family:var(--font-data); }
+.ash-proposed button { min-height:36px; border:1px solid var(--color-border-default); background:transparent; color:var(--color-text-secondary); }
+.ash-actions { display:flex; justify-content:flex-end; gap:var(--space-3); margin-top:var(--space-5); }
+.ash-result,.victims-result { border:1px solid var(--color-orange); background:linear-gradient(135deg,rgba(255,156,66,.1),var(--color-bg-panel) 45%); padding:clamp(24px,4vw,60px); }
+.ash-result h2,.victims-result h2 { max-width:25ch; }
+.ash-result ol { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); list-style:none; padding:0; margin:var(--space-6) 0; gap:var(--space-3); }
+.ash-result li { display:grid; gap:var(--space-2); padding:var(--space-4); border-top:2px solid var(--color-orange); background:var(--color-bg-base); }
+.ash-result time { color:var(--color-orange); font:.72rem var(--font-data); }
+.ash-result span { color:var(--color-text-secondary); }
+.victims-vitals { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); border:1px solid var(--color-orange); margin-bottom:var(--space-5); }
+.victims-vitals div { display:grid; gap:var(--space-2); padding:var(--space-4); border-right:1px solid var(--color-border-subtle); }
+.victims-vitals div:last-child { border-right:0; }
+.victims-vitals span { font:.72rem var(--font-data); color:var(--color-text-muted); }
+.victims-vitals strong { font-size:clamp(1.2rem,2vw,2rem); color:var(--color-orange); }
+.victims-options { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--space-4); margin-bottom:var(--space-5); }
+.victims-options button { min-height:190px; }
+.victims-options button.is-selected { border-color:var(--color-orange); box-shadow:inset 4px 0 var(--color-orange); background:rgba(255,156,66,.07); }
+.victims-result blockquote { max-width:65ch; margin:var(--space-6) 0; padding:var(--space-5); border-left:2px solid var(--color-orange); background:var(--color-bg-base); }
+.victims-result blockquote cite { display:block; margin-top:var(--space-3); color:var(--color-orange); font-style:normal; }
+
 @media (max-width:1200px) {
   .operator-list--index { grid-template-columns:1fr; }
   .detail-grid { grid-template-columns:1fr; }

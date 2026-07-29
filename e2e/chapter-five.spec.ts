@@ -53,7 +53,7 @@ test('termine Traque Omega et conserve la route d’extraction', async ({page}) 
   await expect(page.locator('.extraction-result').getByText(/CHAPITRE 05 TERMINÉ/)).toBeVisible();
 
   const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('nexus-archives:v1') ?? '{}') as {version?:number;completedChapters?:string[];narrativeChoices?:Record<string,string>});
-  expect(saved.version).toBe(6);
+  expect(saved.version).toBe(7);
   expect(saved.completedChapters).toContain('chapter-five');
   expect(saved.narrativeChoices?.['omega7-extraction']).toBe('ghosts');
 

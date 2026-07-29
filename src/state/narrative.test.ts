@@ -1,5 +1,5 @@
-import { chapterCompletionRequirements, chapterFiveCompletionRequirements, chapterFourCompletionRequirements, chapterThreeCompletionRequirements, chapterTwoCompletionRequirements } from '../data';
-import { applyNarrativeEffects, applyTerminalResult, canCompleteChapterFive, canCompleteChapterFour, canCompleteChapterThree, canCompleteChapterTwo, canCompleteChapterZero, completeChapterFive, completeChapterFour, completeChapterThree, completeChapterTwo, completeChapterZero, isDocumentAvailable } from './narrative';
+import { chapterCompletionRequirements, chapterFiveCompletionRequirements, chapterFourCompletionRequirements, chapterSixCompletionRequirements, chapterThreeCompletionRequirements, chapterTwoCompletionRequirements } from '../data';
+import { applyNarrativeEffects, applyTerminalResult, canCompleteChapterFive, canCompleteChapterFour, canCompleteChapterSix, canCompleteChapterThree, canCompleteChapterTwo, canCompleteChapterZero, completeChapterFive, completeChapterFour, completeChapterSix, completeChapterThree, completeChapterTwo, completeChapterZero, isDocumentAvailable } from './narrative';
 import { defaultProgress, loadProgress, saveProgress } from './progress';
 import { archiveDocuments } from '../data/archives';
 
@@ -36,5 +36,15 @@ describe('progression narrative du Chapitre 01', () => {
     expect(complete.completedChapters).toContain('chapter-five');
     expect(complete.narrativeChoices['omega7-extraction']).toBe('ghosts');
     expect(complete.narrativeFlags).toContain('extraction-ghosts');
+    expect(complete.activeChapter).toBe('chapter-six');
+  });
+  it('refuse de statuer sur les noms avant la révocation Cendre', () => { expect(canCompleteChapterSix(defaultProgress)).toBe(false); expect(completeChapterSix(defaultProgress,'analog')).toBe(defaultProgress); });
+  it('archive la destination des 63 218 identités', () => {
+    const ready={...defaultProgress,accessLevel:'NOIR ABSOLU' as const,activeChapter:'chapter-six',completedChapters:['chapter-zero','chapter-two','chapter-three','chapter-four','chapter-five'],completedObjectives:chapterSixCompletionRequirements};
+    const complete=completeChapterSix(ready,'analog');
+    expect(complete.completedChapters).toContain('chapter-six');
+    expect(complete.narrativeChoices['victims-ledger']).toBe('analog');
+    expect(complete.narrativeFlags).toContain('victims-analog');
+    expect(complete.selectedTransmission).toBe('sera-nox-names');
   });
 });

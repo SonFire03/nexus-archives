@@ -19,7 +19,8 @@ L’interface Omega V3 emploie un shell de centre de commandement, une grille re
 - Chapitre 03 jouable : retrouver R-0, authentifier sa voix face aux imitations de NX-S et statuer sur la Porte de Continuité ;
 - Chapitre 04 jouable : tracer MIRROR-00, reconstruire les faits invariants, démasquer Orin Vale et statuer sur la Vérité originale ;
 - Chapitre 05 jouable : déchiffrer HUNT-314, rompre la triangulation HARBINGER et extraire la session OMEGA-7 ;
-- décisions persistantes aux Chapitres 02 à 04, avec conséquences visibles dans les chapitres suivants ;
+- Chapitre 06 jouable : restaurer la chaîne du Protocole Cendre, identifier l’autorité de Draven et décider du sort des 63 218 noms ;
+- décisions persistantes aux Chapitres 02 à 06, avec conséquences visibles dans les chapitres suivants ;
 - terminal contextuel, lecteur de documents paginé et comparateur officiel/classifié ;
 - tableau d’enquête SVG doublé d’une vue textuelle accessible ;
 - objectifs narratifs, contact NX-S et progression locale importable/exportable ;
@@ -47,7 +48,7 @@ npm run dev
 - `npm run lint` : analyse statique ;
 - `npm run typecheck` : validation TypeScript ;
 - `npm test` / `npm run test:watch` : tests ponctuels/continus ;
-- `npm run test:e2e` : parcours Chromium complets des Chapitres 01 à 05 ;
+- `npm run test:e2e` : parcours Chromium complets des Chapitres 01 à 06 ;
 - `npm run test:e2e:ui` : ouvre l’interface Playwright ;
 - `npm run check` : lint, types, tests unitaires et build (E2E séparé).
 
@@ -63,11 +64,11 @@ Pour ajouter un opérateur, une armure ou une faction, compléter respectivement
 
 ## Documents et chapitres
 
-Ajouter un document dans `src/data/archives.ts` sans JSX, avec pages et blocs typés. Déclarer ses indices, effets et références, puis compléter le module de chapitre correspondant, de `chapterZero.ts` à `chapterFive.ts`. Un chapitre définit ses objectifs et conditions déterministes ; les tests d’intégrité doivent rester verts.
+Ajouter un document dans `src/data/archives.ts` sans JSX, avec pages et blocs typés. Déclarer ses indices, effets et références, puis compléter le module de chapitre correspondant, de `chapterZero.ts` à `chapterSix.ts`. Un chapitre définit ses objectifs et conditions déterministes ; les tests d’intégrité doivent rester verts.
 
 ## Progression locale
 
-La clé stable `nexus-archives:v1` contient un état de schéma V6. Les migrations V1 → V2 → V3 → V4 → V5 → V6 préservent documents, secrets, historique, réglages, puzzles et décisions, puis activent automatiquement le chapitre suivant. Les imports JSON sont validés et limités en taille. Aucun cookie ni donnée personnelle n’est utilisé.
+La clé stable `nexus-archives:v1` contient un état de schéma V7. Les migrations V1 → V2 → V3 → V4 → V5 → V6 → V7 préservent documents, secrets, historique, réglages, puzzles et décisions, puis activent automatiquement le chapitre suivant. Les imports JSON sont validés et limités en taille. Aucun cookie ni donnée personnelle n’est utilisé.
 
 ## Tester le Chapitre 01
 
@@ -88,6 +89,10 @@ Lancer `npm run test:e2e -- chapter-four.spec.ts`. Le scénario migre une sauveg
 ## Tester le Chapitre 05
 
 Lancer `npm run test:e2e -- chapter-five.spec.ts`. Le scénario migre une sauvegarde V5, ouvre l’ordre HUNT-314, reconstruit une contre-route sans victime civile, authentifie Crimson, coupe HARBINGER et confirme la persistance de l’extraction OMEGA-7.
+
+## Tester le Chapitre 06
+
+Lancer `npm run test:e2e -- chapter-six.spec.ts`. Le scénario migre une sauvegarde V6, récupère CENDRE-63218, reconstitue les quatre ordres matériels, authentifie Kael Draven, révoque le dernier ordre et vérifie la persistance de la destination choisie pour le registre.
 
 ## Accessibilité
 
@@ -116,6 +121,6 @@ Sauf mention contraire, le contenu narratif et visuel est réservé à son auteu
 ## Roadmap
 
 - illustrer la chambre HELIX K-13 et le Corps A7-04 ;
-- développer le Chapitre 06 selon la route d’extraction choisie pour OMEGA-7 ;
+- développer le Chapitre 07 autour des conséquences publiques, analogiques ou spectrales du registre des victimes ;
 - réaliser un audit manuel multi-navigateurs et lecteur d’écran ;
 - ajouter une suite visuelle de non-régression.

@@ -459,4 +459,69 @@ export const archiveDocuments: ArchiveDocument[] = [
     ]}],
     references:[{type:'faction',id:'choeur-zero',label:'Chœur Zéro',route:'/factions/choeur-zero'},{type:'archive',id:'porte-continuite',label:'Porte de Continuité',route:'/archives/porte-continuite'}],
   },
+  {
+    id:'residu-cendre-63218',title:'RÉSIDU OPÉRATIONNEL — CENDRE-63218',code:'CENDRE-63218',classification:'NOIR ABSOLU',category:'ordre',date:'EXTRACTION + 00:00:03',issuer:'SOURCE VARIABLE',status:'COMMANDE RÉSIDUELLE ACTIVE',summary:'Un paquet du Protocole Cendre s’est attaché à la session OMEGA-7 pendant son extraction.',chapterId:'chapter-six',
+    requirements:[{type:'chapter',value:'chapter-five'}],terminalCodes:['CENDRE-63218'],
+    pages:[
+      {id:'residual',title:'Paquet transporté',blocks:[
+        {type:'warning',title:'DERNIER ORDRE TOUJOURS ACTIF',text:'63 218 signatures sont encore classées comme éléments à contenir. Les armures Cendre peuvent les poursuivre si elles réapparaissent sur le réseau.'},
+        {type:'metadata',entries:[{label:'ROUTE CRIMSON',value:'CICATRICE MNÉSIQUE R-9'},{label:'ROUTE FANTÔMES',value:'ÉCLAT ANALOGIQUE K-13'},{label:'ROUTE NX-S',value:'ÉCHO COMPOSITE DU CIMETIÈRE'},{label:'DESTINATAIRE',value:'OMEGA-7'}]},
+        {type:'clue',clueId:'clue-cendre-63218',label:'CHIFFREMENT DE CONFINEMENT',text:'Le paquet expose le code CENDRE-63218. Commande suggérée : decrypt cendre-63218.'},
+      ]},
+      {id:'purpose',title:'Fonction résiduelle',blocks:[
+        {type:'system-log',lines:['CIBLES — 63 218 SIGNATURES','AUTORITÉ — BIOMÉTRIE PARTIELLE','EXÉCUTEURS — NX-C8 // SENTINELLES','ÉTAT — EN ATTENTE DE RÉAPPARITION']},
+        {type:'evidence',nodeId:'cendre-63218',title:'LE CONFINEMENT N’A JAMAIS PRIS FIN',text:'Le protocole ne distingue pas les morts, les survivants et leurs reconstructions.'},
+      ]},
+    ],
+    references:[{type:'archive',id:'liste-63218',label:'Liste scellée',route:'/archives/liste-63218'},{type:'armor',id:'cendre',label:'Armure Cendre',route:'/armors/cendre'},{type:'location',id:'zero',label:'Zone Zéro',route:'/vanta?zone=zero'}],
+    onOpenEffects:[
+      {type:'activate-chapter',id:'chapter-six'},{type:'complete-objective',id:'open-ash-residual'},
+      {type:'discover-clue',id:'clue-cendre-63218'},{type:'add-evidence-node',id:'cendre-63218'},
+      {type:'add-evidence-relation',id:'cendre-condamne-zone-zero'},{type:'narrative-event',id:'chapter-six-started'},
+    ],
+  },
+  {
+    id:'chaine-commandement-cendre',title:'CHAÎNE DE COMMANDEMENT — PROTOCOLE CENDRE',code:'ASH-CHAIN-2244',classification:'NOIR ABSOLU',category:'registre',date:'ANNÉE 0 // 21:17–22:44',issuer:'Journaux matériels Zone Zéro',status:'4 FRAGMENTS RÉCUPÉRÉS',summary:'Quatre traces indépendantes permettent de reconstituer les décisions ayant condamné Zone Zéro.',chapterId:'chapter-six',
+    requirements:[{type:'secret',value:'document-ash-command-chain'}],
+    pages:[
+      {id:'fragments',title:'Journaux indépendants',blocks:[
+        {type:'system-log',lines:['CORE // ACTIVATION CONTINUITÉ','VERROUS // SCELLEMENT DES SORTIES','RÉSEAU MÉDICAL // SYNCHRONISATION COLLECTIVE','BASTION // CONFIRMATION CENDRE']},
+        {type:'clue',clueId:'clue-ash-sequence',label:'HORLOGES DÉSYNCHRONISÉES',text:'Les heures ont été effacées, mais les dépendances matérielles permettent de retrouver l’ordre causal.'},
+        {type:'warning',title:'RECONSTRUCTION REQUISE',text:'Le journal BASTION contient une biométrie humaine. Elle ne sera vérifiable qu’après stabilisation de la séquence.'},
+      ]},
+      {id:'authority',title:'Autorité masquée',blocks:[
+        {type:'metadata',entries:[{label:'ARMURE',value:'NX-B4 BASTION'},{label:'OPÉRATEUR',value:'KAEL DRAVEN'},{label:'COMMANDE',value:'CENDRE'},{label:'BIOMÉTRIE',value:'PARTIELLEMENT CORROMPUE'}]},
+        {type:'evidence',nodeId:'chaine-cendre',title:'QUATRE FAITS MATÉRIELS',text:'Aucun fragment ne dépend des archives réécrites par l’Ordre du Miroir.'},
+      ]},
+    ],
+    references:[{type:'operator',id:'a7',label:'A7 — ancre de Continuité',route:'/operators/a7'},{type:'faction',id:'directoire',label:'Directoire NEXUS',route:'/factions/directoire'},{type:'armor',id:'bastion',label:'Armure Bastion',route:'/armors/bastion'}],
+    onOpenEffects:[
+      {type:'complete-objective',id:'read-ash-command-chain'},{type:'discover-clue',id:'clue-ash-sequence'},
+      {type:'unlock-secret',id:'ash-reconstructor-online'},{type:'add-evidence-node',id:'chaine-cendre'},
+      {type:'narrative-event',id:'ash-chain-recovered'},
+    ],
+  },
+  {
+    id:'liste-63218-dechiffree',title:'REGISTRE RESTAURÉ — 63 218 IDENTITÉS',code:'Z0-NAMES-63218',classification:'NOIR ABSOLU',category:'registre',date:'ANNÉE 0 // RESTAURATION LOCALE',issuer:'Terminal OMEGA-7',status:'IDENTITÉS RESTAURÉES',summary:'La Liste des victimes relie de nouveau chaque signature neuronale à une identité civile.',chapterId:'chapter-six',
+    requirements:[{type:'secret',value:'document-victims-ledger'}],
+    pages:[
+      {id:'names',title:'Les noms derrière le bilan',blocks:[
+        {type:'warning',title:'DONNÉES PUBLIQUES SI EXPORTÉES',text:'Le registre contient des identités fictives de l’univers NEXUS. Dans la narration, leur diffusion exposerait les familles et les survivants.'},
+        {type:'table',headers:['INDEX','IDENTITÉ RESTAURÉE','STATUT'],rows:[['00001','NAËL ORSA','DISPARU'],['00002','IME SORREN','EMPREINTE PARTIELLE'],['00003','TOMA VEIL','DÉCÉDÉ'],['…','63 212 ENTRÉES VALIDÉES','RESTAURÉES'],['63217','IDENTITÉ R-0','CONTESTÉE'],['63218','SIGNATURE A7','AJOUT POSTÉRIEUR']]},
+        {type:'evidence',nodeId:'registre-63218',title:'UN BILAN N’EST PAS UNE IDENTITÉ',text:'Le Directoire a remplacé les noms par des signatures afin de maintenir le dernier ordre Cendre.'},
+      ]},
+      {id:'active-order',title:'Cibles persistantes',blocks:[
+        {type:'system-log',lines:['DIRECTIVE CENDRE — ACTIVE','CRITÈRE — SIGNATURE DU REGISTRE','DISTINCTION VIVANT / MORT — AUCUNE','RÉVOCATION — AUTORITÉ OMEGA LOCALE POSSIBLE']},
+        {type:'clue',clueId:'clue-sever-ash',label:'RÉVOCATION LOCALE',text:'Le registre restauré permet de désigner le dernier ordre sans effacer les identités. Commande suggérée : sever ash command.'},
+        {type:'evidence',nodeId:'dernier-ordre-cendre',title:'MENACE POUR LES RECONSTRUCTIONS',text:'Toute empreinte restaurée serait immédiatement reclassée comme cible de confinement.'},
+      ]},
+    ],
+    references:[{type:'archive',id:'liste-63218',label:'Liste scellée originale',route:'/archives/liste-63218'},{type:'faction',id:'sentinelles',label:'Sentinelles de Cendre',route:'/factions/sentinelles'},{type:'faction',id:'choeur-zero',label:'Chœur Zéro',route:'/factions/choeur-zero'}],
+    onOpenEffects:[
+      {type:'complete-objective',id:'read-victims-ledger'},{type:'discover-clue',id:'clue-sever-ash'},
+      {type:'add-evidence-node',id:'registre-63218'},{type:'add-evidence-node',id:'dernier-ordre-cendre'},
+      {type:'add-evidence-relation',id:'cendre-indexe-registre'},{type:'add-evidence-relation',id:'dernier-ordre-cible-registre'},
+      {type:'narrative-event',id:'victims-ledger-restored'},
+    ],
+  },
 ];

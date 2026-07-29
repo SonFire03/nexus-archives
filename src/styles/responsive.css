@@ -200,3 +200,20 @@
   .transmission__source { grid-template-columns:32px 1fr; }
   .transmission__source em { grid-column:1/-1; }
 }
+
+@media (max-width:900px) {
+  .ash-workspace { grid-template-columns:1fr; }
+  .ash-result ol { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .victims-options { grid-template-columns:1fr; }
+  .victims-vitals { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+
+@media (max-width:700px) {
+  .ash-origin,.ash-fragments,.ash-result ol { grid-template-columns:1fr; }
+  .ash-origin em { text-align:left; }
+  .ash-proposed li { grid-template-columns:32px 1fr; }
+  .ash-proposed button { grid-column:2; }
+  .ash-actions { align-items:stretch; flex-direction:column; }
+  .victims-vitals { grid-template-columns:1fr; }
+  .victims-vitals div { border-right:0; border-bottom:1px solid var(--color-border-subtle); }
+}

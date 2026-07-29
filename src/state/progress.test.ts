@@ -1,4 +1,4 @@
-import { defaultProgress, deriveAccessLevel, loadProgress, mergeUnique, migrateV1ToV2, migrateV2ToV3, migrateV3ToV4, migrateV4ToV5, migrateV5ToV6, saveProgress, STORAGE_KEY, validateProgress } from './progress';
+import { defaultProgress, deriveAccessLevel, loadProgress, mergeUnique, migrateV1ToV2, migrateV2ToV3, migrateV3ToV4, migrateV4ToV5, migrateV5ToV6, migrateV6ToV7, saveProgress, STORAGE_KEY, validateProgress } from './progress';
 
 describe('progression locale', () => {
   it('sauvegarde et recharge la progression', () => { saveProgress({ ...defaultProgress, introSeen: true }); expect(loadProgress().introSeen).toBe(true); });
@@ -32,5 +32,13 @@ describe('progression locale', () => {
     v5.completedChapters.push('chapter-three','chapter-four');
     v5.narrativeChoices['mirror-00']='fragment';
     expect(migrateV5ToV6(v5)).toEqual(expect.objectContaining({version:6,activeChapter:'chapter-five',narrativeChoices:{'mirror-00':'fragment'}}));
+  });
+  it('migre la V6 vers la V7 et active le Chapitre 06', () => {
+    const v2=migrateV1ToV2({version:1,introSeen:true,accessLevel:'NOIR ABSOLU',viewedDocuments:['plan-extraction-omega-7'],unlockedSecrets:['chapter-five-decision'],terminalHistory:['sever harbinger'],completedObjectives:['choose-extraction'],audioEnabled:false,reducedEffects:true,selectedTransmission:'crimson-extraction',lastVisitedRoute:'/chapter-five'});
+    v2.completedChapters=['chapter-zero','chapter-two'];
+    const v6=migrateV5ToV6(migrateV4ToV5(migrateV3ToV4(migrateV2ToV3(v2))));
+    v6.completedChapters.push('chapter-three','chapter-four','chapter-five');
+    v6.narrativeChoices['omega7-extraction']='crimson';
+    expect(migrateV6ToV7(v6)).toEqual(expect.objectContaining({version:7,activeChapter:'chapter-six',narrativeChoices:{'omega7-extraction':'crimson'}}));
   });
 });

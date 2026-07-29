@@ -70,4 +70,22 @@ describe('moteur contextuel du terminal', () => {
     expect(severed.completedObjectives).toContain('sever-harbinger-network');
     expect(executeCommand('follow crimson',{...emptyTerminalContext,completedObjectives:['sever-harbinger-network']}).navigateTo).toBe('/chapter-five?decision=crimson');
   });
+  it('déchiffre CENDRE-63218 uniquement après découverte du résidu', () => {
+    expect(executeCommand('decrypt cendre-63218').output).toContain('CODE CENDRE-63218 INCONNU');
+    const result=executeCommand('DECRYPT CENDRE-63218',{...emptyTerminalContext,activeChapter:'chapter-six',discoveredClues:['clue-cendre-63218']});
+    expect(result.completedObjectives).toContain('decrypt-cendre-63218');
+    expect(result.unlocks).toContain('document-ash-command-chain');
+  });
+  it('authentifie Draven uniquement après reconstruction', () => {
+    expect(executeCommand('verify draven').output).toContain('BIOMÉTRIE NON VÉRIFIABLE');
+    const result=executeCommand('VERIFY DRAVEN',{...emptyTerminalContext,activeChapter:'chapter-six',solvedPuzzles:['ash-command-sequence']});
+    expect(result.completedObjectives).toContain('verify-draven-authority');
+    expect(result.unlocks).toContain('document-victims-ledger');
+  });
+  it('conditionne la révocation Cendre et la destination des noms', () => {
+    expect(executeCommand('sever ash command').output).toContain('RÉVOCATION REFUSÉE');
+    const severed=executeCommand('sever ash command',{...emptyTerminalContext,completedObjectives:['read-victims-ledger']});
+    expect(severed.completedObjectives).toContain('sever-ash-command');
+    expect(executeCommand('protect names',{...emptyTerminalContext,completedObjectives:['sever-ash-command']}).navigateTo).toBe('/chapter-six?decision=analog');
+  });
 });

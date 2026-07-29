@@ -23,6 +23,9 @@ Ce dossier reçoit uniquement les médias locaux validés pour publication. Tous
 - `images/archives/archive-hunt-314.webp` : futur ordre de capture OMEGA-7 ;
 - `images/archives/archive-harbinger-trace.webp` : future carte de triangulation HARBINGER ;
 - `images/archives/archive-omega7-extraction.webp` : futur plan des trois voies d’extraction ;
+- `images/archives/archive-cendre-residual.webp` : futur résidu opérationnel CENDRE-63218 ;
+- `images/archives/archive-ash-command-chain.webp` : future chaîne matérielle du Protocole Cendre ;
+- `images/archives/archive-victims-ledger.webp` : futur registre restauré des identités ;
 - `images/zone-zero-surveillance.webp` : capture de Zone Zéro ;
 - `images/crimson-surveillance.webp` : portrait de surveillance de Crimson ;
 - `images/a7-medical-schema.svg` : schéma médical d’A7 ;

@@ -5,7 +5,7 @@ export const accessOrder: AccessLevel[] = ['CIVIL', 'TACTIQUE', 'OMEGA', 'NOIR A
 export const MAX_IMPORT_SIZE = 250_000;
 
 export const defaultProgress: ProgressState = {
-  version: 6,
+  version: 7,
   introSeen: false,
   accessLevel: 'CIVIL',
   viewedDocuments: [],
@@ -50,6 +50,7 @@ interface LegacyV2Progress {
 interface LegacyV3Progress extends Omit<ProgressState,'version' | 'narrativeFlags'> { version: 3 }
 interface LegacyV4Progress extends Omit<ProgressState,'version'> { version: 4 }
 interface LegacyV5Progress extends Omit<ProgressState,'version'> { version: 5 }
+interface LegacyV6Progress extends Omit<ProgressState,'version'> { version: 6 }
 
 const stringArray = (value: unknown): value is string[] => Array.isArray(value) && value.every((item) => typeof item === 'string');
 const isRecord = (value: unknown): value is Record<string, unknown> => Boolean(value) && typeof value === 'object' && !Array.isArray(value);
@@ -111,11 +112,16 @@ export function migrateV4ToV5(legacy: LegacyV4Progress): LegacyV5Progress {
   return { ...legacy, version:5, activeChapter };
 }
 
-export function migrateV5ToV6(legacy: LegacyV5Progress): ProgressState {
+export function migrateV5ToV6(legacy: LegacyV5Progress): LegacyV6Progress {
   const activeChapter = legacy.completedChapters.includes('chapter-five')
     ? 'chapter-five'
     : legacy.completedChapters.includes('chapter-four') ? 'chapter-five' : legacy.activeChapter;
   return { ...legacy, version:6, activeChapter };
+}
+
+export function migrateV6ToV7(legacy: LegacyV6Progress): ProgressState {
+  const activeChapter = legacy.completedChapters.includes('chapter-five') ? 'chapter-six' : legacy.activeChapter;
+  return { ...legacy, version:7, activeChapter };
 }
 
 function validateLegacy(value: unknown): LegacyProgress | null {
@@ -127,7 +133,7 @@ function validateLegacy(value: unknown): LegacyProgress | null {
 }
 
 export function validateProgress(value: unknown): ProgressState | null {
-  if (!isRecord(value) || value.version !== 6 || typeof value.introSeen !== 'boolean' || typeof value.accessLevel !== 'string' || !accessOrder.includes(value.accessLevel as AccessLevel)) return null;
+  if (!isRecord(value) || value.version !== 7 || typeof value.introSeen !== 'boolean' || typeof value.accessLevel !== 'string' || !accessOrder.includes(value.accessLevel as AccessLevel)) return null;
   const arrays = ['viewedDocuments','unlockedSecrets','terminalHistory','completedObjectives','completedChapters','discoveredClues','evidenceNodes','evidenceRelations','solvedPuzzles','narrativeFlags'] as const;
   if (arrays.some((key) => !stringArray(value[key]))) return null;
   if (typeof value.audioEnabled !== 'boolean' || typeof value.reducedEffects !== 'boolean' || typeof value.lastVisitedRoute !== 'string' || typeof value.activeChapter !== 'string') return null;
@@ -136,6 +142,18 @@ export function validateProgress(value: unknown): ProgressState | null {
   if (value.lastNarrativeEvent !== null && typeof value.lastNarrativeEvent !== 'string') return null;
   if (!isReadingProgress(value.documentReadingProgress) || !isStringRecord(value.narrativeChoices)) return null;
   return value as unknown as ProgressState;
+}
+
+function validateV6(value: unknown): LegacyV6Progress | null {
+  if (!isRecord(value) || value.version !== 6 || typeof value.introSeen !== 'boolean' || typeof value.accessLevel !== 'string' || !accessOrder.includes(value.accessLevel as AccessLevel)) return null;
+  const arrays = ['viewedDocuments','unlockedSecrets','terminalHistory','completedObjectives','completedChapters','discoveredClues','evidenceNodes','evidenceRelations','solvedPuzzles','narrativeFlags'] as const;
+  if (arrays.some((key) => !stringArray(value[key]))) return null;
+  if (typeof value.audioEnabled !== 'boolean' || typeof value.reducedEffects !== 'boolean' || typeof value.lastVisitedRoute !== 'string' || typeof value.activeChapter !== 'string') return null;
+  if (typeof value.volume !== 'number' || value.volume < 0 || value.volume > 1 || typeof value.spectralContactCount !== 'number' || value.spectralContactCount < 0) return null;
+  if (value.selectedTransmission !== null && typeof value.selectedTransmission !== 'string') return null;
+  if (value.lastNarrativeEvent !== null && typeof value.lastNarrativeEvent !== 'string') return null;
+  if (!isReadingProgress(value.documentReadingProgress) || !isStringRecord(value.narrativeChoices)) return null;
+  return value as unknown as LegacyV6Progress;
 }
 
 function validateV5(value: unknown): LegacyV5Progress | null {
@@ -192,16 +210,18 @@ export function parseProgress(raw: string): ProgressState | null {
     const parsed: unknown = JSON.parse(raw);
     const current = validateProgress(parsed);
     if (current) return current;
+    const legacyV6 = validateV6(parsed);
+    if (legacyV6) return migrateV6ToV7(legacyV6);
     const legacyV5 = validateV5(parsed);
-    if (legacyV5) return migrateV5ToV6(legacyV5);
+    if (legacyV5) return migrateV6ToV7(migrateV5ToV6(legacyV5));
     const legacyV4 = validateV4(parsed);
-    if (legacyV4) return migrateV5ToV6(migrateV4ToV5(legacyV4));
+    if (legacyV4) return migrateV6ToV7(migrateV5ToV6(migrateV4ToV5(legacyV4)));
     const legacyV3 = validateV3(parsed);
-    if (legacyV3) return migrateV5ToV6(migrateV4ToV5(migrateV3ToV4(legacyV3)));
+    if (legacyV3) return migrateV6ToV7(migrateV5ToV6(migrateV4ToV5(migrateV3ToV4(legacyV3))));
     const legacyV2 = validateV2(parsed);
-    if (legacyV2) return migrateV5ToV6(migrateV4ToV5(migrateV3ToV4(migrateV2ToV3(legacyV2))));
+    if (legacyV2) return migrateV6ToV7(migrateV5ToV6(migrateV4ToV5(migrateV3ToV4(migrateV2ToV3(legacyV2)))));
     const legacy = validateLegacy(parsed);
-    return legacy ? migrateV5ToV6(migrateV4ToV5(migrateV3ToV4(migrateV2ToV3(migrateV1ToV2(legacy))))) : null;
+    return legacy ? migrateV6ToV7(migrateV5ToV6(migrateV4ToV5(migrateV3ToV4(migrateV2ToV3(migrateV1ToV2(legacy)))))) : null;
   } catch {
     return null;
   }
