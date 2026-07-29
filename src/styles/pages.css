@@ -260,6 +260,41 @@
 .truth-options span { color:var(--color-orange); font:.72rem var(--font-data); }
 .truth-options strong { margin:var(--space-4) 0; font-size:1.15rem; }
 
+/* Chapitre 05 — Traque Omega */
+.hunt-status { display:grid; grid-template-columns:1fr 2fr 1fr; margin-bottom:var(--space-5); border:1px solid var(--color-danger); background:linear-gradient(90deg,rgba(255,74,74,.1),var(--color-bg-elevated)); }
+.hunt-status > * { padding:var(--space-4); border-right:1px solid var(--color-border-default); }
+.hunt-status > *:last-child { border-right:0; text-align:right; }
+.hunt-status span,.hunt-status em { color:var(--color-text-secondary); font:normal .72rem var(--font-data); }
+.hunt-status strong { color:var(--color-danger); font:800 .84rem var(--font-data); }
+.counter-trace-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--space-4); align-items:start; }
+.counter-options { display:grid; gap:var(--space-3); }
+.counter-options button { min-height:150px; padding:var(--space-4); text-align:left; color:var(--color-text-primary); border:1px solid var(--color-border-default); background:var(--color-bg-base); }
+.counter-options button:hover,.counter-options button:focus-visible { border-color:var(--color-cyan); }
+.counter-options button.is-selected { border-color:var(--color-cyan); box-shadow:inset 3px 0 0 var(--color-cyan); background:rgba(79,216,232,.06); }
+.counter-options strong,.counter-options small { display:block; }
+.counter-options strong { color:var(--color-cyan); font-size:.86rem; }
+.counter-options p { min-height:3.5em; color:var(--color-text-secondary); font-size:.8rem; line-height:1.5; }
+.counter-options small { color:var(--color-orange); font:.68rem var(--font-data); }
+.counter-error { margin:var(--space-4) 0; padding:var(--space-4); border-left:3px solid var(--color-danger); background:rgba(255,74,74,.07); color:var(--color-danger); }
+.counter-validate { display:block; margin:var(--space-5) 0 0 auto; }
+.counter-trace-result,.extraction-result { padding:clamp(28px,5vw,72px); border:1px solid var(--color-cyan); background:radial-gradient(circle at 70% 15%,rgba(79,216,232,.12),transparent 42%),var(--color-bg-panel); }
+.counter-trace-result h2,.extraction-result h2 { max-width:20ch; font-size:clamp(1.8rem,4vw,4rem); }
+.extraction-result blockquote { max-width:70ch; margin:var(--space-8) 0; padding:var(--space-5); border-left:3px solid var(--color-cyan); background:rgba(5,6,9,.65); }
+.extraction-result cite { display:block; margin-top:var(--space-3); color:var(--color-cyan); }
+.extraction-vitals { display:grid; grid-template-columns:repeat(4,1fr); margin-bottom:var(--space-5); border:1px solid var(--color-cyan); background:var(--color-bg-panel); }
+.extraction-vitals div { padding:var(--space-5); border-right:1px solid var(--color-border-default); }
+.extraction-vitals div:last-child { border-right:0; }
+.extraction-vitals span,.extraction-vitals strong { display:block; font-family:var(--font-data); }
+.extraction-vitals span { color:var(--color-text-muted); font-size:.72rem; }
+.extraction-vitals strong { margin-top:var(--space-2); color:var(--color-cyan); }
+.extraction-options { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--space-4); margin-bottom:var(--space-5); }
+.extraction-options button { min-height:230px; padding:var(--space-6); text-align:left; color:var(--color-text-primary); border:1px solid var(--color-border-default); background:var(--color-bg-panel); }
+.extraction-options button:hover,.extraction-options button:focus-visible,.extraction-options button.is-selected { border-color:var(--color-cyan); background:rgba(79,216,232,.06); }
+.extraction-options button.is-selected { box-shadow:inset 0 3px 0 var(--color-cyan); }
+.extraction-options span,.extraction-options strong { display:block; }
+.extraction-options span { color:var(--color-cyan); font:.72rem var(--font-data); }
+.extraction-options strong { margin:var(--space-4) 0; font-size:1.15rem; }
+
 @media (max-width:1200px) {
   .operator-list--index { grid-template-columns:1fr; }
   .detail-grid { grid-template-columns:1fr; }

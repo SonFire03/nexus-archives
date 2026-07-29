@@ -33,7 +33,7 @@ export interface TimelineEvent { id: string; sort: number; date: string; title: 
 export interface Transmission { id: string; sender: string; text: string; trigger: string }
 
 export type ArchiveCategory = 'incident' | 'médical' | 'ordre' | 'programme' | 'identité' | 'transmission' | 'registre' | 'laboratoire';
-export type ArchiveReferenceType = 'operator' | 'location' | 'faction' | 'timeline' | 'archive';
+export type ArchiveReferenceType = 'operator' | 'armor' | 'location' | 'faction' | 'timeline' | 'archive';
 export type ArchiveBlock =
   | { type: 'heading'; text: string }
   | { type: 'paragraph'; text: string }
@@ -94,7 +94,7 @@ export interface EvidenceRelation {
 }
 export interface NarrativeEvent { id: string; kind: 'document' | 'objective' | 'access' | 'spectral' | 'chapter'; title: string; message: string }
 export interface ProgressState {
-  version: 5; introSeen: boolean; accessLevel: AccessLevel; viewedDocuments: string[];
+  version: 6; introSeen: boolean; accessLevel: AccessLevel; viewedDocuments: string[];
   unlockedSecrets: string[]; terminalHistory: string[]; completedObjectives: string[];
   audioEnabled: boolean; volume: number; reducedEffects: boolean;
   selectedTransmission: string | null; lastVisitedRoute: string; activeChapter: string;

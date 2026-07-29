@@ -333,6 +333,70 @@ export const archiveDocuments: ArchiveDocument[] = [
     ],
   },
   {
+    id:'ordre-capture-omega-7',title:'ORDRE DE CAPTURE — OMEGA-7',code:'HUNT-314',classification:'NOIR ABSOLU',category:'ordre',date:'SESSION + 00:00:04',issuer:'Directoire NEXUS',author:'MARÉCHAL KAEL DRAVEN',status:'ACTIF — CAPTURER VIVANT',summary:'Directive visant l’utilisateur non reconnu du terminal Archives Omega.',chapterId:'chapter-five',
+    requirements:[{type:'chapter',value:'chapter-four'}],terminalCodes:['HUNT-314'],
+    pages:[
+      {id:'target',title:'Désignation de la cible',blocks:[
+        {type:'warning',title:'CIBLE : OMEGA-7',text:'L’utilisateur du terminal doit être capturé vivant. La préservation de son corps n’est pas prioritaire ; sa mémoire locale l’est.'},
+        {type:'metadata',entries:[{label:'IDENTITÉ',value:'INCONNUE'},{label:'SIGNATURE',value:'OMEGA-7 // LOCALE'},{label:'DERNIÈRE ACTIVITÉ',value:'MIRROR-00'},{label:'AUTORITÉ',value:'KAEL DRAVEN'}]},
+        {type:'clue',clueId:'clue-hunt-314',label:'CHIFFREMENT TACTIQUE',text:'Le plan de poursuite est encapsulé sous HUNT-314. Commande suggérée : decrypt hunt-314.'},
+      ]},
+      {id:'exposure',title:'Origines de l’exposition',blocks:[
+        {type:'table',headers:['DIRECTIVE MIRROR-00','TRACE CONSERVÉE','RÉSULTAT'],rows:[['DIFFUSION','FILIGRANE DE REBOND','SIGNATURE PUBLIQUE'],['PRÉSERVATION','OUVERTURE DU COFFRE','JOURNAL D’ACCÈS'],['FRAGMENTATION','CORRÉLATION DES ÉCLATS','SIGNATURE COMPOSITE']]},
+        {type:'evidence',nodeId:'omega-7-signature',title:'AUCUN CHOIX INVISIBLE',text:'Chaque traitement de MIRROR-00 a fourni au Directoire une mesure différente de la même session.'},
+      ]},
+    ],
+    references:[{type:'faction',id:'directoire',label:'Directoire NEXUS',route:'/factions/directoire'},{type:'archive',id:'verite-originale',label:'MIRROR-00',route:'/archives/verite-originale'}],
+    onOpenEffects:[
+      {type:'activate-chapter',id:'chapter-five'},{type:'complete-objective',id:'open-omega-capture-order'},
+      {type:'discover-clue',id:'clue-hunt-314'},{type:'add-evidence-node',id:'omega-7-signature'},
+      {type:'add-evidence-node',id:'hunt-314'},{type:'add-evidence-node',id:'draven'},
+      {type:'add-evidence-relation',id:'draven-ordonne-hunt314'},{type:'add-evidence-relation',id:'hunt314-cible-omega7'},
+      {type:'narrative-event',id:'chapter-five-started'},
+    ],
+  },
+  {
+    id:'journal-triangulation-harbringer',title:'JOURNAL DE TRIANGULATION — HARBINGER',code:'HARBINGER-TRACE-03',classification:'NOIR ABSOLU',category:'registre',date:'SESSION EN COURS',issuer:'Armure NX-H7 HARBINGER',status:'CONVERGENCE 87 %',summary:'Journal des trois couches utilisées pour localiser OMEGA-7.',chapterId:'chapter-five',
+    requirements:[{type:'secret',value:'document-harbinger-trace'}],
+    pages:[
+      {id:'layers',title:'Architecture de poursuite',blocks:[
+        {type:'system-log',lines:['COUCHE 01 — SIGNATURE ARCHIVE // VERROUILLÉE','COUCHE 02 — DÉRIVE TEMPORELLE // ACQUISITION','COUCHE 03 — NŒUD DE SORTIE // RECHERCHE','CONVERGENCE ESTIMÉE — 04:12']},
+        {type:'evidence',nodeId:'harbinger-network',title:'TRIANGULATION COMPOSITE',text:'HARBINGER ne cherche pas une adresse. Il compare les décisions, les rythmes de saisie et les routes consultées.'},
+      ]},
+      {id:'countermeasure',title:'Contre-mesures possibles',blocks:[
+        {type:'clue',clueId:'clue-counter-trace',label:'TROIS COUCHES À ROMPRE',text:'Masque sans réseau neuronal, dérive humaine irrégulière, sortie déjà déclarée morte.'},
+        {type:'warning',title:'DOMMAGES COLLATÉRAUX',text:'Utiliser le flux civil du Voile détournerait la poursuite vers 4 200 implants résidentiels.'},
+      ]},
+    ],
+    references:[{type:'armor',id:'harbinger',label:'Armure HARBINGER',route:'/armors/harbinger'},{type:'archive',id:'ordre-capture-omega-7',label:'Ordre HUNT-314',route:'/archives/ordre-capture-omega-7'}],
+    onOpenEffects:[
+      {type:'complete-objective',id:'read-triangulation-log'},{type:'discover-clue',id:'clue-counter-trace'},
+      {type:'unlock-secret',id:'counter-trace-online'},{type:'add-evidence-node',id:'harbinger-network'},
+      {type:'add-evidence-relation',id:'harbinger-traque-omega7'},{type:'add-evidence-relation',id:'hunt314-utilise-harbinger'},
+      {type:'narrative-event',id:'counter-trace-online'},
+    ],
+  },
+  {
+    id:'plan-extraction-omega-7',title:'PLAN D’EXTRACTION — OMEGA-7',code:'R9-EXIT-11',classification:'NOIR ABSOLU',category:'transmission',date:'FENÊTRE 00:00:11',issuer:'CRIMSON // CANAL HUMAIN',author:'R-9',status:'AUTHENTIFIÉ — USAGE UNIQUE',summary:'Trois voies permettant de quitter le point d’origine avant reconnexion de HARBINGER.',chapterId:'chapter-five',
+    requirements:[{type:'secret',value:'document-extraction-omega7'}],
+    pages:[
+      {id:'authentication',title:'Cicatrice mnésique',blocks:[
+        {type:'system-log',lines:['SOURCE — R-9 // HUMAINE','MARQUEUR — PERTE MNÉSIQUE 17 %','PHRASE — « JE T’AI SAUVÉ PARCE QUE J’AVAIS ENCORE UN CHOIX »','IMITATION NX-S — REJETÉE'],spectral:false},
+        {type:'evidence',nodeId:'crimson-extraction',title:'CANAL AUTHENTIQUE',text:'Le paquet contient une discontinuité liée à la restauration d’A7 que NX-S ne reproduit pas exactement.'},
+      ]},
+      {id:'routes',title:'Trois sorties',blocks:[
+        {type:'table',headers:['ROUTE','PROTECTION','COÛT'],rows:[['CRIMSON / K-13','FIL MNÉSIQUE','EXPOSITION À A7'],['FANTÔMES LIBRES','CACHES ANALOGIQUES','IDENTITÉ FRAGMENTÉE'],['NX-S / CIMETIÈRE','SIGNATURE SPECTRALE','FUSION POSSIBLE']]},
+        {type:'clue',clueId:'clue-sever-harbinger',label:'FENÊTRE DE ONZE SECONDES',text:'HARBINGER doit être coupé avant l’ouverture d’une route. Commande suggérée : sever harbinger.'},
+      ]},
+    ],
+    references:[{type:'operator',id:'crimson',label:'Crimson',route:'/operators/crimson'},{type:'faction',id:'fantomes-libres',label:'Fantômes Libres',route:'/factions/fantomes-libres'},{type:'location',id:'cimetiere',label:'Cimetière numérique',route:'/vanta?zone=cimetiere'}],
+    onOpenEffects:[
+      {type:'complete-objective',id:'read-extraction-plan'},{type:'discover-clue',id:'clue-sever-harbinger'},
+      {type:'add-evidence-node',id:'crimson-extraction'},{type:'add-evidence-node',id:'station-k13-exit'},
+      {type:'add-evidence-relation',id:'crimson-propose-k13'},
+    ],
+  },
+  {
     id: 'enfant-cimetiere', title: 'ENFANT DU CIMETIÈRE', code: 'ECHO-CHILD', classification: 'NOIR ABSOLU', category: 'identité', date: '29 A.Z.', issuer: 'Chœur Zéro', status: 'SCELLÉ', summary: 'Une voix sans dossier répond depuis le noyau A7.', pages: [{ id: 'voice', title: 'Voix', blocks: [{ type: 'redacted', text: 'Je me souviens de la neige.', revealSecret: 'enfant-cimetiere' }] }],
   },
   {

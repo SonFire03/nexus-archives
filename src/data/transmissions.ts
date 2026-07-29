@@ -19,4 +19,7 @@ export const transmissions: Transmission[] = [
   {id:'orin-vale-01',sender:'ORIN VALE // CONSERVATEUR',text:'Vous confondez le fait brut avec la vérité. Le premier détruit. La seconde permet de continuer.',trigger:'chapter-four'},
   {id:'sera-nox-mirror',sender:'SERA NOX // ARCHIVISTE',text:'MIRROR-00 n’est pas la vérité originale. C’est le premier mensonge dont nous pouvons prouver la date.',trigger:'chapter-four'},
   {id:'orin-vale-final',sender:'ORIN VALE // CANAL DIRECT',text:'Vous avez choisi ce que VANTA devra croire. Vous travaillez déjà pour le Miroir.',trigger:'chapter-four-complete'},
+  {id:'draven-hunt',sender:'KAEL DRAVEN // HUNT-314',text:'OMEGA-7, vous n’êtes pas un intrus. Vous êtes un témoin non indexé. Cela peut être corrigé.',trigger:'chapter-five'},
+  {id:'crimson-extraction',sender:'CRIMSON // R-9',text:'Ils ne suivent pas ta position. Ils suivent tes choix. Pour une fois, choisis vite.',trigger:'chapter-five'},
+  {id:'nxs-exit',sender:'NX-S // CANAL MORT',text:'Je peux vous rendre introuvable. Je ne peux pas promettre que vous resterez seul.',trigger:'chapter-five'},
 ];

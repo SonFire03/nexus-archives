@@ -5,7 +5,7 @@ import { useAudio } from '../../hooks/useAudio';
 import { NarrativeNotification } from '../feedback/NarrativeNotification';
 import { TopCommandBar } from './TopCommandBar';
 import { Sidebar } from '../navigation/Sidebar';
-import { chapterFourObjectives, chapterThreeObjectives, chapterTwoObjectives, chapterZeroObjectives } from '../../data';
+import { chapterFiveObjectives, chapterFourObjectives, chapterThreeObjectives, chapterTwoObjectives, chapterZeroObjectives } from '../../data';
 
 const SIDEBAR_KEY = 'nexus-archives:sidebar-collapsed';
 
@@ -34,7 +34,7 @@ export function AppShell() {
     return () => window.removeEventListener('keydown',closeOnEscape);
   }, [menuOpen]);
   const closeMobileMenu = () => { setMenuOpen(false); menuButtonRef.current?.focus(); };
-  const objectives = progress.activeChapter === 'chapter-four' ? chapterFourObjectives : progress.activeChapter === 'chapter-three' ? chapterThreeObjectives : progress.activeChapter === 'chapter-two' ? chapterTwoObjectives : chapterZeroObjectives;
+  const objectives = progress.activeChapter === 'chapter-five' ? chapterFiveObjectives : progress.activeChapter === 'chapter-four' ? chapterFourObjectives : progress.activeChapter === 'chapter-three' ? chapterThreeObjectives : progress.activeChapter === 'chapter-two' ? chapterTwoObjectives : chapterZeroObjectives;
   const objectiveCount = progress.completedObjectives.filter((id) => objectives.some((objective) => objective.id === id)).length;
   const chapterProgress = Math.round((objectiveCount / objectives.length) * 100);
 

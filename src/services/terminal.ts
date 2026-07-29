@@ -2,6 +2,7 @@ import { chapterZeroObjectives } from '../data/chapterZero';
 import { chapterTwoObjectives } from '../data/chapterTwo';
 import { chapterThreeObjectives } from '../data/chapterThree';
 import { chapterFourObjectives } from '../data/chapterFour';
+import { chapterFiveObjectives } from '../data/chapterFive';
 import type { TerminalContext, TerminalResult } from '../types';
 
 export const terminalCommands = [
@@ -15,6 +16,8 @@ export const terminalCommands = [
   'contact mother-echo','open gate','seal gate','isolate child',
   'trace mirror-00','open mirror ledger','reconstruct truth','verify vale signature',
   'open truth directive','map mirror network','broadcast truth','preserve truth','fragment truth',
+  'decrypt hunt-314','open harbinger log','counter trace','authenticate crimson',
+  'open extraction plan','sever harbinger','follow crimson','join free ghosts','merge nx-s',
 ];
 
 export const emptyTerminalContext: TerminalContext = {
@@ -38,6 +41,7 @@ const directRoutes: Record<string, string> = {
   'reconstruct memory':'/memory', 'reconstruire memoire':'/memory',
   'analyze voice':'/spectral-analysis', 'analyser voix':'/spectral-analysis',
   'reconstruct truth':'/truth-reconstruction', 'reconstruire verite':'/truth-reconstruction',
+  'counter trace':'/counter-trace', 'contre traque':'/counter-trace',
 };
 
 const isDecryptZero = (command: string) => ['decrypt z 2219','decrypt z2219','decrypt zero','decrypt nuit zero'].includes(command);
@@ -47,11 +51,11 @@ export function executeCommand(raw: string, context: TerminalContext = emptyTerm
   if (!command) return { output: [] };
   if (command === 'clear') return { output: [], clear: true };
   if (command === 'help') return { output: ['COMMANDES DISPONIBLES', terminalCommands.join(' · ')] };
-  if (command === 'status') { const chapter=context.activeChapter==='chapter-zero'?'01 // NUIT ZÉRO':context.activeChapter==='chapter-two'?'02 // LES SEPT CORPS':context.activeChapter==='chapter-three'?'03 // L’ENFANT DU CIMETIÈRE':'04 // VÉRITÉ ORIGINALE'; return { output: [`CHAPITRE : ${chapter}`,`ACCÈS : ${context.accessLevel}`,`PREUVES : ${context.evidenceNodes.length} NŒUDS // ${context.evidenceRelations.length} RELATIONS`,context.spectralContactCount ? 'ACTIVITÉ SPECTRALE : TERMINAL COMPROMIS' : 'ACTIVITÉ SPECTRALE : INSTABLE'] }; }
+  if (command === 'status') { const chapter=context.activeChapter==='chapter-zero'?'01 // NUIT ZÉRO':context.activeChapter==='chapter-two'?'02 // LES SEPT CORPS':context.activeChapter==='chapter-three'?'03 // L’ENFANT DU CIMETIÈRE':context.activeChapter==='chapter-four'?'04 // VÉRITÉ ORIGINALE':'05 // TRAQUE OMEGA'; return { output: [`CHAPITRE : ${chapter}`,`ACCÈS : ${context.accessLevel}`,`PREUVES : ${context.evidenceNodes.length} NŒUDS // ${context.evidenceRelations.length} RELATIONS`,context.spectralContactCount ? 'ACTIVITÉ SPECTRALE : TERMINAL COMPROMIS' : 'ACTIVITÉ SPECTRALE : INSTABLE'] }; }
   if (command === 'whoami') return { output: ['IDENTITÉ : INCONNUE', `AUTORISATION : ${context.accessLevel}`, 'LOCALISATION : IMPOSSIBLE'] };
   if (command === 'access') return { output: [`NIVEAU ACTUEL : ${context.accessLevel}`, context.accessLevel === 'CIVIL' ? 'CONDITION TACTIQUE : TERMINER L’ENQUÊTE NUIT ZÉRO' : context.accessLevel === 'TACTIQUE' ? 'CONDITION OMEGA : STATUER SUR LE CORPS A7-04' : context.accessLevel === 'OMEGA' ? 'CONDITION NOIR ABSOLU : STATUER SUR LA PORTE DE CONTINUITÉ' : 'ACCÈS NOIR ABSOLU CONFIRMÉ'] };
   if (command === 'objectives') {
-    const objectives = context.activeChapter === 'chapter-four' ? chapterFourObjectives : context.activeChapter === 'chapter-three' ? chapterThreeObjectives : context.activeChapter === 'chapter-two' ? chapterTwoObjectives : chapterZeroObjectives;
+    const objectives = context.activeChapter === 'chapter-five' ? chapterFiveObjectives : context.activeChapter === 'chapter-four' ? chapterFourObjectives : context.activeChapter === 'chapter-three' ? chapterThreeObjectives : context.activeChapter === 'chapter-two' ? chapterTwoObjectives : chapterZeroObjectives;
     const next = objectives.find((objective) => !context.completedObjectives.includes(objective.id));
     return { output: next ? [`OBJECTIF PRIORITAIRE : ${next.title.toUpperCase()}`, next.description.toUpperCase(), next.hint?.toUpperCase() ?? 'AUCUN INDICE DISPONIBLE'] : ['TOUS LES OBJECTIFS DU CHAPITRE SONT TERMINÉS.'] };
   }
@@ -78,6 +82,25 @@ export function executeCommand(raw: string, context: TerminalContext = emptyTerm
     return {output:['BALAYAGE DE L’ÉCHO R-0…','SOURCE 01 : NOYAU A7 // 14 %','SOURCE 02 : NŒUD MÉMORIEL 29 // 61 %','REGISTRE ECHO-R0-29 RÉCUPÉRÉ'],unlocks:['document-registre-enfant'],completedObjectives:['scan-child-echo'],evidenceNodes:['enfant-echo','noeud-memorial-29'],notification:'child-echo-located'};
   }
   if (['open child register','open registre enfant','open child echo'].includes(command)) return context.unlockedSecrets.includes('document-registre-enfant')?{output:['OUVERTURE : REGISTRE R-0'],navigateTo:'/archives/registre-enfant-cimetiere'}:{output:['ACCÈS REFUSÉ','LOCALISATION DE R-0 REQUISE.']};
+  if (['decrypt hunt 314','decrypt hunt314','decrypt traque omega'].includes(command)) {
+    if (!context.discoveredClues.includes('clue-hunt-314')) return {output:['CODE HUNT-314 INCONNU','CONSULTEZ L’ORDRE DE CAPTURE OMEGA-7.']};
+    if (context.completedObjectives.includes('decrypt-hunt-314')) return {output:['HUNT-314 DÉJÀ DÉCHIFFRÉ','JOURNAL HARBINGER-TRACE-03 DISPONIBLE.']};
+    return {output:['HUNT-314 DÉCHIFFRÉ','COUCHE 01 : SIGNATURE ARCHIVE','COUCHE 02 : DÉRIVE TEMPORELLE','COUCHE 03 : NŒUD DE SORTIE','CONVERGENCE : 04:12','JOURNAL HARBINGER-TRACE-03 RÉCUPÉRÉ'],unlocks:['document-harbinger-trace'],completedObjectives:['decrypt-hunt-314'],evidenceNodes:['harbinger-network'],notification:'hunt314-decrypted'};
+  }
+  if (['open harbinger log','open journal harbinger','open triangulation log'].includes(command)) return context.unlockedSecrets.includes('document-harbinger-trace')?{output:['OUVERTURE : JOURNAL DE TRIANGULATION HARBINGER'],navigateTo:'/archives/journal-triangulation-harbringer'}:{output:['ACCÈS REFUSÉ','DÉCHIFFREMENT HUNT-314 REQUIS.']};
+  if (['authenticate crimson','auth crimson','verify crimson channel'].includes(command)) {
+    if (!context.solvedPuzzles.includes('harbinger-counter-trace')) return {output:['CANAL NON AUTHENTIFIABLE','TRIANGULATION HARBINGER ENCORE ACTIVE.']};
+    if (context.completedObjectives.includes('authenticate-crimson-channel')) return {output:['CANAL CRIMSON DÉJÀ AUTHENTIFIÉ','PLAN R9-EXIT-11 DISPONIBLE.']};
+    return {output:['AUTHENTIFICATION DU CANAL R-9…','CICATRICE MNÉSIQUE : 17 %','PHRASE DE RESTAURATION : CONFIRMÉE','SOURCE HUMAINE : CRIMSON','PLAN R9-EXIT-11 RÉCUPÉRÉ'],unlocks:['document-extraction-omega7'],completedObjectives:['authenticate-crimson-channel'],evidenceNodes:['crimson-extraction'],transmissionId:'crimson-extraction',notification:'crimson-channel-authenticated'};
+  }
+  if (['open extraction plan','open plan extraction','open r9 exit 11'].includes(command)) return context.unlockedSecrets.includes('document-extraction-omega7')?{output:['OUVERTURE : PLAN D’EXTRACTION OMEGA-7'],navigateTo:'/archives/plan-extraction-omega-7'}:{output:['ACCÈS REFUSÉ','CANAL CRIMSON NON AUTHENTIFIÉ.']};
+  if (['sever harbinger','cut harbinger','couper harbinger'].includes(command)) {
+    if (!context.completedObjectives.includes('read-extraction-plan')) return {output:['RUPTURE REFUSÉE','PLAN D’EXTRACTION NON CONSULTÉ.']};
+    if (context.completedObjectives.includes('sever-harbinger-network')) return {output:['HARBINGER DÉJÀ COUPÉ','FENÊTRE D’EXTRACTION : 00:00:11']};
+    return {output:['INJECTION DE LA CONTRE-ROUTE…','NŒUD COURONNE : AVEUGLE','NŒUD VOILE : DÉCALÉ','NŒUD CIMETIÈRE : DÉCLARÉ MORT','HARBINGER : HORS LIGNE','FENÊTRE D’EXTRACTION : 00:00:11'],completedObjectives:['sever-harbinger-network'],narrativeFlags:['harbinger-severed'],notification:'harbinger-severed'};
+  }
+  const extractionDecisions:Record<string,string>={'follow crimson':'crimson','suivre crimson':'crimson','join free ghosts':'ghosts','rejoindre fantomes libres':'ghosts','merge nx s':'spectral','disappear nx s':'spectral','disparaitre nx s':'spectral'};
+  if (extractionDecisions[command]) return context.completedObjectives.includes('sever-harbinger-network')?{output:['ROUTE D’EXTRACTION CHARGÉE','CONFIRMATION LOCALE REQUISE.'],navigateTo:`/chapter-five?decision=${extractionDecisions[command]}`}:{output:['EXTRACTION INDISPONIBLE','HARBINGER ENCORE ACTIF.']};
   if (['trace mirror 00','trace mirror00','trace original truth'].includes(command)) {
     if (!context.discoveredClues.includes('clue-mirror-00')) return {output:['CHECKSUM INCONNU','CONSULTEZ VÉRITÉ ORIGINALE.']};
     if (context.completedObjectives.includes('trace-mirror-00')) return {output:['CHECKSUM MIRROR-00 DÉJÀ TRACÉ','REGISTRE MIRROR-LEDGER-17 DISPONIBLE.']};

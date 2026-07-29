@@ -1,4 +1,4 @@
-import { archiveDocuments, archiveImages, armorImages, armors, chapterFourObjectives, chapterThreeObjectives, chapterTwoObjectives, evidenceNodes, evidenceRelations, factionImages, factions, locationImages, locations, operatorImages, operators, timeline, truthFragments, validateData, voiceFragments } from '.';
+import { archiveDocuments, archiveImages, armorImages, armors, chapterFiveObjectives, chapterFourObjectives, chapterThreeObjectives, chapterTwoObjectives, counterTraceChoices, evidenceNodes, evidenceRelations, factionImages, factions, locationImages, locations, operatorImages, operators, timeline, truthFragments, validateData, voiceFragments } from '.';
 
 describe('intégrité du canon NEXUS', () => {
   it('utilise des identifiants uniques et des relations valides', () => { expect(validateData()).toEqual([]); });
@@ -28,5 +28,10 @@ describe('intégrité du canon NEXUS', () => {
     expect(chapterFourObjectives).toHaveLength(8);
     expect(new Set(chapterFourObjectives.map(({id}) => id)).size).toBe(8);
     expect(truthFragments.filter(({invariant}) => invariant)).toHaveLength(4);
+  });
+  it('déclare les huit objectifs et trois contre-mesures sûres du Chapitre 05', () => {
+    expect(chapterFiveObjectives).toHaveLength(8);
+    expect(new Set(chapterFiveObjectives.map(({id}) => id)).size).toBe(8);
+    expect(counterTraceChoices.filter(({safe}) => safe)).toHaveLength(3);
   });
 });

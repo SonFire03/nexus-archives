@@ -121,6 +121,10 @@
 }
 
 @media (max-width:700px) {
+  .hunt-status,.counter-trace-grid,.extraction-options { grid-template-columns:1fr; }
+  .hunt-status > * { border-right:0; border-bottom:1px solid var(--color-border-default); }
+  .hunt-status > *:last-child { border-bottom:0; text-align:left; }
+  .extraction-vitals { grid-template-columns:1fr 1fr; }
   .truth-origin,.truth-grid,.truth-fragments,.truth-options { grid-template-columns:1fr; }
   .truth-origin > * { border-right:0; border-bottom:1px solid var(--color-border-default); }
   .truth-origin > *:last-child { border-bottom:0; text-align:left; }

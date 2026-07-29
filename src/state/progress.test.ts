@@ -1,4 +1,4 @@
-import { defaultProgress, deriveAccessLevel, loadProgress, mergeUnique, migrateV1ToV2, migrateV2ToV3, migrateV3ToV4, migrateV4ToV5, saveProgress, STORAGE_KEY, validateProgress } from './progress';
+import { defaultProgress, deriveAccessLevel, loadProgress, mergeUnique, migrateV1ToV2, migrateV2ToV3, migrateV3ToV4, migrateV4ToV5, migrateV5ToV6, saveProgress, STORAGE_KEY, validateProgress } from './progress';
 
 describe('progression locale', () => {
   it('sauvegarde et recharge la progression', () => { saveProgress({ ...defaultProgress, introSeen: true }); expect(loadProgress().introSeen).toBe(true); });
@@ -24,5 +24,13 @@ describe('progression locale', () => {
     v4.completedChapters.push('chapter-three');
     v4.narrativeChoices['continuity-gate']='isolate';
     expect(migrateV4ToV5(v4)).toEqual(expect.objectContaining({version:5,activeChapter:'chapter-four',narrativeChoices:{'continuity-gate':'isolate'}}));
+  });
+  it('migre la V5 vers la V6 et active le Chapitre 05', () => {
+    const v2=migrateV1ToV2({version:1,introSeen:true,accessLevel:'NOIR ABSOLU',viewedDocuments:['verite-originale'],unlockedSecrets:['chapter-four-decision'],terminalHistory:['map mirror network'],completedObjectives:['decide-original-truth'],audioEnabled:false,reducedEffects:true,selectedTransmission:'orin-vale-final',lastVisitedRoute:'/chapter-four'});
+    v2.completedChapters=['chapter-zero','chapter-two'];
+    const v5=migrateV4ToV5(migrateV3ToV4(migrateV2ToV3(v2)));
+    v5.completedChapters.push('chapter-three','chapter-four');
+    v5.narrativeChoices['mirror-00']='fragment';
+    expect(migrateV5ToV6(v5)).toEqual(expect.objectContaining({version:6,activeChapter:'chapter-five',narrativeChoices:{'mirror-00':'fragment'}}));
   });
 });

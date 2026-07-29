@@ -51,7 +51,7 @@ test('termine Vérité originale et conserve le destin de MIRROR-00', async ({pa
   await expect(page.locator('.truth-decision-result').getByText(/CHAPITRE 04 TERMINÉ/)).toBeVisible();
 
   const saved = await page.evaluate(() => JSON.parse(localStorage.getItem('nexus-archives:v1') ?? '{}') as {version?:number;completedChapters?:string[];narrativeChoices?:Record<string,string>});
-  expect(saved.version).toBe(5);
+  expect(saved.version).toBe(6);
   expect(saved.completedChapters).toContain('chapter-four');
   expect(saved.narrativeChoices?.['mirror-00']).toBe('fragment');
 

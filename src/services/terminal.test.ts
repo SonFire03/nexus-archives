@@ -52,4 +52,22 @@ describe('moteur contextuel du terminal', () => {
     expect(mapped.completedObjectives).toContain('map-mirror-network');
     expect(executeCommand('fragment truth',{...emptyTerminalContext,completedObjectives:['map-mirror-network']}).navigateTo).toBe('/chapter-four?decision=fragment');
   });
+  it('déchiffre HUNT-314 uniquement après lecture de l’ordre', () => {
+    expect(executeCommand('decrypt hunt-314').output).toContain('CODE HUNT-314 INCONNU');
+    const result=executeCommand('DECRYPT HUNT-314',{...emptyTerminalContext,activeChapter:'chapter-five',discoveredClues:['clue-hunt-314']});
+    expect(result.completedObjectives).toContain('decrypt-hunt-314');
+    expect(result.unlocks).toContain('document-harbinger-trace');
+  });
+  it('authentifie Crimson après rupture de triangulation', () => {
+    expect(executeCommand('authenticate crimson').output).toContain('CANAL NON AUTHENTIFIABLE');
+    const result=executeCommand('AUTHENTICATE CRIMSON',{...emptyTerminalContext,activeChapter:'chapter-five',solvedPuzzles:['harbinger-counter-trace']});
+    expect(result.completedObjectives).toContain('authenticate-crimson-channel');
+    expect(result.unlocks).toContain('document-extraction-omega7');
+  });
+  it('conditionne la rupture HARBINGER et l’extraction', () => {
+    expect(executeCommand('sever harbinger').output).toContain('RUPTURE REFUSÉE');
+    const severed=executeCommand('sever harbinger',{...emptyTerminalContext,completedObjectives:['read-extraction-plan']});
+    expect(severed.completedObjectives).toContain('sever-harbinger-network');
+    expect(executeCommand('follow crimson',{...emptyTerminalContext,completedObjectives:['sever-harbinger-network']}).navigateTo).toBe('/chapter-five?decision=crimson');
+  });
 });

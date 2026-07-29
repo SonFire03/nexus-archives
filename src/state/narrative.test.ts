@@ -1,5 +1,5 @@
-import { chapterCompletionRequirements, chapterFourCompletionRequirements, chapterThreeCompletionRequirements, chapterTwoCompletionRequirements } from '../data';
-import { applyNarrativeEffects, applyTerminalResult, canCompleteChapterFour, canCompleteChapterThree, canCompleteChapterTwo, canCompleteChapterZero, completeChapterFour, completeChapterThree, completeChapterTwo, completeChapterZero, isDocumentAvailable } from './narrative';
+import { chapterCompletionRequirements, chapterFiveCompletionRequirements, chapterFourCompletionRequirements, chapterThreeCompletionRequirements, chapterTwoCompletionRequirements } from '../data';
+import { applyNarrativeEffects, applyTerminalResult, canCompleteChapterFive, canCompleteChapterFour, canCompleteChapterThree, canCompleteChapterTwo, canCompleteChapterZero, completeChapterFive, completeChapterFour, completeChapterThree, completeChapterTwo, completeChapterZero, isDocumentAvailable } from './narrative';
 import { defaultProgress, loadProgress, saveProgress } from './progress';
 import { archiveDocuments } from '../data/archives';
 
@@ -28,5 +28,13 @@ describe('progression narrative du Chapitre 01', () => {
     expect(complete.completedChapters).toContain('chapter-four');
     expect(complete.narrativeChoices['mirror-00']).toBe('fragment');
     expect(complete.narrativeFlags).toContain('truth-fragment');
+  });
+  it('refuse une extraction tant que HARBINGER reste actif', () => { expect(canCompleteChapterFive(defaultProgress)).toBe(false); expect(completeChapterFive(defaultProgress,'crimson')).toBe(defaultProgress); });
+  it('archive la voie d’extraction OMEGA-7', () => {
+    const ready={...defaultProgress,accessLevel:'NOIR ABSOLU' as const,activeChapter:'chapter-five',completedChapters:['chapter-zero','chapter-two','chapter-three','chapter-four'],completedObjectives:chapterFiveCompletionRequirements};
+    const complete=completeChapterFive(ready,'ghosts');
+    expect(complete.completedChapters).toContain('chapter-five');
+    expect(complete.narrativeChoices['omega7-extraction']).toBe('ghosts');
+    expect(complete.narrativeFlags).toContain('extraction-ghosts');
   });
 });
