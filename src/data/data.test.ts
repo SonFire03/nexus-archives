@@ -1,4 +1,4 @@
-import { archiveDocuments, archiveImages, armorImages, armors, evidenceNodes, evidenceRelations, factionImages, factions, locationImages, locations, operatorImages, operators, timeline, validateData } from '.';
+import { archiveDocuments, archiveImages, armorImages, armors, chapterTwoObjectives, evidenceNodes, evidenceRelations, factionImages, factions, locationImages, locations, operatorImages, operators, timeline, validateData } from '.';
 
 describe('intégrité du canon NEXUS', () => {
   it('utilise des identifiants uniques et des relations valides', () => { expect(validateData()).toEqual([]); });
@@ -18,4 +18,5 @@ describe('intégrité du canon NEXUS', () => {
     expect(locations.every(({id}) => locationImages[id]?.endsWith('.webp'))).toBe(true);
     expect(archiveDocuments.every(({id}) => archiveImages[id]?.endsWith('.webp'))).toBe(true);
   });
+  it('déclare les huit objectifs jouables du Chapitre 02', () => { expect(chapterTwoObjectives).toHaveLength(8); expect(new Set(chapterTwoObjectives.map(({id}) => id)).size).toBe(8); });
 });

@@ -1,6 +1,7 @@
 import { accessOrder, deriveAccessLevel, mergeUnique } from './progress';
 import type { ArchiveDocument, NarrativeEffect, ProgressState, TerminalResult, UnlockRequirement } from '../types';
 import { chapterCompletionRequirements } from '../data/chapterZero';
+import { chapterTwoChoices, chapterTwoCompletionRequirements, type ChapterTwoChoice } from '../data/chapterTwo';
 
 export function requirementMet(requirement: UnlockRequirement, progress: ProgressState): boolean {
   if (requirement.type === 'access') return accessOrder.indexOf(progress.accessLevel) >= accessOrder.indexOf(requirement.value);
@@ -26,6 +27,8 @@ export function applyNarrativeEffects(progress: ProgressState, effects: Narrativ
     if (effect.type === 'add-evidence-node') next.evidenceNodes = mergeUnique(next.evidenceNodes, [effect.id]);
     if (effect.type === 'add-evidence-relation') next.evidenceRelations = mergeUnique(next.evidenceRelations, [effect.id]);
     if (effect.type === 'transmission') next.selectedTransmission = effect.id;
+    if (effect.type === 'activate-chapter') next.activeChapter = effect.id;
+    if (effect.type === 'solve-puzzle') next.solvedPuzzles = mergeUnique(next.solvedPuzzles, [effect.id]);
     if (effect.type === 'narrative-event') next.lastNarrativeEvent = effect.id;
   }
   next.accessLevel = deriveAccessLevel(next);
@@ -64,6 +67,28 @@ export function completeChapterZero(progress: ProgressState): ProgressState {
     spectralContactCount: progress.spectralContactCount + 1,
     selectedTransmission: 'nx-s-contact-01',
     lastNarrativeEvent: 'chapter-zero-complete',
+    activeChapter: 'chapter-two',
+  };
+  return { ...next, accessLevel: deriveAccessLevel(next) };
+}
+
+export function canCompleteChapterTwo(progress: ProgressState): boolean {
+  return chapterTwoCompletionRequirements.every((id) => progress.completedObjectives.includes(id));
+}
+
+export function completeChapterTwo(progress: ProgressState, choice: ChapterTwoChoice): ProgressState {
+  if (progress.completedChapters.includes('chapter-two') || !canCompleteChapterTwo(progress) || !chapterTwoChoices.some((item) => item.id === choice)) return progress;
+  const next: ProgressState = {
+    ...progress,
+    activeChapter: 'chapter-two',
+    completedObjectives: mergeUnique(progress.completedObjectives, ['decide-body-04']),
+    completedChapters: mergeUnique(progress.completedChapters, ['chapter-two']),
+    unlockedSecrets: mergeUnique(progress.unlockedSecrets, ['chapter-two-decision','document-protocole-fil-rouge']),
+    evidenceRelations: mergeUnique(progress.evidenceRelations, ['corps-04-contient-sauvegarde']),
+    narrativeChoices: { ...progress.narrativeChoices, 'body-04': choice },
+    selectedTransmission: 'nx-s-body-04',
+    spectralContactCount: progress.spectralContactCount + 1,
+    lastNarrativeEvent: 'chapter-two-complete',
   };
   return { ...next, accessLevel: deriveAccessLevel(next) };
 }

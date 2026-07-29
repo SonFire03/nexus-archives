@@ -44,10 +44,12 @@ export const archiveImages: Record<string, string> = {
   'ordre-execution-a7': image('archives/archive-execution-order-a7.webp'),
   'protocole-fil-rouge': image('archives/archive-fil-rouge.webp'),
   'dossier-sept-corps': image('archives/archive-sept-corps.webp'),
+  'registre-helix-k13': image('archives/archive-fil-rouge.webp'),
+  'memoire-source-a7-04': image('archives/archive-restauration-2224.webp'),
+  'directive-corps-04': image('archives/archive-execution-order-a7.webp'),
   'message-future-crimson': image('archives/archive-future-crimson.webp'),
   'liste-63218': image('archives/archive-protocol-ash.webp'),
   'projet-ascendant': image('archives/archive-ascendant.webp'),
   'verite-originale': image('archives/archive-original-truth.webp'),
   'enfant-cimetiere': image('archives/archive-child-cemetery.webp'),
 };
-

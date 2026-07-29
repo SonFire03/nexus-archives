@@ -11,4 +11,6 @@ export const transmissions: Transmission[] = [
   {id:'yara-01',sender:'YARA SOL',text:'Rien ne sort de Zone Zéro. Même lorsque cela porte le visage d’un ami.',trigger:'vanta'},
   {id:'crimson-future',sender:'CRIMSON // VERSION ANTÉRIEURE',text:"Tu ne te souviens probablement pas de moi. C’est normal. Je suis toi. A7 ne doit pas être restauré depuis la sauvegarde la plus récente.",trigger:'chapter-zero'},
   {id:'nx-s-contact-01',sender:'NX-S',text:"Vous appelez cela une enquête. Vous ne faites que reconstruire un souvenir que j’ai déjà vécu.",trigger:'chapter-zero-complete'},
+  {id:'crimson-body-04',sender:'CRIMSON // CANAL R-9',text:"A7-04 n’est pas une sauvegarde de secours. C’est une mission que nous avons choisi d’oublier.",trigger:'chapter-two'},
+  {id:'nx-s-body-04',sender:'NX-S',text:"Vous avez choisi lequel devait continuer. C’est ainsi que le Directoire a commencé.",trigger:'chapter-two-complete'},
 ];

@@ -32,6 +32,7 @@ export default function ArchiveDocumentPage() {
   const previousDocument = availableDocuments[currentDocumentIndex - 1];
   const nextDocument = availableDocuments[currentDocumentIndex + 1];
   const comparisonAvailable = document.comparison && (!document.comparison.requirement || requirementMet(document.comparison.requirement, progress));
+  const comparisonObjective = document.comparison?.onRecordEffects.find((effect) => effect.type === 'complete-objective')?.id;
   const goToPage = (next: number) => { setPageIndex(Math.max(0, Math.min(document.pages.length - 1, next))); window.scrollTo({ top: 0, behavior: progress.reducedEffects ? 'auto' : 'smooth' }); };
 
   return <article className="page archive-document">
@@ -43,7 +44,7 @@ export default function ArchiveDocumentPage() {
       <section className="document-reader" aria-labelledby="document-page-title"><header><span>PAGE {String(pageIndex + 1).padStart(2,'0')} / {String(document.pages.length).padStart(2,'0')}</span><span>{document.code}</span></header><h2 id="document-page-title">{page.title}</h2>{page.blocks.map((block,index) => <ArchiveBlockRenderer key={`${page.id}-${index}`} block={block} unlockedSecrets={progress.unlockedSecrets} />)}<footer><button className="button-ghost" disabled={pageIndex === 0} onClick={() => goToPage(pageIndex - 1)}>← PAGE PRÉCÉDENTE</button><button className="button-ghost" disabled={pageIndex === document.pages.length - 1} onClick={() => goToPage(pageIndex + 1)}>PAGE SUIVANTE →</button></footer></section>
       <aside className="document-sidecar"><h2>PIÈCES JOINTES</h2>{document.attachments?.map((attachment) => <div key={attachment.id}><strong>{attachment.label}</strong><span>{attachment.type}</span><small>{attachment.status}</small></div>) ?? <p>AUCUNE PIÈCE JOINTE</p>}<h2>RÉFÉRENCES</h2>{document.references?.map((reference) => <Link key={`${reference.type}-${reference.id}`} to={reference.route}>{reference.label} →</Link>)}</aside>
     </div>
-    {comparisonAvailable && document.comparison && <div id="comparison"><ClassifiedComparison comparison={document.comparison} recorded={progress.completedObjectives.includes('compare-zero-versions')} onRecord={() => dispatchEffects(document.comparison!.onRecordEffects)} /></div>}
+    {comparisonAvailable && document.comparison && <div id="comparison"><ClassifiedComparison comparison={document.comparison} recorded={Boolean(comparisonObjective && progress.completedObjectives.includes(comparisonObjective))} onRecord={() => dispatchEffects(document.comparison!.onRecordEffects)} /></div>}
     <nav className="document-sequence" aria-label="Documents disponibles">{previousDocument ? <Link to={`/archives/${previousDocument.id}`}>← {previousDocument.title}</Link> : <span />}{nextDocument && <Link to={`/archives/${nextDocument.id}`}>{nextDocument.title} →</Link>}</nav>
   </article>;
 }

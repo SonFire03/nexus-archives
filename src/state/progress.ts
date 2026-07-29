@@ -5,7 +5,7 @@ export const accessOrder: AccessLevel[] = ['CIVIL', 'TACTIQUE', 'OMEGA', 'NOIR A
 export const MAX_IMPORT_SIZE = 250_000;
 
 export const defaultProgress: ProgressState = {
-  version: 2,
+  version: 3,
   introSeen: false,
   accessLevel: 'CIVIL',
   viewedDocuments: [],
@@ -25,6 +25,8 @@ export const defaultProgress: ProgressState = {
   spectralContactCount: 0,
   lastNarrativeEvent: null,
   documentReadingProgress: {},
+  solvedPuzzles: [],
+  narrativeChoices: {},
 };
 
 interface LegacyProgress {
@@ -34,9 +36,20 @@ interface LegacyProgress {
   selectedTransmission: string | null; lastVisitedRoute: string;
 }
 
+interface LegacyV2Progress {
+  version: 2; introSeen: boolean; accessLevel: AccessLevel; viewedDocuments: string[];
+  unlockedSecrets: string[]; terminalHistory: string[]; completedObjectives: string[];
+  audioEnabled: boolean; volume: number; reducedEffects: boolean;
+  selectedTransmission: string | null; lastVisitedRoute: string; activeChapter: string;
+  completedChapters: string[]; discoveredClues: string[]; evidenceNodes: string[];
+  evidenceRelations: string[]; spectralContactCount: number;
+  lastNarrativeEvent: string | null; documentReadingProgress: Record<string, number>;
+}
+
 const stringArray = (value: unknown): value is string[] => Array.isArray(value) && value.every((item) => typeof item === 'string');
 const isRecord = (value: unknown): value is Record<string, unknown> => Boolean(value) && typeof value === 'object' && !Array.isArray(value);
 const isReadingProgress = (value: unknown): value is Record<string, number> => isRecord(value) && Object.values(value).every((item) => typeof item === 'number' && Number.isInteger(item) && item >= 0);
+const isStringRecord = (value: unknown): value is Record<string, string> => isRecord(value) && Object.values(value).every((item) => typeof item === 'string');
 
 const legacyDocumentIds: Record<string, string> = {
   'sept-corps': 'dossier-sept-corps', 'fil-rouge': 'protocole-fil-rouge', 'ordre-a7': 'ordre-execution-a7',
@@ -47,10 +60,11 @@ export function mergeUnique(current: string[], additions: string[]): string[] {
   return [...new Set([...current, ...additions])];
 }
 
-export function migrateV1ToV2(legacy: LegacyProgress): ProgressState {
+export function migrateV1ToV2(legacy: LegacyProgress): LegacyV2Progress {
   return {
-    ...defaultProgress,
+    version: 2,
     introSeen: legacy.introSeen,
+    accessLevel: legacy.accessLevel,
     viewedDocuments: legacy.viewedDocuments.map((id) => legacyDocumentIds[id] ?? id),
     unlockedSecrets: [...legacy.unlockedSecrets],
     terminalHistory: [...legacy.terminalHistory],
@@ -60,7 +74,22 @@ export function migrateV1ToV2(legacy: LegacyProgress): ProgressState {
     reducedEffects: legacy.reducedEffects,
     selectedTransmission: legacy.selectedTransmission,
     lastVisitedRoute: legacy.lastVisitedRoute,
+    activeChapter: 'chapter-zero',
+    completedChapters: [],
+    discoveredClues: [],
+    evidenceNodes: [],
+    evidenceRelations: [],
+    spectralContactCount: 0,
+    lastNarrativeEvent: null,
+    documentReadingProgress: {},
   };
+}
+
+export function migrateV2ToV3(legacy: LegacyV2Progress): ProgressState {
+  const activeChapter = legacy.completedChapters.includes('chapter-two')
+    ? 'chapter-two'
+    : legacy.completedChapters.includes('chapter-zero') ? 'chapter-two' : legacy.activeChapter;
+  return { ...legacy, version: 3, activeChapter, solvedPuzzles: [], narrativeChoices: {} };
 }
 
 function validateLegacy(value: unknown): LegacyProgress | null {
@@ -72,6 +101,18 @@ function validateLegacy(value: unknown): LegacyProgress | null {
 }
 
 export function validateProgress(value: unknown): ProgressState | null {
+  if (!isRecord(value) || value.version !== 3 || typeof value.introSeen !== 'boolean' || typeof value.accessLevel !== 'string' || !accessOrder.includes(value.accessLevel as AccessLevel)) return null;
+  const arrays = ['viewedDocuments','unlockedSecrets','terminalHistory','completedObjectives','completedChapters','discoveredClues','evidenceNodes','evidenceRelations','solvedPuzzles'] as const;
+  if (arrays.some((key) => !stringArray(value[key]))) return null;
+  if (typeof value.audioEnabled !== 'boolean' || typeof value.reducedEffects !== 'boolean' || typeof value.lastVisitedRoute !== 'string' || typeof value.activeChapter !== 'string') return null;
+  if (typeof value.volume !== 'number' || value.volume < 0 || value.volume > 1 || typeof value.spectralContactCount !== 'number' || value.spectralContactCount < 0) return null;
+  if (value.selectedTransmission !== null && typeof value.selectedTransmission !== 'string') return null;
+  if (value.lastNarrativeEvent !== null && typeof value.lastNarrativeEvent !== 'string') return null;
+  if (!isReadingProgress(value.documentReadingProgress) || !isStringRecord(value.narrativeChoices)) return null;
+  return value as unknown as ProgressState;
+}
+
+function validateV2(value: unknown): LegacyV2Progress | null {
   if (!isRecord(value) || value.version !== 2 || typeof value.introSeen !== 'boolean' || typeof value.accessLevel !== 'string' || !accessOrder.includes(value.accessLevel as AccessLevel)) return null;
   const arrays = ['viewedDocuments','unlockedSecrets','terminalHistory','completedObjectives','completedChapters','discoveredClues','evidenceNodes','evidenceRelations'] as const;
   if (arrays.some((key) => !stringArray(value[key]))) return null;
@@ -80,7 +121,7 @@ export function validateProgress(value: unknown): ProgressState | null {
   if (value.selectedTransmission !== null && typeof value.selectedTransmission !== 'string') return null;
   if (value.lastNarrativeEvent !== null && typeof value.lastNarrativeEvent !== 'string') return null;
   if (!isReadingProgress(value.documentReadingProgress)) return null;
-  return value as unknown as ProgressState;
+  return value as unknown as LegacyV2Progress;
 }
 
 export function parseProgress(raw: string): ProgressState | null {
@@ -89,8 +130,10 @@ export function parseProgress(raw: string): ProgressState | null {
     const parsed: unknown = JSON.parse(raw);
     const current = validateProgress(parsed);
     if (current) return current;
+    const legacyV2 = validateV2(parsed);
+    if (legacyV2) return migrateV2ToV3(legacyV2);
     const legacy = validateLegacy(parsed);
-    return legacy ? migrateV1ToV2(legacy) : null;
+    return legacy ? migrateV2ToV3(migrateV1ToV2(legacy)) : null;
   } catch {
     return null;
   }
@@ -106,6 +149,8 @@ export function saveProgress(progress: ProgressState, storage: Pick<Storage, 'se
 }
 
 export function deriveAccessLevel(progress: ProgressState): AccessLevel {
-  if (progress.accessLevel === 'NOIR ABSOLU' || progress.accessLevel === 'OMEGA') return progress.accessLevel;
+  if (progress.accessLevel === 'NOIR ABSOLU') return progress.accessLevel;
+  if (progress.completedChapters.includes('chapter-two')) return 'OMEGA';
+  if (progress.accessLevel === 'OMEGA') return progress.accessLevel;
   return progress.completedChapters.includes('chapter-zero') ? 'TACTIQUE' : 'CIVIL';
 }

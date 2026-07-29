@@ -129,9 +129,110 @@ export const archiveDocuments: ArchiveDocument[] = [
   },
   {
     id: 'dossier-sept-corps', title: 'DOSSIER DES SEPT CORPS', code: 'A7-SEPT', classification: 'TACTIQUE', category: 'identité',
-    date: 'INCOHÉRENTE', issuer: 'Archiviste des Absents', status: 'OUVERTURE PARTIELLE', summary: 'Sept signatures neuronales revendiquent le matricule A7.',
+    date: 'INCOHÉRENTE', issuer: 'Archiviste des Absents', status: 'OUVERTURE PARTIELLE', summary: 'Sept signatures neuronales revendiquent le matricule A7.', chapterId: 'chapter-two',
     requirements: [{ type: 'chapter', value: 'chapter-zero' }],
-    pages: [{ id: 'signatures', title: 'Index des signatures', blocks: [{ type: 'system-log', lines: ['A7-01 — DÉTRUITE', 'A7-02 — ABSENTE', 'A7-03 — ARCHIVÉE', 'A7-04 — ACTIVE', 'A7-05 — CORROMPUE', 'A7-06 — INCONNUE', 'A7-07 — VOUS REGARDE'] }, { type: 'redacted', text: 'Origine biologique commune : aucune.', revealSecret: 'seven-bodies-origin' }] }],
+    terminalCodes: ['A7-03'],
+    pages: [
+      { id: 'signatures', title: 'Index des signatures', blocks: [
+        { type: 'warning', title: 'CONTINUITÉ IDENTITAIRE NON GARANTIE', text: 'Les sept entrées partagent des réflexes et des souvenirs, mais aucune origine biologique commune.' },
+        { type: 'system-log', lines: ['A7-01 — DÉTRUITE', 'A7-02 — ABSENTE', 'A7-03 — ARCHIVÉE // ÉMISSION RÉSIDUELLE', 'A7-04 — ACTIVE', 'A7-05 — CORROMPUE', 'A7-06 — INCONNUE', 'A7-07 — VOUS REGARDE'] },
+        { type: 'clue', clueId: 'clue-signature-a7-03', label: 'SIGNATURE INTERROGEABLE', text: 'A7-03 possède encore un canal de réponse. Commande suggérée : scan signature a7-03.' },
+      ] },
+      { id: 'compatibility', title: 'Matrice de compatibilité', blocks: [
+        { type: 'table', headers: ['SIGNATURE','CORPS ASSOCIÉ','MÉMOIRE COMMUNE','LOCALISATION'], rows: [
+          ['A7-01','DÉTRUIT','31 %','ZONE ZÉRO'],['A7-02','INCONNU','44 %','AUCUNE'],['A7-03','A7-04','83 %','K-13 / RELAIS HELIX'],['A7-04','ACTUEL','91 %','INSTABLE'],['A7-05','SYNTHÉTIQUE','56 %','CIMETIÈRE'],['A7-06','NON INDEXÉ','12 %','INCONNUE'],['A7-07','TERMINAL LOCAL','—','PRÉSENTE'],
+        ] },
+        { type: 'evidence', nodeId: 'signature-a7-03', title: 'ÉMISSION RÉSIDUELLE', text: 'La signature classée archivée continue de répondre depuis une infrastructure HELIX.' },
+      ] },
+      { id: 'origin', title: 'Hypothèse d’origine', blocks: [
+        { type: 'paragraph', text: 'Les signatures ne sont pas des copies successives d’un même cerveau. Elles semblent avoir été assemblées autour d’un protocole comportemental partagé.' },
+        { type: 'redacted', text: 'Origine biologique commune : aucune. Premier modèle : sujet pédiatrique non identifié.', revealSecret: 'seven-bodies-origin' },
+        { type: 'quote', text: 'Un nom peut survivre à son propriétaire. Cela ne signifie pas qu’il lui appartient encore.', source: 'Sera Nox' },
+      ] },
+    ],
+    references: [
+      { type:'operator', id:'a7', label:'Dossier A7', route:'/operators/a7' },
+      { type:'faction', id:'helix', label:'HELIX Biodyne', route:'/factions/helix' },
+      { type:'archive', id:'restauration-2224', label:'Restauration 22:24', route:'/archives/restauration-2224' },
+    ],
+    onOpenEffects: [
+      { type:'activate-chapter', id:'chapter-two' }, { type:'complete-objective', id:'open-seven-bodies' },
+      { type:'discover-clue', id:'clue-signature-a7-03' }, { type:'add-evidence-node', id:'signature-a7-03' },
+      { type:'add-evidence-node', id:'sept-corps' }, { type:'add-evidence-relation', id:'sept-corps-inclut-sauvegarde-04' },
+      { type:'narrative-event', id:'chapter-two-started' },
+    ],
+  },
+  {
+    id:'registre-helix-k13', title:'REGISTRE HELIX — ANNEXE K-13', code:'HLX-K13-04', classification:'TACTIQUE', category:'laboratoire',
+    date:'6 P.Z. // 04:17', issuer:'HELIX Biodyne', author:'Système de stase autonome', status:'RÉCUPÉRÉ — RELAIS ANALOGIQUE',
+    summary:'Registre biologique d’une chambre effacée des inventaires HELIX.', chapterId:'chapter-two', terminalCodes:['MNEM-0417'],
+    requirements:[{type:'secret',value:'document-registre-helix-k13'}],
+    pages:[
+      {id:'chamber',title:'Chambre biologique 04',blocks:[
+        {type:'metadata',entries:[{label:'SUJET',value:'NX5-00 / CORPS 04'},{label:'ÉTAT',value:'VIABLE — STASE PROFONDE'},{label:'ACTIVITÉ CORTICALE',value:'0,7 %'},{label:'EMPREINTE ASSOCIÉE',value:'A7-03 / A7-04'}]},
+        {type:'warning',title:'IDENTITÉ ABSENTE',text:'Le corps respire et réagit aux stimuli, mais aucune conscience stable ne contrôle l’activité neuronale.'},
+        {type:'evidence',nodeId:'corps-a7-04',title:'CORPS VIABLE',text:'HELIX conserve un corps compatible avec la sauvegarde choisie par Crimson pendant la Nuit Zéro.'},
+      ]},
+      {id:'maintenance',title:'Journal de maintenance',blocks:[
+        {type:'system-log',lines:['04:17:12 — INTRUSION MNÉSIQUE DÉTECTÉE','04:17:16 — SOURCE VOCALE NON INDEXÉE','04:17:21 — DIRECTIVE R-9 REÇUE','04:17:28 — PURGE DE L’INDEX ORDONNÉE','04:17:31 — QUATRE FRAGMENTS CONSERVÉS // MNEM-0417']},
+        {type:'clue',clueId:'clue-mnem-0417',label:'SÉQUENCE FRAGMENTÉE',text:'Quatre fragments restent exploitables dans le reconstructeur mnésique.'},
+      ]},
+      {id:'ownership',title:'Propriété du sujet',blocks:[
+        {type:'paragraph',text:'HELIX classe le Corps 04 comme matériel biologique vacant. Le Directoire le classe comme infrastructure militaire. Aucune entrée ne le considère comme une personne.'},
+        {type:'quote',text:'La chair peut attendre. Une identité, beaucoup moins.',source:'Docteure Selene Arkh'},
+      ]},
+    ],
+    attachments:[{id:'k13-chamber',label:'Schéma de la chambre 04',type:'SCHÉMA BIOMÉDICAL',status:'EMPLACEMENT VISUEL RÉSERVÉ'}],
+    references:[{type:'faction',id:'helix',label:'HELIX Biodyne',route:'/factions/helix'},{type:'archive',id:'dossier-sept-corps',label:'Dossier des Sept Corps',route:'/archives/dossier-sept-corps'}],
+    onOpenEffects:[
+      {type:'complete-objective',id:'read-helix-register'},{type:'discover-clue',id:'clue-mnem-0417'},
+      {type:'unlock-secret',id:'memory-reconstructor-0417'},{type:'add-evidence-node',id:'laboratoire-k13'},
+      {type:'add-evidence-node',id:'helix-biodyne'},{type:'add-evidence-node',id:'corps-a7-04'},
+      {type:'add-evidence-relation',id:'signature-03-emet-k13'},{type:'add-evidence-relation',id:'helix-maintient-corps-04'},
+      {type:'narrative-event',id:'memory-reconstructor-online'},
+    ],
+  },
+  {
+    id:'memoire-source-a7-04', title:'MÉMOIRE SOURCE — A7-04', code:'MNEM-A7-0417', classification:'TACTIQUE', category:'identité',
+    date:'6 P.Z. // RESTAURATION PARTIELLE', issuer:'Reconstructeur OMEGA', status:'INTÉGRITÉ 74 %',
+    summary:'Comparaison entre l’A7 actif et la sauvegarde destinée au Corps 04.', chapterId:'chapter-two',
+    requirements:[{type:'secret',value:'document-memoire-source-a7-04'}],
+    pages:[
+      {id:'restored-sequence',title:'Séquence 04:17',blocks:[
+        {type:'system-log',lines:['04:17:12 — SIGNATURE ÉTRANGÈRE DANS LE NOYAU','04:17:16 — « NE LAISSE PAS LA PORTE S’OUVRIR »','04:17:21 — R-9 : PRÉSERVER LE CORPS 04','04:17:28 — HELIX : PURGE DE L’INDEX'],spectral:true},
+        {type:'transmission',sender:'CRIMSON // SIGNATURE R-9 CONFIRMÉE',text:'Si A7-04 se réveille, il se souviendra d’une mission que l’A7 actuel n’a jamais vécue. Ne les laisse pas se synchroniser.'},
+      ]},
+      {id:'identity-delta',title:'Écarts identitaires',blocks:[
+        {type:'table',headers:['PARAMÈTRE','A7 ACTUEL','A7-04'],rows:[['NUIT ZÉRO','FRAGMENTS INCOMPLETS','AUCUN SOUVENIR'],['CRIMSON','CONFIANCE INSTINCTIVE','HOSTILITÉ CONDITIONNÉE'],['NX-S','PRÉSENCE INTERNE','SIGNATURE ABSENTE'],['MISSION K-13','INCONNUE','OBJECTIF PRIORITAIRE']]},
+        {type:'evidence',nodeId:'sauvegarde-a7-04',title:'IDENTITÉ DIVERGENTE',text:'A7-04 ne constitue ni une copie récente ni une origine vérifiable de l’A7 actif.'},
+      ]},
+    ],
+    references:[{type:'operator',id:'a7',label:'A7 actuel',route:'/operators/a7'},{type:'operator',id:'crimson',label:'Crimson',route:'/operators/crimson'},{type:'archive',id:'registre-helix-k13',label:'Registre HELIX K-13',route:'/archives/registre-helix-k13'}],
+    comparison:{
+      id:'a7-current-a7-04',officialTitle:'A7 ACTUEL',classifiedTitle:'SAUVEGARDE A7-04',summary:'Les deux signatures revendiquent le même matricule, mais leurs souvenirs et leurs conditionnements sont incompatibles.',
+      differences:[
+        {id:'zero-memory',label:'NUIT ZÉRO',official:'Souvenirs fragmentaires de l’incident.',classified:'Aucun souvenir : la sauvegarde est antérieure.'},
+        {id:'crimson-trust',label:'RELATION À CRIMSON',official:'Confiance persistante malgré les contradictions.',classified:'Hostilité implantée envers le Sujet R-9.'},
+        {id:'spectral-presence',label:'PRÉSENCE NX-S',official:'Contamination spectrale active.',classified:'Aucune empreinte NX-S détectable.'},
+        {id:'k13-mission',label:'MISSION K-13',official:'Aucune trace consciente.',classified:'Ordre prioritaire sans contenu récupérable.',evidenceNodeId:'memoire-0417',evidenceRelationId:'memoire-contredit-a7'},
+      ],
+      onRecordEffects:[
+        {type:'complete-objective',id:'compare-a7-identities'},{type:'add-evidence-node',id:'sauvegarde-a7-04'},
+        {type:'add-evidence-node',id:'memoire-0417'},{type:'add-evidence-relation',id:'memoire-contredit-a7'},
+        {type:'add-evidence-relation',id:'crimson-protege-corps-04'},{type:'narrative-event',id:'crimson-memory-verified'},
+      ],
+    },
+  },
+  {
+    id:'directive-corps-04', title:'DIRECTIVE DE DISPOSITION — CORPS 04', code:'OMEGA-C04', classification:'OMEGA', category:'ordre',
+    date:'TEMPS LOCAL', issuer:'Terminal OMEGA-7', status:'DÉCISION REQUISE', summary:'Trois protocoles sont techniquement possibles. Aucun ne préserve toutes les identités.', chapterId:'chapter-two',
+    requirements:[{type:'secret',value:'body-04-located'}],
+    pages:[{id:'options',title:'Protocoles disponibles',blocks:[
+      {type:'metadata',entries:[{label:'RÉVEIL',value:'DEUX A7 ACTIFS // RISQUE SPECTRAL'},{label:'ISOLEMENT',value:'STASE ANALOGIQUE // RISQUE HELIX'},{label:'EFFACEMENT',value:'CORPS VIABLE // EMPREINTE DÉTRUITE'}]},
+      {type:'warning',title:'ABSENCE DE SOLUTION NEUTRE',text:'Toute décision impose un coût physique, mental ou identitaire. Le terminal archivera le choix localement.'},
+      {type:'paragraph',text:'La décision doit être confirmée depuis la console du Chapitre 02. Une réinitialisation complète de la progression reste possible dans les réglages.'},
+    ]}],
+    references:[{type:'archive',id:'memoire-source-a7-04',label:'Mémoire source A7-04',route:'/archives/memoire-source-a7-04'}],
   },
   {
     id: 'message-future-crimson', title: 'MESSAGE À LA PROCHAINE VERSION', code: 'R9-FUTURE', classification: 'TACTIQUE', category: 'transmission',

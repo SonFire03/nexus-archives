@@ -5,7 +5,8 @@ export { locations } from './locations';
 export { timeline } from './timeline';
 export { transmissions } from './transmissions';
 export { archiveDocuments } from './archives';
-export { chapterZeroObjectives, evidenceNodes, evidenceRelations, narrativeEvents, chapterCompletionRequirements } from './chapterZero';
+export { chapterZeroObjectives, chapterCompletionRequirements } from './chapterZero';
+export { chapterTwoObjectives, chapterTwoCompletionRequirements, memoryFragments, memorySolution, chapterTwoChoices } from './chapterTwo';
 export { brandImages, operatorImages, armorImages, factionImages, locationImages, archiveImages } from './visualAssets';
 
 import { operators } from './operators';
@@ -14,11 +15,16 @@ import { factions } from './factions';
 import { locations } from './locations';
 import { timeline } from './timeline';
 import { archiveDocuments } from './archives';
-import { evidenceNodes, evidenceRelations } from './chapterZero';
+import { chapterZeroObjectives, evidenceNodes as chapterZeroEvidenceNodes, evidenceRelations as chapterZeroEvidenceRelations, narrativeEvents as chapterZeroEvents } from './chapterZero';
+import { chapterTwoEvidenceNodes, chapterTwoEvidenceRelations, chapterTwoEvents, chapterTwoObjectives } from './chapterTwo';
+
+export const evidenceNodes = [...chapterZeroEvidenceNodes, ...chapterTwoEvidenceNodes];
+export const evidenceRelations = [...chapterZeroEvidenceRelations, ...chapterTwoEvidenceRelations];
+export const narrativeEvents = [...chapterZeroEvents, ...chapterTwoEvents];
 
 export function validateData(): string[] {
   const errors: string[] = [];
-  const collections = [operators, armors, factions, locations, timeline, archiveDocuments, evidenceNodes, evidenceRelations];
+  const collections = [operators, armors, factions, locations, timeline, archiveDocuments, evidenceNodes, evidenceRelations, chapterZeroObjectives, chapterTwoObjectives];
   for (const collection of collections) {
     const ids = collection.map((item) => item.id);
     if (new Set(ids).size !== ids.length) errors.push('Identifiants dupliqués détectés.');

@@ -153,6 +153,51 @@
 .fatal-error > small { color:var(--color-text-muted); }
 .fatal-error .button-danger { margin:0; }
 
+/* Chapitre 02 — reconstruction mnésique */
+.memory-status,.decision-vitals { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); margin-bottom:var(--space-4); border:1px solid var(--color-cyan); background:linear-gradient(100deg,rgba(79,216,232,.08),var(--color-bg-elevated)); }
+.memory-status > *,.decision-vitals > div { min-width:0; padding:var(--space-4); border-right:1px solid var(--color-border-default); }
+.memory-status > *:last-child,.decision-vitals > div:last-child { border-right:0; }
+.memory-status span,.memory-status em,.decision-vitals span { color:var(--color-text-secondary); font-size:.72rem; font-style:normal; letter-spacing:.08em; }
+.memory-status strong,.decision-vitals strong { color:var(--color-cyan); font:800 1.15rem var(--font-data); }
+.memory-status em { text-align:right; }
+.memory-workspace { display:grid; grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr); gap:var(--space-4); align-items:start; }
+.memory-fragments { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--space-3); }
+.memory-fragments button { min-height:170px; display:flex; flex-direction:column; align-items:flex-start; border:1px solid var(--color-border-default); padding:var(--space-4); background:var(--color-bg-base); color:var(--color-text-primary); text-align:left; }
+.memory-fragments button:hover:not(:disabled),.memory-fragments button:focus-visible { border-color:var(--color-cyan); background:rgba(79,216,232,.06); }
+.memory-fragments button:disabled { opacity:.35; }
+.memory-fragments span { color:var(--color-cyan); font-size:.68rem; letter-spacing:.1em; }
+.memory-fragments strong { margin-top:var(--space-3); font:800 1rem var(--font-data); }
+.memory-fragments p { color:var(--color-text-secondary); font-size:.84rem; line-height:1.55; }
+.memory-sequence { min-height:310px; margin:0; padding:0; list-style:none; }
+.memory-sequence li { display:grid; grid-template-columns:34px 1fr auto; align-items:center; gap:var(--space-3); min-height:58px; border-bottom:1px solid var(--color-border-subtle); }
+.memory-sequence li > span { color:var(--color-cyan); }
+.memory-sequence button { border:0; color:var(--color-text-muted); background:transparent; font-size:.65rem; }
+.memory-error { border-left:2px solid var(--color-danger); padding:var(--space-3); color:var(--color-danger); }
+.memory-actions { display:flex; justify-content:flex-end; gap:var(--space-3); margin-top:var(--space-4); }
+.memory-restored { max-width:1100px; margin-inline:auto; border:1px solid var(--color-cyan); padding:clamp(20px,3vw,42px); background:linear-gradient(145deg,rgba(79,216,232,.07),var(--color-bg-elevated)); }
+.memory-restored ol { margin:var(--space-6) 0; padding:0; list-style:none; }
+.memory-restored li { display:grid; grid-template-columns:100px 1fr; gap:var(--space-4); padding:var(--space-4); border-bottom:1px solid var(--color-border-default); }
+.memory-restored time { color:var(--color-cyan); font-weight:800; }
+.memory-restored p { color:var(--color-text-secondary); }
+
+/* Chapitre 02 — décision Corps 04 */
+.decision-vitals { grid-template-columns:repeat(4,minmax(0,1fr)); border-color:var(--color-nexus); background:linear-gradient(100deg,rgba(240,90,50,.07),var(--color-bg-elevated)); }
+.decision-vitals div { display:grid; gap:var(--space-2); }
+.decision-vitals strong { color:var(--color-text-primary); }
+.decision-options { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--space-4); margin-block:var(--space-5); }
+.decision-options button { min-height:250px; display:flex; flex-direction:column; align-items:flex-start; border:1px solid var(--color-border-default); padding:var(--space-5); background:linear-gradient(145deg,var(--color-bg-panel),var(--color-bg-base)); color:var(--color-text-primary); text-align:left; }
+.decision-options button:hover,.decision-options button:focus-visible { border-color:var(--color-nexus); }
+.decision-options button.is-selected { border-color:var(--color-nexus-bright); box-shadow:inset 4px 0 var(--color-nexus); background:rgba(240,90,50,.08); }
+.decision-options span { color:var(--color-nexus-bright); font-size:.7rem; letter-spacing:.1em; }
+.decision-options strong { margin:var(--space-6) 0 var(--space-3); font:900 1.45rem var(--font-display); }
+.decision-options p { color:var(--color-text-secondary); font-size:.88rem; line-height:1.6; }
+.decision-result { max-width:1100px; border:1px solid var(--color-spectral); padding:clamp(24px,4vw,56px); background:radial-gradient(circle at 80% 20%,rgba(82,140,255,.12),var(--color-bg-elevated) 58%); }
+.decision-result h2 { font-size:clamp(2rem,5vw,4.5rem); }
+.decision-result > p:not(.eyebrow) { max-width:65ch; color:var(--color-text-secondary); font-size:1rem; }
+.decision-result blockquote { max-width:760px; margin:var(--space-8) 0; border-left:2px solid var(--color-spectral); padding:var(--space-5); color:var(--color-spectral-bright); font-size:1.1rem; }
+.decision-result cite { display:block; margin-top:var(--space-3); color:var(--color-text-secondary); font-size:.75rem; }
+.decision-result > div { display:flex; flex-wrap:wrap; gap:var(--space-3); }
+
 @media (max-width:1200px) {
   .operator-list--index { grid-template-columns:1fr; }
   .detail-grid { grid-template-columns:1fr; }

@@ -2,11 +2,11 @@
 
 > TERMINAL CLASSIFIÉ DU DIRECTOIRE
 
-Expérience narrative cyberpunk statique en français. Le visiteur infiltre les archives de VANTA, enquête sur la Nuit Zéro et débloque localement des fragments autour d’A7, Crimson et du réseau spectral NX-S.
+Expérience narrative cyberpunk statique en français. Le visiteur infiltre les archives de VANTA, enquête sur la Nuit Zéro puis confronte les identités concurrentes d’A7 dans Les Sept Corps.
 
 ## Aperçu
 
-L’interface Omega V3 emploie un shell de centre de commandement, une grille responsive jusqu’à 5120 px et des silhouettes SVG originales. Les captures de contrôle sont produites par Playwright comme pièces jointes de test ; les visuels narratifs finaux pourront les remplacer sans modifier les données.
+L’interface Omega V3 emploie un shell de centre de commandement, une grille responsive jusqu’à 5120 px et des illustrations originales locales. Les captures de contrôle sont produites par Playwright comme pièces jointes de test ; les visuels narratifs peuvent être remplacés sans modifier les données.
 
 ## Fonctionnalités
 
@@ -15,6 +15,8 @@ L’interface Omega V3 emploie un shell de centre de commandement, une grille re
 - dossiers A7/Crimson, 18 armures filtrables et 8 factions reliées ;
 - chronologie A.Z./P.Z. et Nuit Zéro minute par minute ;
 - Chapitre 01 jouable : consulter, déchiffrer, comparer et relier les preuves de la Nuit Zéro ;
+- Chapitre 02 jouable : localiser A7-03, infiltrer un registre HELIX, reconstruire une mémoire et statuer sur le Corps 04 ;
+- trois décisions persistantes — réveil, isolement ou effacement — accordant l’accès OMEGA ;
 - terminal contextuel, lecteur de documents paginé et comparateur officiel/classifié ;
 - tableau d’enquête SVG doublé d’une vue textuelle accessible ;
 - objectifs narratifs, contact NX-S et progression locale importable/exportable ;
@@ -42,7 +44,7 @@ npm run dev
 - `npm run lint` : analyse statique ;
 - `npm run typecheck` : validation TypeScript ;
 - `npm test` / `npm run test:watch` : tests ponctuels/continus ;
-- `npm run test:e2e` : parcours Chromium complet du Chapitre 01 ;
+- `npm run test:e2e` : parcours Chromium complets des Chapitres 01 et 02 ;
 - `npm run test:e2e:ui` : ouvre l’interface Playwright ;
 - `npm run check` : lint, types, tests unitaires et build (E2E séparé).
 
@@ -58,15 +60,19 @@ Pour ajouter un opérateur, une armure ou une faction, compléter respectivement
 
 ## Documents et chapitres
 
-Ajouter un document dans `src/data/archives.ts` sans JSX, avec pages et blocs typés. Déclarer ses indices, effets et références, puis compléter les nœuds et relations de `chapterZero.ts`. Un chapitre définit ses objectifs et conditions déterministes ; les tests d’intégrité doivent rester verts.
+Ajouter un document dans `src/data/archives.ts` sans JSX, avec pages et blocs typés. Déclarer ses indices, effets et références, puis compléter le module `chapterZero.ts` ou `chapterTwo.ts`. Un chapitre définit ses objectifs et conditions déterministes ; les tests d’intégrité doivent rester verts.
 
 ## Progression locale
 
-La clé stable `nexus-archives:v1` contient un état de schéma V2. `migrateV1ToV2` préserve documents, secrets, historique et réglages. Les imports JSON sont validés et limités en taille. Aucun cookie ni donnée personnelle n’est utilisé.
+La clé stable `nexus-archives:v1` contient un état de schéma V3. Les migrations V1 → V2 → V3 préservent documents, secrets, historique et réglages, puis initialisent puzzles et décisions. Les imports JSON sont validés et limités en taille. Aucun cookie ni donnée personnelle n’est utilisé.
 
 ## Tester le Chapitre 01
 
 Après `npx playwright install chromium`, lancer `npm run test:e2e`. Le scénario réinitialise le stockage, ouvre le rapport, déchiffre Z-2219, consulte la restauration, compare les versions, analyse A7, établit la synthèse et vérifie l’accès TACTIQUE après rechargement. La même suite contrôle le shell, le tiroir mobile, les pages majeures, l’absence de débordement et neuf formats de 390 × 844 à 5120 × 1440.
+
+## Tester le Chapitre 02
+
+Lancer `npm run test:e2e -- chapter-two.spec.ts`. Le scénario part d’une sauvegarde TACTIQUE, analyse A7-03, ouvre le registre K-13, reconstruit la séquence 04:17, vérifie Crimson, compare A7-04, localise le corps et confirme la persistance d’une décision OMEGA.
 
 ## Accessibilité
 
@@ -82,9 +88,9 @@ Navigation clavier, lien d’évitement, focus visible, régions sémantiques, c
 
 Vite utilise `base: "/nexus-archives/"` et le routage par hash. Ne pas créer de branche `gh-pages`.
 
-## Assets et limites de la V2
+## Assets et limites actuelles
 
-Consulter `public/assets/README.md` pour les futurs médias. La V2 couvre un chapitre linéaire, sans backend, embranchements irréversibles, multijoueur ni synchronisation cloud.
+Consulter `public/assets/README.md` pour les futurs médias. Les embranchements modifient la progression locale et les conclusions, sans backend, multijoueur ni synchronisation cloud.
 
 ## Sécurité, fiction et licence
 
@@ -94,7 +100,7 @@ Sauf mention contraire, le contenu narratif et visuel est réservé à son auteu
 
 ## Roadmap
 
-- remplacer les placeholders par des illustrations originales finales ;
-- développer le Chapitre 02 autour du Dossier des Sept Corps ;
+- illustrer la chambre HELIX K-13 et le Corps A7-04 ;
+- développer le Chapitre 03 autour de l’Enfant du Cimetière ;
 - réaliser un audit manuel multi-navigateurs et lecteur d’écran ;
 - ajouter une suite visuelle de non-régression.

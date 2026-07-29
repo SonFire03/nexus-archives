@@ -5,6 +5,7 @@ import { useAudio } from '../../hooks/useAudio';
 import { NarrativeNotification } from '../feedback/NarrativeNotification';
 import { TopCommandBar } from './TopCommandBar';
 import { Sidebar } from '../navigation/Sidebar';
+import { chapterTwoObjectives, chapterZeroObjectives } from '../../data';
 
 const SIDEBAR_KEY = 'nexus-archives:sidebar-collapsed';
 
@@ -33,13 +34,14 @@ export function AppShell() {
     return () => window.removeEventListener('keydown',closeOnEscape);
   }, [menuOpen]);
   const closeMobileMenu = () => { setMenuOpen(false); menuButtonRef.current?.focus(); };
-  const objectiveCount = progress.completedObjectives.filter((id) => ['view-official-zero-report','identify-z-2219','decrypt-z-2219','read-restoration-log','compare-zero-versions','detect-seven-signatures','link-main-evidence','identify-nx-s-intervention'].includes(id)).length;
-  const chapterProgress = Math.round((objectiveCount / 8) * 100);
+  const objectives = progress.activeChapter === 'chapter-two' ? chapterTwoObjectives : chapterZeroObjectives;
+  const objectiveCount = progress.completedObjectives.filter((id) => objectives.some((objective) => objective.id === id)).length;
+  const chapterProgress = Math.round((objectiveCount / objectives.length) * 100);
 
   return (
     <div className={`app-shell ${sidebarCollapsed ? 'sidebar-collapsed' : ''} ${progress.reducedEffects ? 'reduced-effects' : ''}`}>
       <a className="skip-link" href="#main-content">Aller au contenu</a>
-      <TopCommandBar accessLevel={progress.accessLevel} chapterComplete={progress.completedChapters.includes('chapter-zero')} audioEnabled={progress.audioEnabled} menuOpen={menuOpen} time={time} menuButtonRef={menuButtonRef} onMenu={() => setMenuOpen((value) => !value)} onAudio={() => { update({ audioEnabled: !progress.audioEnabled }); if (!progress.audioEnabled) window.setTimeout(() => play('terminal'),0); }} />
+      <TopCommandBar accessLevel={progress.accessLevel} activeChapter={progress.activeChapter} chapterComplete={progress.completedChapters.includes(progress.activeChapter)} audioEnabled={progress.audioEnabled} menuOpen={menuOpen} time={time} menuButtonRef={menuButtonRef} onMenu={() => setMenuOpen((value) => !value)} onAudio={() => { update({ audioEnabled: !progress.audioEnabled }); if (!progress.audioEnabled) window.setTimeout(() => play('terminal'),0); }} />
       <Sidebar ref={sidebarRef} collapsed={sidebarCollapsed} mobileOpen={menuOpen} progress={chapterProgress} onToggle={() => setSidebarCollapsed((value) => !value)} />
       {menuOpen && <button className="mobile-navigation-overlay" aria-label="Fermer la navigation" onClick={closeMobileMenu} />}
       <main id="main-content" className="main-content" tabIndex={-1}><Outlet /></main>

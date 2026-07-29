@@ -1,5 +1,5 @@
-import { chapterCompletionRequirements } from '../data';
-import { applyNarrativeEffects, applyTerminalResult, canCompleteChapterZero, completeChapterZero, isDocumentAvailable } from './narrative';
+import { chapterCompletionRequirements, chapterTwoCompletionRequirements } from '../data';
+import { applyNarrativeEffects, applyTerminalResult, canCompleteChapterTwo, canCompleteChapterZero, completeChapterTwo, completeChapterZero, isDocumentAvailable } from './narrative';
 import { defaultProgress, loadProgress, saveProgress } from './progress';
 import { archiveDocuments } from '../data/archives';
 
@@ -10,4 +10,6 @@ describe('progression narrative du Chapitre 01', () => {
   it('termine le chapitre et accorde TACTIQUE', () => { const ready={...defaultProgress,completedObjectives:chapterCompletionRequirements,unlockedSecrets:['message-future-crimson']}; const complete=completeChapterZero(ready); expect(complete.completedChapters).toContain('chapter-zero'); expect(complete.accessLevel).toBe('TACTIQUE'); expect(complete.completedObjectives).toContain('identify-nx-s-intervention'); });
   it('ne déclenche le contact NX-S qu’une fois', () => { const ready={...defaultProgress,completedObjectives:chapterCompletionRequirements,unlockedSecrets:['message-future-crimson']}; const once=completeChapterZero(ready); const twice=completeChapterZero(once); expect(twice.spectralContactCount).toBe(1); });
   it('persiste un chapitre terminé après rechargement', () => { const complete={...defaultProgress,completedChapters:['chapter-zero'],accessLevel:'TACTIQUE' as const}; saveProgress(complete); expect(loadProgress()).toEqual(complete); });
+  it('refuse de terminer le Chapitre 02 avant toutes les preuves', () => { expect(canCompleteChapterTwo(defaultProgress)).toBe(false); expect(completeChapterTwo(defaultProgress,'isolate')).toBe(defaultProgress); });
+  it('archive le choix du Corps 04 et accorde OMEGA', () => { const ready={...defaultProgress,accessLevel:'TACTIQUE' as const,activeChapter:'chapter-two',completedChapters:['chapter-zero'],completedObjectives:chapterTwoCompletionRequirements}; const complete=completeChapterTwo(ready,'isolate'); expect(complete.completedChapters).toContain('chapter-two'); expect(complete.completedObjectives).toContain('decide-body-04'); expect(complete.narrativeChoices['body-04']).toBe('isolate'); expect(complete.accessLevel).toBe('OMEGA'); });
 });

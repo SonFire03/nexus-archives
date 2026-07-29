@@ -9,7 +9,7 @@ import { Icon } from '../components/common/Icon';
 import { Panel } from '../components/common/Panel';
 import { StatusBadge } from '../components/common/StatusBadge';
 import { TransmissionCard } from '../components/common/TransmissionCard';
-import { archiveDocuments, chapterZeroObjectives, locations, operators, transmissions } from '../data';
+import { archiveDocuments, chapterTwoObjectives, chapterZeroObjectives, locations, operators, transmissions } from '../data';
 import { useProgress } from '../state/ProgressContext';
 
 const incidents = [
@@ -24,16 +24,18 @@ const sectorState: Record<string,string> = { couronne:'SURVEILLÉ',voile:'SURVEI
 
 export default function DashboardPage() {
   const { progress } = useProgress();
-  const nextObjective = chapterZeroObjectives.find((objective) => !progress.completedObjectives.includes(objective.id));
-  const completed = progress.completedObjectives.filter((id) => chapterZeroObjectives.some((objective) => objective.id === id));
-  const chapterProgress = Math.round((completed.length / chapterZeroObjectives.length) * 100);
+  const isChapterTwo = progress.activeChapter === 'chapter-two';
+  const objectives = isChapterTwo ? chapterTwoObjectives : chapterZeroObjectives;
+  const nextObjective = objectives.find((objective) => !progress.completedObjectives.includes(objective.id));
+  const completed = progress.completedObjectives.filter((id) => objectives.some((objective) => objective.id === id));
+  const chapterProgress = Math.round((completed.length / objectives.length) * 100);
   const lastDocument = [...progress.viewedDocuments].reverse().map((id) => archiveDocuments.find((document) => document.id === id)).find(Boolean);
   const contacted = progress.spectralContactCount > 0;
 
   return <div className="page dashboard-page">
-    <header className="dashboard-hero"><div className="dashboard-hero__copy"><p className="eyebrow">CENTRE DE COMMANDE // CHAPITRE 01</p><h1>SITUATION <span>CRITIQUE</span></h1><p>L’enquête sur la Nuit Zéro révèle des contradictions dans le récit du Directoire.</p><div className="dashboard-hero__sync"><StatusBadge tone="critical">ALERTE OMEGA-7</StatusBadge><StatusBadge tone="success">4 SECTEURS ACTIFS</StatusBadge><span>DERNIÈRE SYNCHRONISATION // 00:14</span></div></div><div className="threat-module" aria-label="Niveau de menace Omega 7, enquête en cours"><Icon name="alert" size={34} /><div><small>NIVEAU DE MENACE</small><strong>OMEGA-7</strong><span>{progress.completedChapters.includes('chapter-zero') ? 'CONTACT NX-S CONFIRMÉ' : 'ENQUÊTE EN COURS'}</span></div><i aria-hidden="true" /></div></header>
+    <header className="dashboard-hero"><div className="dashboard-hero__copy"><p className="eyebrow">CENTRE DE COMMANDE // CHAPITRE {isChapterTwo ? '02' : '01'}</p><h1>{isChapterTwo ? <>IDENTITÉ <span>FRAGMENTÉE</span></> : <>SITUATION <span>CRITIQUE</span></>}</h1><p>{isChapterTwo ? 'Une signature archivée d’A7 émet encore depuis une installation HELIX sous Station K-13.' : 'L’enquête sur la Nuit Zéro révèle des contradictions dans le récit du Directoire.'}</p><div className="dashboard-hero__sync"><StatusBadge tone="critical">ALERTE OMEGA-7</StatusBadge><StatusBadge tone="success">4 SECTEURS ACTIFS</StatusBadge><span>DERNIÈRE SYNCHRONISATION // 00:14</span></div></div><div className="threat-module" aria-label="Niveau de menace Omega 7, enquête en cours"><Icon name="alert" size={34} /><div><small>NIVEAU DE MENACE</small><strong>OMEGA-7</strong><span>{progress.completedChapters.includes('chapter-two') ? 'CORPS 04 // DÉCISION ARCHIVÉE' : progress.completedChapters.includes('chapter-zero') ? 'SIGNATURES MULTIPLES' : 'ENQUÊTE EN COURS'}</span></div><i aria-hidden="true" /></div></header>
 
-    <PrimaryObjectivePanel objective={nextObjective} completed={completed.length} total={chapterZeroObjectives.length} percentage={chapterProgress} />
+    <PrimaryObjectivePanel objective={nextObjective} completed={completed.length} total={objectives.length} percentage={chapterProgress} chapter={isChapterTwo ? '02' : '01'} completedDescription={isChapterTwo ? 'La décision concernant le Corps A7-04 est archivée.' : undefined} completedRoute={isChapterTwo ? '/chapter-two' : undefined} />
 
     <section className="dashboard-metrics" aria-label="Indicateurs opérationnels">
       <MetricCard icon="alert" label="ALERTE VANTA" value="CRITIQUE" detail="Zone Zéro sous confinement renforcé" code="VNT-05"><span className="metric-trend is-critical">↑ +2 incidents</span></MetricCard>
@@ -45,7 +47,7 @@ export default function DashboardPage() {
     <div className="dashboard-command-grid">
       <Panel title="STATUT DE VANTA" eyebrow="MÉGALOPOLE // CINQ NIVEAUX" code="SYS.VANTA" tone="critical" className="dashboard-vanta"><div className="vanta-overview"><div><div className="vanta-overview__alert"><span>NIVEAU D’ALERTE</span><strong>CRITIQUE</strong><small>PROTOCOLE DE CONTINUITÉ ACTIF</small></div><dl><div><dt>SECTEURS OPÉRATIONNELS</dt><dd>4 / 5</dd></div><div><dt>POPULATION SUIVIE</dt><dd>███ 218</dd></div><div><dt>INCIDENTS ACTIFS</dt><dd>05</dd></div><div><dt>COUVRE-FEU</dt><dd>22:00</dd></div></dl></div><NetworkIntegrityGauge value={72} /></div><div className="vanta-levels" aria-label="État des cinq niveaux de VANTA">{locations.map((location) => <Link key={location.id} to={`/vanta?zone=${location.id}`}><span>0{location.level}</span><i className={`is-${location.color}`} /><strong>{location.name}</strong><small>{sectorState[location.id]}</small></Link>)}</div></Panel>
 
-      <Panel title="OBJECTIFS DU CHAPITRE" eyebrow="ENQUÊTE NUIT ZÉRO" code={`${completed.length} / 8 TERMINÉS`} tone="warning" className="dashboard-objectives"><ObjectiveList objectives={chapterZeroObjectives} completedIds={progress.completedObjectives} activeId={nextObjective?.id} /></Panel>
+      <Panel title="OBJECTIFS DU CHAPITRE" eyebrow={isChapterTwo ? 'ENQUÊTE LES SEPT CORPS' : 'ENQUÊTE NUIT ZÉRO'} code={`${completed.length} / ${objectives.length} TERMINÉS`} tone="warning" className="dashboard-objectives"><ObjectiveList objectives={objectives} completedIds={progress.completedObjectives} activeId={nextObjective?.id} /></Panel>
 
       <Panel title="OPÉRATEURS RECHERCHÉS" eyebrow="DIRECTIVE DE CAPTURE" code="DIR.44" tone="nexus" className="dashboard-operators"><div className="operator-list">{operators.map((operator) => <OperatorCard key={operator.id} operator={operator} />)}</div></Panel>
 
