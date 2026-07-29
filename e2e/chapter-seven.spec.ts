@@ -49,6 +49,10 @@ test('termine ASCENDANT et conserve le destin du corps collectif', async ({page}
   await page.reload();
   await expect(page.locator('.ascendant-final').getByText(/CHAPITRE 07 TERMINÉ/)).toBeVisible();
 
+  await page.goto('/nexus-archives/#/investigation');
+  await expect(page.getByRole('heading',{name:'TABLEAU D’ENQUÊTE'})).toBeVisible();
+  await expect(page.getByRole('button',{name:/Corps NX6-OMEGA ASCENDANT, armure/})).toBeVisible();
+
   const saved=await page.evaluate(()=>JSON.parse(localStorage.getItem('nexus-archives:v1')??'{}') as {version?:number;completedChapters?:string[];narrativeChoices?:Record<string,string>});
   expect(saved.version).toBe(8);
   expect(saved.completedChapters).toContain('chapter-seven');
