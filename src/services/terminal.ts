@@ -4,6 +4,7 @@ import { chapterThreeObjectives } from '../data/chapterThree';
 import { chapterFourObjectives } from '../data/chapterFour';
 import { chapterFiveObjectives } from '../data/chapterFive';
 import { chapterSixObjectives } from '../data/chapterSix';
+import { chapterSevenObjectives } from '../data/chapterSeven';
 import type { TerminalContext, TerminalResult } from '../types';
 
 export const terminalCommands = [
@@ -21,6 +22,8 @@ export const terminalCommands = [
   'open extraction plan','sever harbinger','follow crimson','join free ghosts','merge nx-s',
   'decrypt cendre-63218','open ash chain','reconstruct ash','verify draven',
   'open victims ledger','sever ash command','broadcast names','return names','protect names',
+  'trace ascendant','open ascendant architecture','stabilize ascendant matrix','ask r-0',
+  'open ascendant diagnostic','sever sovereign','host r-0','host seven voices','dismantle ascendant',
 ];
 
 export const emptyTerminalContext: TerminalContext = {
@@ -46,6 +49,7 @@ const directRoutes: Record<string, string> = {
   'reconstruct truth':'/truth-reconstruction', 'reconstruire verite':'/truth-reconstruction',
   'counter trace':'/counter-trace', 'contre traque':'/counter-trace',
   'reconstruct ash':'/ash-protocol', 'reconstruire cendre':'/ash-protocol',
+  'stabilize ascendant matrix':'/ascendant-matrix', 'stabiliser matrice ascendant':'/ascendant-matrix',
 };
 
 const isDecryptZero = (command: string) => ['decrypt z 2219','decrypt z2219','decrypt zero','decrypt nuit zero'].includes(command);
@@ -55,11 +59,11 @@ export function executeCommand(raw: string, context: TerminalContext = emptyTerm
   if (!command) return { output: [] };
   if (command === 'clear') return { output: [], clear: true };
   if (command === 'help') return { output: ['COMMANDES DISPONIBLES', terminalCommands.join(' · ')] };
-  if (command === 'status') { const chapter=context.activeChapter==='chapter-zero'?'01 // NUIT ZÉRO':context.activeChapter==='chapter-two'?'02 // LES SEPT CORPS':context.activeChapter==='chapter-three'?'03 // L’ENFANT DU CIMETIÈRE':context.activeChapter==='chapter-four'?'04 // VÉRITÉ ORIGINALE':context.activeChapter==='chapter-five'?'05 // TRAQUE OMEGA':'06 // LES NOMS DE CENDRE'; return { output: [`CHAPITRE : ${chapter}`,`ACCÈS : ${context.accessLevel}`,`PREUVES : ${context.evidenceNodes.length} NŒUDS // ${context.evidenceRelations.length} RELATIONS`,context.spectralContactCount ? 'ACTIVITÉ SPECTRALE : TERMINAL COMPROMIS' : 'ACTIVITÉ SPECTRALE : INSTABLE'] }; }
+  if (command === 'status') { const chapter=context.activeChapter==='chapter-zero'?'01 // NUIT ZÉRO':context.activeChapter==='chapter-two'?'02 // LES SEPT CORPS':context.activeChapter==='chapter-three'?'03 // L’ENFANT DU CIMETIÈRE':context.activeChapter==='chapter-four'?'04 // VÉRITÉ ORIGINALE':context.activeChapter==='chapter-five'?'05 // TRAQUE OMEGA':context.activeChapter==='chapter-six'?'06 // LES NOMS DE CENDRE':'07 // ASCENDANT'; return { output: [`CHAPITRE : ${chapter}`,`ACCÈS : ${context.accessLevel}`,`PREUVES : ${context.evidenceNodes.length} NŒUDS // ${context.evidenceRelations.length} RELATIONS`,context.spectralContactCount ? 'ACTIVITÉ SPECTRALE : TERMINAL COMPROMIS' : 'ACTIVITÉ SPECTRALE : INSTABLE'] }; }
   if (command === 'whoami') return { output: ['IDENTITÉ : INCONNUE', `AUTORISATION : ${context.accessLevel}`, 'LOCALISATION : IMPOSSIBLE'] };
   if (command === 'access') return { output: [`NIVEAU ACTUEL : ${context.accessLevel}`, context.accessLevel === 'CIVIL' ? 'CONDITION TACTIQUE : TERMINER L’ENQUÊTE NUIT ZÉRO' : context.accessLevel === 'TACTIQUE' ? 'CONDITION OMEGA : STATUER SUR LE CORPS A7-04' : context.accessLevel === 'OMEGA' ? 'CONDITION NOIR ABSOLU : STATUER SUR LA PORTE DE CONTINUITÉ' : 'ACCÈS NOIR ABSOLU CONFIRMÉ'] };
   if (command === 'objectives') {
-    const objectives = context.activeChapter === 'chapter-six' ? chapterSixObjectives : context.activeChapter === 'chapter-five' ? chapterFiveObjectives : context.activeChapter === 'chapter-four' ? chapterFourObjectives : context.activeChapter === 'chapter-three' ? chapterThreeObjectives : context.activeChapter === 'chapter-two' ? chapterTwoObjectives : chapterZeroObjectives;
+    const objectives = context.activeChapter === 'chapter-seven' ? chapterSevenObjectives : context.activeChapter === 'chapter-six' ? chapterSixObjectives : context.activeChapter === 'chapter-five' ? chapterFiveObjectives : context.activeChapter === 'chapter-four' ? chapterFourObjectives : context.activeChapter === 'chapter-three' ? chapterThreeObjectives : context.activeChapter === 'chapter-two' ? chapterTwoObjectives : chapterZeroObjectives;
     const next = objectives.find((objective) => !context.completedObjectives.includes(objective.id));
     return { output: next ? [`OBJECTIF PRIORITAIRE : ${next.title.toUpperCase()}`, next.description.toUpperCase(), next.hint?.toUpperCase() ?? 'AUCUN INDICE DISPONIBLE'] : ['TOUS LES OBJECTIFS DU CHAPITRE SONT TERMINÉS.'] };
   }
@@ -124,6 +128,25 @@ export function executeCommand(raw: string, context: TerminalContext = emptyTerm
   }
   const victimsDecisions:Record<string,string>={'broadcast names':'broadcast','diffuser noms':'broadcast','return names':'choir','restituer noms':'choir','protect names':'analog','proteger noms':'analog'};
   if (victimsDecisions[command]) return context.completedObjectives.includes('sever-ash-command')?{output:['DIRECTIVE DU REGISTRE CHARGÉE','CONFIRMATION LOCALE REQUISE.'],navigateTo:`/chapter-six?decision=${victimsDecisions[command]}`}:{output:['DIRECTIVE INDISPONIBLE','DERNIER ORDRE CENDRE ENCORE ACTIF.']};
+  if (['trace ascendant','trace nx6 omega','locate ascendant'].includes(command)) {
+    if (!context.discoveredClues.includes('clue-ascendant-signal')) return {output:['SIGNAL ASCENDANT INCONNU','CONSULTEZ L’ALERTE NX6-OMEGA.']};
+    if (context.completedObjectives.includes('trace-ascendant')) return {output:['ASCENDANT DÉJÀ LOCALISÉ','SOUS-NIVEAU : NEXUS CORE // 07']};
+    return {output:['TRAÇAGE NX6-OMEGA…','SOUS-NIVEAU : NEXUS CORE // 07','ACTIVATION : 12 %','REQUÊTES D’INCARNATION : 63 218','ARCHITECTURE NX6-IDMATRIX-07 RÉCUPÉRÉE'],unlocks:['document-ascendant-architecture','ascendant'],completedObjectives:['trace-ascendant'],evidenceNodes:['ascendant-host','ascendant-core'],notification:'ascendant-architecture-recovered'};
+  }
+  if (['open ascendant architecture','open identity matrix','open architecture nx6'].includes(command)) return context.unlockedSecrets.includes('document-ascendant-architecture')?{output:['OUVERTURE : ARCHITECTURE IDENTITAIRE ASCENDANT'],navigateTo:'/archives/architecture-ascendant'}:{output:['ACCÈS REFUSÉ','LOCALISATION ASCENDANT REQUISE.']};
+  if (['ask r 0','ask r0','demander r 0','demander r0'].includes(command)) {
+    if (!context.solvedPuzzles.includes('ascendant-identity-matrix')) return {output:['CANAL R-0 REFUSÉ','MATRICE IDENTITAIRE NON STABLE.']};
+    if (context.completedObjectives.includes('request-r0-consent')) return {output:['CONSENTEMENT R-0 DÉJÀ ARCHIVÉ','DIAGNOSTIC ASC-HOST-CONSENT DISPONIBLE.']};
+    return {output:['CANAL R-0 OUVERT…','« JE NE VEUX PAS DEVENIR TOUTES LES VOIX. »','« JE VEUX POUVOIR SORTIR. »','CONSENTEMENT : CONDITIONNEL','DIAGNOSTIC D’HÔTE RÉCUPÉRÉ'],unlocks:['document-ascendant-diagnostic'],completedObjectives:['request-r0-consent'],evidenceNodes:['r0-consent'],transmissionId:'child-r0',notification:'r0-consent-recorded'};
+  }
+  if (['open ascendant diagnostic','open host diagnostic','open diagnostic hote'].includes(command)) return context.unlockedSecrets.includes('document-ascendant-diagnostic')?{output:['OUVERTURE : DIAGNOSTIC D’HÔTE ASCENDANT'],navigateTo:'/archives/diagnostic-hote-ascendant'}:{output:['ACCÈS REFUSÉ','CONSENTEMENT R-0 NON ARCHIVÉ.']};
+  if (['sever sovereign','cut sovereign','couper sovereign'].includes(command)) {
+    if (!context.completedObjectives.includes('read-ascendant-diagnostic')) return {output:['RUPTURE REFUSÉE','DIAGNOSTIC D’HÔTE NON CONSULTÉ.']};
+    if (context.completedObjectives.includes('sever-sovereign-command')) return {output:['SOVEREIGN DÉJÀ COUPÉ','AUTORITÉ MOTRICE : LOCALE.']};
+    return {output:['RUPTURE DU CANAL SOVEREIGN…','COMMANDE DIRECTOIRE : REJETÉE','FONCTIONS MOTRICES : LOCALES','ARRÊTS INDIVIDUELS : ACTIFS','ASCENDANT : LIBRE DE TOUTE AUTORITÉ DISTANTE'],completedObjectives:['sever-sovereign-command'],narrativeFlags:['sovereign-command-severed'],notification:'sovereign-command-severed'};
+  }
+  const ascendantDecisions:Record<string,string>={'host r 0':'r0','confier corps r 0':'r0','host seven voices':'choir','accueillir sept voix':'choir','dismantle ascendant':'dismantle','demanteler ascendant':'dismantle'};
+  if (ascendantDecisions[command]) return context.completedObjectives.includes('sever-sovereign-command')?{output:['PROTOCOLE ASCENDANT CHARGÉ','CONFIRMATION LOCALE REQUISE.'],navigateTo:`/chapter-seven?decision=${ascendantDecisions[command]}`}:{output:['PROTOCOLE INDISPONIBLE','AUTORITÉ SOVEREIGN ENCORE ACTIVE.']};
   if (['trace mirror 00','trace mirror00','trace original truth'].includes(command)) {
     if (!context.discoveredClues.includes('clue-mirror-00')) return {output:['CHECKSUM INCONNU','CONSULTEZ VÉRITÉ ORIGINALE.']};
     if (context.completedObjectives.includes('trace-mirror-00')) return {output:['CHECKSUM MIRROR-00 DÉJÀ TRACÉ','REGISTRE MIRROR-LEDGER-17 DISPONIBLE.']};

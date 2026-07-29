@@ -53,7 +53,7 @@ test('termine Les Noms de Cendre et conserve la destination du registre', async 
   await expect(page.locator('.victims-result').getByText(/CHAPITRE 06 TERMINÉ/)).toBeVisible();
 
   const saved=await page.evaluate(()=>JSON.parse(localStorage.getItem('nexus-archives:v1')??'{}') as {version?:number;completedChapters?:string[];narrativeChoices?:Record<string,string>});
-  expect(saved.version).toBe(7);
+  expect(saved.version).toBe(8);
   expect(saved.completedChapters).toContain('chapter-six');
   expect(saved.narrativeChoices?.['victims-ledger']).toBe('analog');
 

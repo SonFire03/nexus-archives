@@ -1,4 +1,4 @@
-import { defaultProgress, deriveAccessLevel, loadProgress, mergeUnique, migrateV1ToV2, migrateV2ToV3, migrateV3ToV4, migrateV4ToV5, migrateV5ToV6, migrateV6ToV7, saveProgress, STORAGE_KEY, validateProgress } from './progress';
+import { defaultProgress, deriveAccessLevel, loadProgress, mergeUnique, migrateV1ToV2, migrateV2ToV3, migrateV3ToV4, migrateV4ToV5, migrateV5ToV6, migrateV6ToV7, migrateV7ToV8, saveProgress, STORAGE_KEY, validateProgress } from './progress';
 
 describe('progression locale', () => {
   it('sauvegarde et recharge la progression', () => { saveProgress({ ...defaultProgress, introSeen: true }); expect(loadProgress().introSeen).toBe(true); });
@@ -40,5 +40,13 @@ describe('progression locale', () => {
     v6.completedChapters.push('chapter-three','chapter-four','chapter-five');
     v6.narrativeChoices['omega7-extraction']='crimson';
     expect(migrateV6ToV7(v6)).toEqual(expect.objectContaining({version:7,activeChapter:'chapter-six',narrativeChoices:{'omega7-extraction':'crimson'}}));
+  });
+  it('migre la V7 vers la V8 et active le Chapitre 07', () => {
+    const v2=migrateV1ToV2({version:1,introSeen:true,accessLevel:'NOIR ABSOLU',viewedDocuments:['liste-63218-dechiffree'],unlockedSecrets:['chapter-six-decision'],terminalHistory:['sever ash command'],completedObjectives:['decide-victims-ledger'],audioEnabled:false,reducedEffects:true,selectedTransmission:'sera-nox-names',lastVisitedRoute:'/chapter-six'});
+    v2.completedChapters=['chapter-zero','chapter-two'];
+    const v7=migrateV6ToV7(migrateV5ToV6(migrateV4ToV5(migrateV3ToV4(migrateV2ToV3(v2)))));
+    v7.completedChapters.push('chapter-three','chapter-four','chapter-five','chapter-six');
+    v7.narrativeChoices['victims-ledger']='analog';
+    expect(migrateV7ToV8(v7)).toEqual(expect.objectContaining({version:8,activeChapter:'chapter-seven',narrativeChoices:{'victims-ledger':'analog'}}));
   });
 });

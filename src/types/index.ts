@@ -94,7 +94,7 @@ export interface EvidenceRelation {
 }
 export interface NarrativeEvent { id: string; kind: 'document' | 'objective' | 'access' | 'spectral' | 'chapter'; title: string; message: string }
 export interface ProgressState {
-  version: 7; introSeen: boolean; accessLevel: AccessLevel; viewedDocuments: string[];
+  version: 8; introSeen: boolean; accessLevel: AccessLevel; viewedDocuments: string[];
   unlockedSecrets: string[]; terminalHistory: string[]; completedObjectives: string[];
   audioEnabled: boolean; volume: number; reducedEffects: boolean;
   selectedTransmission: string | null; lastVisitedRoute: string; activeChapter: string;

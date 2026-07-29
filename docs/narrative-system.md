@@ -2,11 +2,11 @@
 
 ## Principe
 
-Les chapitres suivent une boucle déterministe : document → indice → commande → preuve → relation → événement. Les Chapitres 02 à 06 ajoutent puzzle → décision → conséquence. Les données restent dans `src/data/`; les composants ne contiennent pas de logique canonique.
+Les chapitres suivent une boucle déterministe : document → indice → commande → preuve → relation → événement. Les Chapitres 02 à 07 ajoutent puzzle → décision → conséquence. Les données restent dans `src/data/`; les composants ne contiennent pas de logique canonique.
 
 ## Progression et migration
 
-`ProgressState` utilise le schéma V7 dans la clé stable `nexus-archives:v1`. Les migrations V1 → V2 → V3 → V4 → V5 → V6 → V7 conservent la progression et initialisent `solvedPuzzles`, `narrativeChoices` et `narrativeFlags`. `src/state/narrative.ts` applique les effets de manière idempotente. Les accès TACTIQUE, OMEGA et NOIR ABSOLU dépendent des conditions de chapitre, jamais d’un score arbitraire.
+`ProgressState` utilise le schéma V8 dans la clé stable `nexus-archives:v1`. Les migrations V1 → V2 → V3 → V4 → V5 → V6 → V7 → V8 conservent la progression et initialisent `solvedPuzzles`, `narrativeChoices` et `narrativeFlags`. `src/state/narrative.ts` applique les effets de manière idempotente. Les accès TACTIQUE, OMEGA et NOIR ABSOLU dépendent des conditions de chapitre, jamais d’un score arbitraire.
 
 ## Documents et effets
 
@@ -25,13 +25,13 @@ Pour ajouter un document :
 
 ## Graphe de preuves
 
-Les modules `chapterZero.ts` à `chapterSix.ts` déclarent les nœuds et relations canoniques. Leur visibilité dépend des identifiants présents dans la progression. Le SVG est une vue secondaire : la liste textuelle fournit les mêmes relations et accès aux sources.
+Les modules `chapterZero.ts` à `chapterSeven.ts` déclarent les nœuds et relations canoniques. Leur visibilité dépend des identifiants présents dans la progression. Le SVG est une vue secondaire : la liste textuelle fournit les mêmes relations et accès aux sources.
 
 ## Événements NX-S
 
 La synthèse finale vérifie toutes les conditions, enregistre une seule occurrence de contact, termine `chapter-zero` et accorde TACTIQUE. Les notifications sont récupérables via les transmissions et n’altèrent jamais silencieusement les données.
 
-## Chapitres 02 à 06
+## Chapitres 02 à 07
 
 `MemoryReconstructionPage` valide une séquence déterministe sans glisser-déposer obligatoire. `ChapterTwoPage` enregistre exactement une décision dans `narrativeChoices['body-04']`; `SpectralAnalysisPage` authentifie trois fragments humains et `ChapterThreePage` enregistre le protocole de la Porte dans `narrativeChoices['continuity-gate']`. La réinitialisation globale reste le seul moyen de remplacer ces décisions. Les fonctions de complétion vérifient toutes les preuves avant d’accorder OMEGA puis NOIR ABSOLU.
 
@@ -41,4 +41,6 @@ La synthèse finale vérifie toutes les conditions, enregistre une seule occurre
 
 `AshProtocolPage` reconstitue quatre ordres matériels et expose la provenance choisie dans `narrativeChoices['omega7-extraction']`. `ChapterSixPage` archive la destination finale dans `narrativeChoices['victims-ledger']`.
 
-Pour préparer le Chapitre 07, brancher ses conséquences sur `victims-broadcast`, `victims-choir` et `victims-analog`, sans convertir ces décisions en score moral. Couvrir d’abord les conditions avec Vitest, puis le parcours avec un scénario Playwright ciblé.
+`AscendantMatrixPage` impose quatre garanties individuelles et adapte son vecteur à `narrativeChoices['victims-ledger']`. `ChapterSevenPage` archive le destin physique dans `narrativeChoices['ascendant-host']`.
+
+Pour préparer le Chapitre 08, brancher ses conséquences sur `ascendant-r0`, `ascendant-choir` et `ascendant-dismantle`, sans convertir ces décisions en score moral. Couvrir d’abord les conditions avec Vitest, puis le parcours avec un scénario Playwright ciblé.

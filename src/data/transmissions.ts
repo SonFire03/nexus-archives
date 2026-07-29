@@ -25,4 +25,7 @@ export const transmissions: Transmission[] = [
   {id:'mother-echo-names',sender:'MÈRE ÉCHO // CHŒUR ZÉRO',text:'Prononce les noms. Pas les numéros. Nous devons savoir lesquels de nos souvenirs ont appartenu à quelqu’un.',trigger:'chapter-six-complete'},
   {id:'sera-nox-names',sender:'SERA NOX // ARCHIVISTE DES ABSENTS',text:'Une archive analogique ne promet pas la vérité immédiate. Elle promet seulement que personne ne pourra l’effacer à distance.',trigger:'chapter-six-complete'},
   {id:'directoire-breach',sender:'DIRECTOIRE // ALERTE PUBLIQUE',text:'La diffusion de données nominatives relatives à Zone Zéro constitue une attaque contre la stabilité de VANTA.',trigger:'chapter-six-complete'},
+  {id:'r0-first-step',sender:'R-0 // HÔTE ASCENDANT',text:'Je ne veux pas le nom qu’ils avaient prévu. Je le choisirai quand j’aurai vu le ciel.',trigger:'chapter-seven-complete'},
+  {id:'choir-seven',sender:'SEPT VOIX // ASCENDANT',text:'Nous ne sommes pas un nous permanent. Nous sommes sept personnes qui doivent apprendre à demander avant chaque pas.',trigger:'chapter-seven-complete'},
+  {id:'crimson-ascendant-end',sender:'CRIMSON // R-9',text:'Détruire une arme ne détruit pas nécessairement le futur qu’elle promettait. Parfois, cela lui donne une autre forme.',trigger:'chapter-seven-complete'},
 ];

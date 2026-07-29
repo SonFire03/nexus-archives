@@ -524,4 +524,69 @@ export const archiveDocuments: ArchiveDocument[] = [
       {type:'narrative-event',id:'victims-ledger-restored'},
     ],
   },
+  {
+    id:'alerte-ascendant-omega',title:'ALERTE D’ACTIVATION — NX6-OMEGA ASCENDANT',code:'ASCENDANT-WAKE-07',classification:'NOIR ABSOLU',category:'programme',date:'REGISTRE + 00:00:07',issuer:'NEXUS Core // sous-niveau inconnu',status:'ACTIVATION SPONTANÉE 12 %',summary:'Le prototype collectif ASCENDANT répond à la restauration des identités de Zone Zéro.',chapterId:'chapter-seven',
+    requirements:[{type:'chapter',value:'chapter-six'}],terminalCodes:['ASCENDANT'],
+    pages:[
+      {id:'wake',title:'Réponse du châssis',blocks:[
+        {type:'warning',title:'CORPS COLLECTIF EN ACTIVATION',text:'NX6-OMEGA reçoit les signatures restaurées comme des candidats à l’incarnation. Aucun consentement n’a été demandé.'},
+        {type:'metadata',entries:[{label:'REGISTRE DIFFUSÉ',value:'ACTIVATION PAR FLUX PUBLICS'},{label:'REGISTRE AU CHŒUR',value:'ACTIVATION PAR RÉSONANCE SPECTRALE'},{label:'REGISTRE ANALOGIQUE',value:'ACTIVATION PAR COPIE INTERCEPTÉE'},{label:'OCCUPANTS',value:'0 // REQUÊTES 63 218'}]},
+        {type:'clue',clueId:'clue-ascendant-signal',label:'SIGNAL NX6-OMEGA',text:'Le châssis émet depuis un sous-niveau absent des plans. Commande suggérée : trace ascendant.'},
+      ]},
+      {id:'purpose',title:'Finalité observée',blocks:[
+        {type:'system-log',lines:['CHÂSSIS — NX6-OMEGA','CLASSE — CORPS COLLECTIF','CAPACITÉ ANNONCÉE — ILLIMITÉE','CAPACITÉ PHYSIQUE OBSERVÉE — SEPT PARTITIONS','AUTORITÉ DISTANTE — SOVEREIGN']},
+        {type:'evidence',nodeId:'ascendant-host',title:'UNE PROMESSE TECHNIQUEMENT FAUSSE',text:'ASCENDANT ne peut accueillir 63 218 individus sans fusionner ou effacer la majorité des empreintes.'},
+      ]},
+    ],
+    references:[{type:'armor',id:'ascendant',label:'NX6-OMEGA ASCENDANT',route:'/armors/ascendant'},{type:'archive',id:'projet-ascendant',label:'Projet ASCENDANT scellé',route:'/archives/projet-ascendant'},{type:'archive',id:'liste-63218-dechiffree',label:'Registre des identités',route:'/archives/liste-63218-dechiffree'}],
+    onOpenEffects:[
+      {type:'activate-chapter',id:'chapter-seven'},{type:'complete-objective',id:'open-ascendant-alert'},
+      {type:'discover-clue',id:'clue-ascendant-signal'},{type:'add-evidence-node',id:'ascendant-host'},
+      {type:'add-evidence-relation',id:'registre-active-ascendant'},{type:'narrative-event',id:'chapter-seven-started'},
+    ],
+  },
+  {
+    id:'architecture-ascendant',title:'ARCHITECTURE IDENTITAIRE — ASCENDANT',code:'NX6-IDMATRIX-07',classification:'NOIR ABSOLU',category:'laboratoire',date:'PROTOTYPE GÉNÉRATION 6',issuer:'HELIX Biodyne // Directoire NEXUS',status:'MATRICE NON STABLE',summary:'Schéma réel des sept partitions conscientes du corps ASCENDANT.',chapterId:'chapter-seven',
+    requirements:[{type:'secret',value:'document-ascendant-architecture'}],
+    pages:[
+      {id:'matrix',title:'Sept partitions',blocks:[
+        {type:'metadata',entries:[{label:'PARTITIONS STABLES',value:'7'},{label:'EMPREINTES DEMANDÉES',value:'63 218'},{label:'AU-DELÀ DE SEPT',value:'FUSION / COMPRESSION'},{label:'ARRÊT INDIVIDUEL',value:'DÉSACTIVÉ PAR DÉFAUT'}]},
+        {type:'evidence',nodeId:'identity-matrix',title:'LA CAPACITÉ A UN COÛT',text:'Une conscience collective illimitée n’existe qu’en supprimant les limites entre les personnes.'},
+        {type:'clue',clueId:'clue-identity-safeguards',label:'SIX PROTOCOLES DISPONIBLES',text:'Quatre garanties préservent l’autorité individuelle. Deux réintroduisent une domination collective ou distante.'},
+      ]},
+      {id:'core',title:'Noyau physique',blocks:[
+        {type:'system-log',lines:['SUBSTRAT — SEPT UNITÉS MNÉSIQUES','MOBILITÉ — CHÂSSIS MILITAIRE','AUTONOMIE — 04:20 H','NEURO-RISQUE — 10 / 10','COMMANDE DISTANTE — SOVEREIGN ACTIVE']},
+        {type:'warning',title:'PUISSANCE NON GRATUITE',text:'Chaque mouvement partagé impose une négociation sensorielle. Un désaccord prolongé provoque douleur, paralysie ou fusion réflexe.'},
+        {type:'evidence',nodeId:'ascendant-core',title:'LIMITE MATÉRIELLE',text:'Le noyau peut maintenir sept individus ou une seule identité composite. Pas 63 218 personnes distinctes.'},
+      ]},
+    ],
+    references:[{type:'armor',id:'ascendant',label:'Catalogue ASCENDANT',route:'/armors/ascendant'},{type:'faction',id:'helix',label:'HELIX Biodyne',route:'/factions/helix'}],
+    onOpenEffects:[
+      {type:'complete-objective',id:'read-ascendant-architecture'},{type:'discover-clue',id:'clue-identity-safeguards'},
+      {type:'unlock-secret',id:'ascendant-matrix-online'},{type:'add-evidence-node',id:'identity-matrix'},
+      {type:'add-evidence-node',id:'ascendant-core'},{type:'add-evidence-relation',id:'matrix-controle-ascendant'},
+      {type:'add-evidence-relation',id:'core-limite-sept'},{type:'narrative-event',id:'ascendant-architecture-recovered'},
+    ],
+  },
+  {
+    id:'diagnostic-hote-ascendant',title:'DIAGNOSTIC D’HÔTE — ASCENDANT',code:'ASC-HOST-CONSENT',classification:'NOIR ABSOLU',category:'médical',date:'SESSION LOCALE',issuer:'Terminal OMEGA-7',author:'R-0 // réponse authentifiée',status:'CONSENTEMENT PARTIEL',summary:'Évaluation médicale et identitaire des occupants possibles du châssis.',chapterId:'chapter-seven',
+    requirements:[{type:'secret',value:'document-ascendant-diagnostic'}],
+    pages:[
+      {id:'consent',title:'Réponse de R-0',blocks:[
+        {type:'transmission',sender:'R-0 // SOURCE UNIQUE',text:'Je veux savoir ce que fait un corps quand personne ne lui donne d’ordre. Je ne veux pas devenir toutes les voix. Je ne veux pas qu’elles deviennent moi.'},
+        {type:'evidence',nodeId:'r0-consent',title:'CONSENTEMENT CONDITIONNEL',text:'R-0 accepte l’existence physique uniquement comme personne distincte, avec une sortie indépendante.'},
+      ]},
+      {id:'protocols',title:'Trois protocoles',blocks:[
+        {type:'table',headers:['PROTOCOLE','BÉNÉFICE','COÛT'],rows:[['HÔTE R-0','IDENTITÉ PHYSIQUE UNIQUE','CORPS MILITAIRE / SIX PLACES FERMÉES'],['SEPT VOIX','INCARNATION PARTAGÉE','NÉGOCIATION MOTRICE / 63 211 EXCLUES'],['DÉMANTÈLEMENT','AUCUNE DOMINATION CENTRALE','PERTE DU CORPS COLLECTIF']]},
+        {type:'clue',clueId:'clue-sovereign-command',label:'AUTORITÉ DISTANTE ACTIVE',text:'Aucun protocole n’est libre tant que SOVEREIGN contrôle les fonctions motrices. Commande suggérée : sever sovereign.'},
+        {type:'evidence',nodeId:'sovereign-command',title:'CONSENTEMENT RÉVOCABLE À DISTANCE',text:'Le Directoire peut reprendre le châssis même après une sélection locale des occupants.'},
+      ]},
+    ],
+    references:[{type:'archive',id:'enfant-cimetiere',label:'Enfant du Cimetière',route:'/archives/enfant-cimetiere'},{type:'armor',id:'sovereign',label:'NX6-ALPHA SOVEREIGN',route:'/armors/sovereign'},{type:'armor',id:'ascendant',label:'NX6-OMEGA ASCENDANT',route:'/armors/ascendant'}],
+    onOpenEffects:[
+      {type:'complete-objective',id:'read-ascendant-diagnostic'},{type:'discover-clue',id:'clue-sovereign-command'},
+      {type:'add-evidence-node',id:'r0-consent'},{type:'add-evidence-node',id:'sovereign-command'},
+      {type:'add-evidence-relation',id:'r0-refuse-collective'},{type:'add-evidence-relation',id:'sovereign-commande-ascendant'},
+    ],
+  },
 ];

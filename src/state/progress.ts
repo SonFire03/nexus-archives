@@ -5,7 +5,7 @@ export const accessOrder: AccessLevel[] = ['CIVIL', 'TACTIQUE', 'OMEGA', 'NOIR A
 export const MAX_IMPORT_SIZE = 250_000;
 
 export const defaultProgress: ProgressState = {
-  version: 7,
+  version: 8,
   introSeen: false,
   accessLevel: 'CIVIL',
   viewedDocuments: [],
@@ -51,6 +51,7 @@ interface LegacyV3Progress extends Omit<ProgressState,'version' | 'narrativeFlag
 interface LegacyV4Progress extends Omit<ProgressState,'version'> { version: 4 }
 interface LegacyV5Progress extends Omit<ProgressState,'version'> { version: 5 }
 interface LegacyV6Progress extends Omit<ProgressState,'version'> { version: 6 }
+interface LegacyV7Progress extends Omit<ProgressState,'version'> { version: 7 }
 
 const stringArray = (value: unknown): value is string[] => Array.isArray(value) && value.every((item) => typeof item === 'string');
 const isRecord = (value: unknown): value is Record<string, unknown> => Boolean(value) && typeof value === 'object' && !Array.isArray(value);
@@ -119,9 +120,14 @@ export function migrateV5ToV6(legacy: LegacyV5Progress): LegacyV6Progress {
   return { ...legacy, version:6, activeChapter };
 }
 
-export function migrateV6ToV7(legacy: LegacyV6Progress): ProgressState {
+export function migrateV6ToV7(legacy: LegacyV6Progress): LegacyV7Progress {
   const activeChapter = legacy.completedChapters.includes('chapter-five') ? 'chapter-six' : legacy.activeChapter;
   return { ...legacy, version:7, activeChapter };
+}
+
+export function migrateV7ToV8(legacy: LegacyV7Progress): ProgressState {
+  const activeChapter = legacy.completedChapters.includes('chapter-six') ? 'chapter-seven' : legacy.activeChapter;
+  return { ...legacy, version:8, activeChapter };
 }
 
 function validateLegacy(value: unknown): LegacyProgress | null {
@@ -133,7 +139,7 @@ function validateLegacy(value: unknown): LegacyProgress | null {
 }
 
 export function validateProgress(value: unknown): ProgressState | null {
-  if (!isRecord(value) || value.version !== 7 || typeof value.introSeen !== 'boolean' || typeof value.accessLevel !== 'string' || !accessOrder.includes(value.accessLevel as AccessLevel)) return null;
+  if (!isRecord(value) || value.version !== 8 || typeof value.introSeen !== 'boolean' || typeof value.accessLevel !== 'string' || !accessOrder.includes(value.accessLevel as AccessLevel)) return null;
   const arrays = ['viewedDocuments','unlockedSecrets','terminalHistory','completedObjectives','completedChapters','discoveredClues','evidenceNodes','evidenceRelations','solvedPuzzles','narrativeFlags'] as const;
   if (arrays.some((key) => !stringArray(value[key]))) return null;
   if (typeof value.audioEnabled !== 'boolean' || typeof value.reducedEffects !== 'boolean' || typeof value.lastVisitedRoute !== 'string' || typeof value.activeChapter !== 'string') return null;
@@ -142,6 +148,18 @@ export function validateProgress(value: unknown): ProgressState | null {
   if (value.lastNarrativeEvent !== null && typeof value.lastNarrativeEvent !== 'string') return null;
   if (!isReadingProgress(value.documentReadingProgress) || !isStringRecord(value.narrativeChoices)) return null;
   return value as unknown as ProgressState;
+}
+
+function validateV7(value: unknown): LegacyV7Progress | null {
+  if (!isRecord(value) || value.version !== 7 || typeof value.introSeen !== 'boolean' || typeof value.accessLevel !== 'string' || !accessOrder.includes(value.accessLevel as AccessLevel)) return null;
+  const arrays = ['viewedDocuments','unlockedSecrets','terminalHistory','completedObjectives','completedChapters','discoveredClues','evidenceNodes','evidenceRelations','solvedPuzzles','narrativeFlags'] as const;
+  if (arrays.some((key) => !stringArray(value[key]))) return null;
+  if (typeof value.audioEnabled !== 'boolean' || typeof value.reducedEffects !== 'boolean' || typeof value.lastVisitedRoute !== 'string' || typeof value.activeChapter !== 'string') return null;
+  if (typeof value.volume !== 'number' || value.volume < 0 || value.volume > 1 || typeof value.spectralContactCount !== 'number' || value.spectralContactCount < 0) return null;
+  if (value.selectedTransmission !== null && typeof value.selectedTransmission !== 'string') return null;
+  if (value.lastNarrativeEvent !== null && typeof value.lastNarrativeEvent !== 'string') return null;
+  if (!isReadingProgress(value.documentReadingProgress) || !isStringRecord(value.narrativeChoices)) return null;
+  return value as unknown as LegacyV7Progress;
 }
 
 function validateV6(value: unknown): LegacyV6Progress | null {
@@ -210,18 +228,20 @@ export function parseProgress(raw: string): ProgressState | null {
     const parsed: unknown = JSON.parse(raw);
     const current = validateProgress(parsed);
     if (current) return current;
+    const legacyV7 = validateV7(parsed);
+    if (legacyV7) return migrateV7ToV8(legacyV7);
     const legacyV6 = validateV6(parsed);
-    if (legacyV6) return migrateV6ToV7(legacyV6);
+    if (legacyV6) return migrateV7ToV8(migrateV6ToV7(legacyV6));
     const legacyV5 = validateV5(parsed);
-    if (legacyV5) return migrateV6ToV7(migrateV5ToV6(legacyV5));
+    if (legacyV5) return migrateV7ToV8(migrateV6ToV7(migrateV5ToV6(legacyV5)));
     const legacyV4 = validateV4(parsed);
-    if (legacyV4) return migrateV6ToV7(migrateV5ToV6(migrateV4ToV5(legacyV4)));
+    if (legacyV4) return migrateV7ToV8(migrateV6ToV7(migrateV5ToV6(migrateV4ToV5(legacyV4))));
     const legacyV3 = validateV3(parsed);
-    if (legacyV3) return migrateV6ToV7(migrateV5ToV6(migrateV4ToV5(migrateV3ToV4(legacyV3))));
+    if (legacyV3) return migrateV7ToV8(migrateV6ToV7(migrateV5ToV6(migrateV4ToV5(migrateV3ToV4(legacyV3)))));
     const legacyV2 = validateV2(parsed);
-    if (legacyV2) return migrateV6ToV7(migrateV5ToV6(migrateV4ToV5(migrateV3ToV4(migrateV2ToV3(legacyV2)))));
+    if (legacyV2) return migrateV7ToV8(migrateV6ToV7(migrateV5ToV6(migrateV4ToV5(migrateV3ToV4(migrateV2ToV3(legacyV2))))));
     const legacy = validateLegacy(parsed);
-    return legacy ? migrateV6ToV7(migrateV5ToV6(migrateV4ToV5(migrateV3ToV4(migrateV2ToV3(migrateV1ToV2(legacy)))))) : null;
+    return legacy ? migrateV7ToV8(migrateV6ToV7(migrateV5ToV6(migrateV4ToV5(migrateV3ToV4(migrateV2ToV3(migrateV1ToV2(legacy))))))) : null;
   } catch {
     return null;
   }

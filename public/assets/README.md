@@ -26,6 +26,9 @@ Ce dossier reçoit uniquement les médias locaux validés pour publication. Tous
 - `images/archives/archive-cendre-residual.webp` : futur résidu opérationnel CENDRE-63218 ;
 - `images/archives/archive-ash-command-chain.webp` : future chaîne matérielle du Protocole Cendre ;
 - `images/archives/archive-victims-ledger.webp` : futur registre restauré des identités ;
+- `images/archives/archive-ascendant-wake.webp` : future alerte d’activation NX6-OMEGA ;
+- `images/archives/archive-ascendant-matrix.webp` : future matrice des sept partitions ;
+- `images/archives/archive-ascendant-host.webp` : futur diagnostic physique du châssis ;
 - `images/zone-zero-surveillance.webp` : capture de Zone Zéro ;
 - `images/crimson-surveillance.webp` : portrait de surveillance de Crimson ;
 - `images/a7-medical-schema.svg` : schéma médical d’A7 ;

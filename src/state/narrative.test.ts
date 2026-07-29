@@ -1,5 +1,5 @@
-import { chapterCompletionRequirements, chapterFiveCompletionRequirements, chapterFourCompletionRequirements, chapterSixCompletionRequirements, chapterThreeCompletionRequirements, chapterTwoCompletionRequirements } from '../data';
-import { applyNarrativeEffects, applyTerminalResult, canCompleteChapterFive, canCompleteChapterFour, canCompleteChapterSix, canCompleteChapterThree, canCompleteChapterTwo, canCompleteChapterZero, completeChapterFive, completeChapterFour, completeChapterSix, completeChapterThree, completeChapterTwo, completeChapterZero, isDocumentAvailable } from './narrative';
+import { chapterCompletionRequirements, chapterFiveCompletionRequirements, chapterFourCompletionRequirements, chapterSevenCompletionRequirements, chapterSixCompletionRequirements, chapterThreeCompletionRequirements, chapterTwoCompletionRequirements } from '../data';
+import { applyNarrativeEffects, applyTerminalResult, canCompleteChapterFive, canCompleteChapterFour, canCompleteChapterSeven, canCompleteChapterSix, canCompleteChapterThree, canCompleteChapterTwo, canCompleteChapterZero, completeChapterFive, completeChapterFour, completeChapterSeven, completeChapterSix, completeChapterThree, completeChapterTwo, completeChapterZero, isDocumentAvailable } from './narrative';
 import { defaultProgress, loadProgress, saveProgress } from './progress';
 import { archiveDocuments } from '../data/archives';
 
@@ -46,5 +46,15 @@ describe('progression narrative du Chapitre 01', () => {
     expect(complete.narrativeChoices['victims-ledger']).toBe('analog');
     expect(complete.narrativeFlags).toContain('victims-analog');
     expect(complete.selectedTransmission).toBe('sera-nox-names');
+    expect(complete.activeChapter).toBe('chapter-seven');
+  });
+  it('refuse ASCENDANT tant que SOVEREIGN reste actif', () => { expect(canCompleteChapterSeven(defaultProgress)).toBe(false); expect(completeChapterSeven(defaultProgress,'dismantle')).toBe(defaultProgress); });
+  it('archive le destin du corps collectif', () => {
+    const ready={...defaultProgress,accessLevel:'NOIR ABSOLU' as const,activeChapter:'chapter-seven',completedChapters:['chapter-zero','chapter-two','chapter-three','chapter-four','chapter-five','chapter-six'],completedObjectives:chapterSevenCompletionRequirements};
+    const complete=completeChapterSeven(ready,'r0');
+    expect(complete.completedChapters).toContain('chapter-seven');
+    expect(complete.narrativeChoices['ascendant-host']).toBe('r0');
+    expect(complete.narrativeFlags).toContain('ascendant-r0');
+    expect(complete.selectedTransmission).toBe('r0-first-step');
   });
 });

@@ -88,4 +88,22 @@ describe('moteur contextuel du terminal', () => {
     expect(severed.completedObjectives).toContain('sever-ash-command');
     expect(executeCommand('protect names',{...emptyTerminalContext,completedObjectives:['sever-ash-command']}).navigateTo).toBe('/chapter-six?decision=analog');
   });
+  it('trace ASCENDANT uniquement après découverte de son signal', () => {
+    expect(executeCommand('trace ascendant').output).toContain('SIGNAL ASCENDANT INCONNU');
+    const result=executeCommand('TRACE ASCENDANT',{...emptyTerminalContext,activeChapter:'chapter-seven',discoveredClues:['clue-ascendant-signal']});
+    expect(result.completedObjectives).toContain('trace-ascendant');
+    expect(result.unlocks).toContain('document-ascendant-architecture');
+  });
+  it('demande le consentement de R-0 après stabilisation', () => {
+    expect(executeCommand('ask r-0').output).toContain('CANAL R-0 REFUSÉ');
+    const result=executeCommand('ASK R-0',{...emptyTerminalContext,activeChapter:'chapter-seven',solvedPuzzles:['ascendant-identity-matrix']});
+    expect(result.completedObjectives).toContain('request-r0-consent');
+    expect(result.unlocks).toContain('document-ascendant-diagnostic');
+  });
+  it('conditionne la coupure SOVEREIGN et le protocole final', () => {
+    expect(executeCommand('sever sovereign').output).toContain('RUPTURE REFUSÉE');
+    const severed=executeCommand('sever sovereign',{...emptyTerminalContext,completedObjectives:['read-ascendant-diagnostic']});
+    expect(severed.completedObjectives).toContain('sever-sovereign-command');
+    expect(executeCommand('dismantle ascendant',{...emptyTerminalContext,completedObjectives:['sever-sovereign-command']}).navigateTo).toBe('/chapter-seven?decision=dismantle');
+  });
 });

@@ -5,8 +5,9 @@ import type { ChapterThreeChoice } from '../data/chapterThree';
 import type { ChapterFourChoice } from '../data/chapterFour';
 import type { ChapterFiveChoice } from '../data/chapterFive';
 import type { ChapterSixChoice } from '../data/chapterSix';
+import type { ChapterSevenChoice } from '../data/chapterSeven';
 import type { NarrativeEffect, NarrativeEvent, ProgressState, TerminalResult } from '../types';
-import { applyNarrativeEffects, applyTerminalResult, completeChapterFive, completeChapterFour, completeChapterSix, completeChapterThree, completeChapterTwo, completeChapterZero } from './narrative';
+import { applyNarrativeEffects, applyTerminalResult, completeChapterFive, completeChapterFour, completeChapterSeven, completeChapterSix, completeChapterThree, completeChapterTwo, completeChapterZero } from './narrative';
 import { defaultProgress, loadProgress, mergeUnique, parseProgress, saveProgress } from './progress';
 
 interface ProgressContextValue {
@@ -23,6 +24,7 @@ interface ProgressContextValue {
   finishChapterFour: (choice: ChapterFourChoice) => void;
   finishChapterFive: (choice: ChapterFiveChoice) => void;
   finishChapterSix: (choice: ChapterSixChoice) => void;
+  finishChapterSeven: (choice: ChapterSevenChoice) => void;
   dismissNotification: () => void;
   reset: () => void;
   exportProgress: () => string;
@@ -77,11 +79,15 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
     setProgress((current) => completeChapterSix(current,choice));
     notify('chapter-six-complete');
   },[notify]);
+  const finishChapterSeven = useCallback((choice: ChapterSevenChoice) => {
+    setProgress((current)=>completeChapterSeven(current,choice));
+    notify('chapter-seven-complete');
+  },[notify]);
   const dismissNotification = useCallback(() => setNotification(null), []);
   const reset = useCallback(() => { setProgress(defaultProgress); setNotification(null); }, []);
   const exportProgress = useCallback(() => JSON.stringify(progress, null, 2), [progress]);
   const importProgress = useCallback((raw: string) => { const parsed = parseProgress(raw); if (!parsed) return false; setProgress(parsed); return true; }, []);
-  const value = useMemo(() => ({ progress, notification, update, dispatchEffects, applyCommandResult, markViewed, setReadingProgress, finishChapterZero, finishChapterTwo, finishChapterThree, finishChapterFour, finishChapterFive, finishChapterSix, dismissNotification, reset, exportProgress, importProgress }), [progress, notification, update, dispatchEffects, applyCommandResult, markViewed, setReadingProgress, finishChapterZero, finishChapterTwo, finishChapterThree, finishChapterFour, finishChapterFive, finishChapterSix, dismissNotification, reset, exportProgress, importProgress]);
+  const value = useMemo(() => ({ progress, notification, update, dispatchEffects, applyCommandResult, markViewed, setReadingProgress, finishChapterZero, finishChapterTwo, finishChapterThree, finishChapterFour, finishChapterFive, finishChapterSix, finishChapterSeven, dismissNotification, reset, exportProgress, importProgress }), [progress, notification, update, dispatchEffects, applyCommandResult, markViewed, setReadingProgress, finishChapterZero, finishChapterTwo, finishChapterThree, finishChapterFour, finishChapterFive, finishChapterSix, finishChapterSeven, dismissNotification, reset, exportProgress, importProgress]);
   return <ProgressContext.Provider value={value}>{children}</ProgressContext.Provider>;
 }
 

@@ -11,6 +11,7 @@ export { chapterThreeObjectives, chapterThreeCompletionRequirements, voiceFragme
 export { chapterFourObjectives, chapterFourCompletionRequirements, truthFragments, invariantTruthIds, chapterFourChoices } from './chapterFour';
 export { chapterFiveObjectives, chapterFiveCompletionRequirements, counterTraceChoices, safeCounterTraceIds, chapterFiveChoices } from './chapterFive';
 export { chapterSixObjectives, chapterSixCompletionRequirements, ashSequenceFragments, ashSequenceSolution, chapterSixChoices } from './chapterSix';
+export { chapterSevenObjectives, chapterSevenCompletionRequirements, identitySafeguards, safeIdentitySafeguardIds, chapterSevenChoices } from './chapterSeven';
 export { brandImages, operatorImages, armorImages, factionImages, locationImages, archiveImages } from './visualAssets';
 
 import { operators } from './operators';
@@ -25,14 +26,15 @@ import { chapterThreeEvidenceNodes, chapterThreeEvidenceRelations, chapterThreeE
 import { chapterFourEvidenceNodes, chapterFourEvidenceRelations, chapterFourEvents, chapterFourObjectives } from './chapterFour';
 import { chapterFiveEvidenceNodes, chapterFiveEvidenceRelations, chapterFiveEvents, chapterFiveObjectives } from './chapterFive';
 import { chapterSixEvidenceNodes, chapterSixEvidenceRelations, chapterSixEvents, chapterSixObjectives } from './chapterSix';
+import { chapterSevenEvidenceNodes, chapterSevenEvidenceRelations, chapterSevenEvents, chapterSevenObjectives } from './chapterSeven';
 
-export const evidenceNodes = [...chapterZeroEvidenceNodes, ...chapterTwoEvidenceNodes, ...chapterThreeEvidenceNodes, ...chapterFourEvidenceNodes, ...chapterFiveEvidenceNodes, ...chapterSixEvidenceNodes];
-export const evidenceRelations = [...chapterZeroEvidenceRelations, ...chapterTwoEvidenceRelations, ...chapterThreeEvidenceRelations, ...chapterFourEvidenceRelations, ...chapterFiveEvidenceRelations, ...chapterSixEvidenceRelations];
-export const narrativeEvents = [...chapterZeroEvents, ...chapterTwoEvents, ...chapterThreeEvents, ...chapterFourEvents, ...chapterFiveEvents, ...chapterSixEvents];
+export const evidenceNodes = [...chapterZeroEvidenceNodes, ...chapterTwoEvidenceNodes, ...chapterThreeEvidenceNodes, ...chapterFourEvidenceNodes, ...chapterFiveEvidenceNodes, ...chapterSixEvidenceNodes, ...chapterSevenEvidenceNodes];
+export const evidenceRelations = [...chapterZeroEvidenceRelations, ...chapterTwoEvidenceRelations, ...chapterThreeEvidenceRelations, ...chapterFourEvidenceRelations, ...chapterFiveEvidenceRelations, ...chapterSixEvidenceRelations, ...chapterSevenEvidenceRelations];
+export const narrativeEvents = [...chapterZeroEvents, ...chapterTwoEvents, ...chapterThreeEvents, ...chapterFourEvents, ...chapterFiveEvents, ...chapterSixEvents, ...chapterSevenEvents];
 
 export function validateData(): string[] {
   const errors: string[] = [];
-  const collections = [operators, armors, factions, locations, timeline, archiveDocuments, evidenceNodes, evidenceRelations, chapterZeroObjectives, chapterTwoObjectives, chapterThreeObjectives, chapterFourObjectives, chapterFiveObjectives, chapterSixObjectives];
+  const collections = [operators, armors, factions, locations, timeline, archiveDocuments, evidenceNodes, evidenceRelations, chapterZeroObjectives, chapterTwoObjectives, chapterThreeObjectives, chapterFourObjectives, chapterFiveObjectives, chapterSixObjectives, chapterSevenObjectives];
   for (const collection of collections) {
     const ids = collection.map((item) => item.id);
     if (new Set(ids).size !== ids.length) errors.push('Identifiants dupliqués détectés.');

@@ -6,6 +6,7 @@ import { chapterThreeChoices, chapterThreeCompletionRequirements, type ChapterTh
 import { chapterFourChoices, chapterFourCompletionRequirements, type ChapterFourChoice } from '../data/chapterFour';
 import { chapterFiveChoices, chapterFiveCompletionRequirements, type ChapterFiveChoice } from '../data/chapterFive';
 import { chapterSixChoices, chapterSixCompletionRequirements, type ChapterSixChoice } from '../data/chapterSix';
+import { chapterSevenChoices, chapterSevenCompletionRequirements, type ChapterSevenChoice } from '../data/chapterSeven';
 
 export function requirementMet(requirement: UnlockRequirement, progress: ProgressState): boolean {
   if (requirement.type === 'access') return accessOrder.indexOf(progress.accessLevel) >= accessOrder.indexOf(requirement.value);
@@ -149,7 +150,7 @@ export function completeChapterSix(progress: ProgressState, choice: ChapterSixCh
   if (progress.completedChapters.includes('chapter-six') || !canCompleteChapterSix(progress) || !chapterSixChoices.some((item) => item.id === choice)) return progress;
   const next: ProgressState = {
     ...progress,
-    activeChapter:'chapter-six',
+    activeChapter:'chapter-seven',
     completedObjectives:mergeUnique(progress.completedObjectives,['decide-victims-ledger']),
     completedChapters:mergeUnique(progress.completedChapters,['chapter-six']),
     unlockedSecrets:mergeUnique(progress.unlockedSecrets,['chapter-six-decision','names-63218-restored']),
@@ -158,6 +159,27 @@ export function completeChapterSix(progress: ProgressState, choice: ChapterSixCh
     selectedTransmission:choice==='choir'?'mother-echo-names':choice==='analog'?'sera-nox-names':'directoire-breach',
     spectralContactCount:progress.spectralContactCount+(choice==='choir'?1:0),
     lastNarrativeEvent:'chapter-six-complete',
+  };
+  return {...next,accessLevel:deriveAccessLevel(next)};
+}
+
+export function canCompleteChapterSeven(progress: ProgressState): boolean {
+  return chapterSevenCompletionRequirements.every((id)=>progress.completedObjectives.includes(id));
+}
+
+export function completeChapterSeven(progress: ProgressState, choice: ChapterSevenChoice): ProgressState {
+  if (progress.completedChapters.includes('chapter-seven') || !canCompleteChapterSeven(progress) || !chapterSevenChoices.some((item)=>item.id===choice)) return progress;
+  const next: ProgressState = {
+    ...progress,
+    activeChapter:'chapter-seven',
+    completedObjectives:mergeUnique(progress.completedObjectives,['decide-ascendant-host']),
+    completedChapters:mergeUnique(progress.completedChapters,['chapter-seven']),
+    unlockedSecrets:mergeUnique(progress.unlockedSecrets,['chapter-seven-decision','ascendant-fate-archived']),
+    narrativeChoices:{...progress.narrativeChoices,'ascendant-host':choice},
+    narrativeFlags:mergeUnique(progress.narrativeFlags,[`ascendant-${choice}`]),
+    selectedTransmission:choice==='r0'?'r0-first-step':choice==='choir'?'choir-seven':'crimson-ascendant-end',
+    spectralContactCount:progress.spectralContactCount+(choice==='choir'?1:0),
+    lastNarrativeEvent:'chapter-seven-complete',
   };
   return {...next,accessLevel:deriveAccessLevel(next)};
 }

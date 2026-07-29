@@ -1,4 +1,4 @@
-import { archiveDocuments, archiveImages, armorImages, armors, ashSequenceFragments, chapterFiveObjectives, chapterFourObjectives, chapterSixObjectives, chapterThreeObjectives, chapterTwoObjectives, counterTraceChoices, evidenceNodes, evidenceRelations, factionImages, factions, locationImages, locations, operatorImages, operators, timeline, truthFragments, validateData, voiceFragments } from '.';
+import { archiveDocuments, archiveImages, armorImages, armors, ashSequenceFragments, chapterFiveObjectives, chapterFourObjectives, chapterSevenObjectives, chapterSixObjectives, chapterThreeObjectives, chapterTwoObjectives, counterTraceChoices, evidenceNodes, evidenceRelations, factionImages, factions, identitySafeguards, locationImages, locations, operatorImages, operators, timeline, truthFragments, validateData, voiceFragments } from '.';
 
 describe('intégrité du canon NEXUS', () => {
   it('utilise des identifiants uniques et des relations valides', () => { expect(validateData()).toEqual([]); });
@@ -38,5 +38,10 @@ describe('intégrité du canon NEXUS', () => {
     expect(chapterSixObjectives).toHaveLength(8);
     expect(new Set(chapterSixObjectives.map(({id}) => id)).size).toBe(8);
     expect(ashSequenceFragments).toHaveLength(4);
+  });
+  it('déclare les huit objectifs et quatre garanties sûres du Chapitre 07', () => {
+    expect(chapterSevenObjectives).toHaveLength(8);
+    expect(new Set(chapterSevenObjectives.map(({id})=>id)).size).toBe(8);
+    expect(identitySafeguards.filter(({safe})=>safe)).toHaveLength(4);
   });
 });

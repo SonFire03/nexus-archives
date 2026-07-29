@@ -187,6 +187,18 @@
   .narrative-notification { right:1rem; bottom:1rem; }
 }
 
+@media (max-width:900px) {
+  .identity-safeguards { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .ascendant-options { grid-template-columns:1fr; }
+  .ascendant-vitals { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+
+@media (max-width:700px) {
+  .ascendant-vector,.identity-safeguards,.ascendant-vitals { grid-template-columns:1fr; }
+  .ascendant-vector em { text-align:left; }
+  .ascendant-vitals div { border-right:0; border-bottom:1px solid var(--color-border-default); }
+}
+
 @media (max-width:420px) {
   .page { padding:var(--space-4); }
   .dashboard-hero__sync { display:none; }
