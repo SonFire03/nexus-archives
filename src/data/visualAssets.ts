@@ -51,6 +51,8 @@ export const archiveImages: Record<string, string> = {
   'liste-63218': image('archives/archive-protocol-ash.webp'),
   'projet-ascendant': image('archives/archive-ascendant.webp'),
   'verite-originale': image('archives/archive-original-truth.webp'),
+  'registre-revisions-miroir': image('archives/archive-original-truth.webp'),
+  'directive-verite-supportable': image('archives/archive-original-truth.webp'),
   'enfant-cimetiere': image('archives/archive-child-cemetery.webp'),
   'registre-enfant-cimetiere': image('archives/archive-child-cemetery.webp'),
   'porte-continuite': image('archives/archive-ascendant.webp'),

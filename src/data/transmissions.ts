@@ -16,4 +16,7 @@ export const transmissions: Transmission[] = [
   {id:'child-r0',sender:'R-0 // SOURCE UNIQUE',text:'Je me souviens de la neige. Je ne sais pas si elle était réelle.',trigger:'chapter-three'},
   {id:'mother-echo-gate',sender:'MÈRE ÉCHO',text:'Nous avons oublié que la première voix du Chœur appartenait à une enfant.',trigger:'chapter-three'},
   {id:'nx-s-gate-final',sender:'NX-S',text:'Vous appelez cela une porte parce que vous avez besoin de croire qu’elle possède deux côtés.',trigger:'chapter-three-complete'},
+  {id:'orin-vale-01',sender:'ORIN VALE // CONSERVATEUR',text:'Vous confondez le fait brut avec la vérité. Le premier détruit. La seconde permet de continuer.',trigger:'chapter-four'},
+  {id:'sera-nox-mirror',sender:'SERA NOX // ARCHIVISTE',text:'MIRROR-00 n’est pas la vérité originale. C’est le premier mensonge dont nous pouvons prouver la date.',trigger:'chapter-four'},
+  {id:'orin-vale-final',sender:'ORIN VALE // CANAL DIRECT',text:'Vous avez choisi ce que VANTA devra croire. Vous travaillez déjà pour le Miroir.',trigger:'chapter-four-complete'},
 ];

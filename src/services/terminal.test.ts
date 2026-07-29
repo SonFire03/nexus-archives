@@ -34,4 +34,22 @@ describe('moteur contextuel du terminal', () => {
     expect(contact.completedObjectives).toContain('contact-mother-echo');
     expect(executeCommand('isolate child',{...emptyTerminalContext,completedObjectives:['contact-mother-echo']}).navigateTo).toBe('/chapter-three?decision=isolate');
   });
+  it('trace MIRROR-00 uniquement après découverte du checksum', () => {
+    expect(executeCommand('trace mirror-00').output).toContain('CHECKSUM INCONNU');
+    const result=executeCommand('TRACE MIRROR-00',{...emptyTerminalContext,activeChapter:'chapter-four',discoveredClues:['clue-mirror-00']});
+    expect(result.completedObjectives).toContain('trace-mirror-00');
+    expect(result.unlocks).toContain('document-registre-miroir');
+  });
+  it('authentifie Vale après reconstruction des faits', () => {
+    expect(executeCommand('verify vale signature').output).toContain('SIGNATURE NON VÉRIFIABLE');
+    const result=executeCommand('VERIFY VALE SIGNATURE',{...emptyTerminalContext,activeChapter:'chapter-four',solvedPuzzles:['mirror-truth-invariants']});
+    expect(result.completedObjectives).toContain('verify-vale-signature');
+    expect(result.unlocks).toContain('document-directive-verite');
+  });
+  it('conditionne la cartographie et la décision MIRROR-00', () => {
+    expect(executeCommand('map mirror network').output).toContain('CARTOGRAPHIE REFUSÉE');
+    const mapped=executeCommand('map mirror network',{...emptyTerminalContext,completedObjectives:['read-truth-directive']});
+    expect(mapped.completedObjectives).toContain('map-mirror-network');
+    expect(executeCommand('fragment truth',{...emptyTerminalContext,completedObjectives:['map-mirror-network']}).navigateTo).toBe('/chapter-four?decision=fragment');
+  });
 });

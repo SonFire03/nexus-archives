@@ -4,11 +4,11 @@ import { AssetImage } from '../components/common/AssetImage';
 import { PageHeader } from '../components/common/PageHeader';
 import { RedactedText } from '../components/common/RedactedText';
 import { TransmissionCard } from '../components/common/TransmissionCard';
-import { archiveDocuments, archiveImages, chapterThreeObjectives, chapterTwoObjectives, chapterZeroObjectives, transmissions } from '../data';
+import { archiveDocuments, archiveImages, chapterFourObjectives, chapterThreeObjectives, chapterTwoObjectives, chapterZeroObjectives, transmissions } from '../data';
 import { isDocumentAvailable } from '../state/narrative';
 import { useProgress } from '../state/ProgressContext';
 
-const chapterLabel = (chapterId?: string) => chapterId === 'chapter-three' ? '03' : chapterId === 'chapter-two' ? '02' : chapterId === 'chapter-zero' ? '01' : '—';
+const chapterLabel = (chapterId?: string) => chapterId === 'chapter-four' ? '04' : chapterId === 'chapter-three' ? '03' : chapterId === 'chapter-two' ? '02' : chapterId === 'chapter-zero' ? '01' : '—';
 
 export default function ArchivesPage() {
   const { progress } = useProgress();
@@ -20,7 +20,7 @@ export default function ArchivesPage() {
     return (category === 'toutes' || document.category === category)
       && (state === 'tous' || (state === 'lu' && viewed) || (state === 'non-lu' && available && !viewed) || (state === 'verrouille' && !available));
   }),[category,state,progress]);
-  const objectives = progress.activeChapter === 'chapter-three' ? chapterThreeObjectives : progress.activeChapter === 'chapter-two' ? chapterTwoObjectives : chapterZeroObjectives;
+  const objectives = progress.activeChapter === 'chapter-four' ? chapterFourObjectives : progress.activeChapter === 'chapter-three' ? chapterThreeObjectives : progress.activeChapter === 'chapter-two' ? chapterTwoObjectives : chapterZeroObjectives;
   const percentage = Math.round((progress.completedObjectives.filter((id) => objectives.some((objective) => objective.id === id)).length / objectives.length) * 100);
   const chapterNumber = chapterLabel(progress.activeChapter);
   const visibleTransmissions = transmissions.filter((item) => {
@@ -30,6 +30,9 @@ export default function ArchivesPage() {
     if (item.id === 'child-r0') return progress.completedObjectives.includes('read-child-register');
     if (item.id === 'mother-echo-gate') return progress.completedObjectives.includes('contact-mother-echo');
     if (item.id === 'nx-s-gate-final') return progress.completedChapters.includes('chapter-three');
+    if (item.id === 'orin-vale-01') return progress.completedObjectives.includes('verify-vale-signature');
+    if (item.id === 'sera-nox-mirror') return progress.completedObjectives.includes('read-mirror-ledger');
+    if (item.id === 'orin-vale-final') return progress.completedChapters.includes('chapter-four');
     return true;
   });
 

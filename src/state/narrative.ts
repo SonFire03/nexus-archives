@@ -3,6 +3,7 @@ import type { ArchiveDocument, NarrativeEffect, ProgressState, TerminalResult, U
 import { chapterCompletionRequirements } from '../data/chapterZero';
 import { chapterTwoChoices, chapterTwoCompletionRequirements, type ChapterTwoChoice } from '../data/chapterTwo';
 import { chapterThreeChoices, chapterThreeCompletionRequirements, type ChapterThreeChoice } from '../data/chapterThree';
+import { chapterFourChoices, chapterFourCompletionRequirements, type ChapterFourChoice } from '../data/chapterFour';
 
 export function requirementMet(requirement: UnlockRequirement, progress: ProgressState): boolean {
   if (requirement.type === 'access') return accessOrder.indexOf(progress.accessLevel) >= accessOrder.indexOf(requirement.value);
@@ -104,7 +105,7 @@ export function completeChapterThree(progress: ProgressState, choice: ChapterThr
   if (progress.completedChapters.includes('chapter-three') || !canCompleteChapterThree(progress) || !chapterThreeChoices.some((item) => item.id === choice)) return progress;
   const next: ProgressState = {
     ...progress,
-    activeChapter:'chapter-three',
+    activeChapter:'chapter-four',
     completedObjectives:mergeUnique(progress.completedObjectives,['decide-continuity-gate']),
     completedChapters:mergeUnique(progress.completedChapters,['chapter-three']),
     unlockedSecrets:mergeUnique(progress.unlockedSecrets,['chapter-three-decision','verite-enfant-r0']),
@@ -113,6 +114,26 @@ export function completeChapterThree(progress: ProgressState, choice: ChapterThr
     selectedTransmission:'nx-s-gate-final',
     spectralContactCount:progress.spectralContactCount + 1,
     lastNarrativeEvent:'chapter-three-complete',
+  };
+  return {...next,accessLevel:deriveAccessLevel(next)};
+}
+
+export function canCompleteChapterFour(progress: ProgressState): boolean {
+  return chapterFourCompletionRequirements.every((id) => progress.completedObjectives.includes(id));
+}
+
+export function completeChapterFour(progress: ProgressState, choice: ChapterFourChoice): ProgressState {
+  if (progress.completedChapters.includes('chapter-four') || !canCompleteChapterFour(progress) || !chapterFourChoices.some((item) => item.id === choice)) return progress;
+  const next: ProgressState = {
+    ...progress,
+    activeChapter:'chapter-four',
+    completedObjectives:mergeUnique(progress.completedObjectives,['decide-original-truth']),
+    completedChapters:mergeUnique(progress.completedChapters,['chapter-four']),
+    unlockedSecrets:mergeUnique(progress.unlockedSecrets,['chapter-four-decision','mirror-network-compromised']),
+    narrativeChoices:{...progress.narrativeChoices,'mirror-00':choice},
+    narrativeFlags:mergeUnique(progress.narrativeFlags,[`truth-${choice}`]),
+    selectedTransmission:'orin-vale-final',
+    lastNarrativeEvent:'chapter-four-complete',
   };
   return {...next,accessLevel:deriveAccessLevel(next)};
 }

@@ -1,6 +1,7 @@
 import { chapterZeroObjectives } from '../data/chapterZero';
 import { chapterTwoObjectives } from '../data/chapterTwo';
 import { chapterThreeObjectives } from '../data/chapterThree';
+import { chapterFourObjectives } from '../data/chapterFour';
 import type { TerminalContext, TerminalResult } from '../types';
 
 export const terminalCommands = [
@@ -12,6 +13,8 @@ export const terminalCommands = [
   'verify memory crimson','trace body-04','wake subject','isolate subject','erase subject',
   'scan child-echo','open child register','analyze voice','verify nx-s','open continuity gate',
   'contact mother-echo','open gate','seal gate','isolate child',
+  'trace mirror-00','open mirror ledger','reconstruct truth','verify vale signature',
+  'open truth directive','map mirror network','broadcast truth','preserve truth','fragment truth',
 ];
 
 export const emptyTerminalContext: TerminalContext = {
@@ -34,6 +37,7 @@ const directRoutes: Record<string, string> = {
   'open seven bodies':'/archives/dossier-sept-corps', 'open dossier sept corps':'/archives/dossier-sept-corps',
   'reconstruct memory':'/memory', 'reconstruire memoire':'/memory',
   'analyze voice':'/spectral-analysis', 'analyser voix':'/spectral-analysis',
+  'reconstruct truth':'/truth-reconstruction', 'reconstruire verite':'/truth-reconstruction',
 };
 
 const isDecryptZero = (command: string) => ['decrypt z 2219','decrypt z2219','decrypt zero','decrypt nuit zero'].includes(command);
@@ -43,11 +47,11 @@ export function executeCommand(raw: string, context: TerminalContext = emptyTerm
   if (!command) return { output: [] };
   if (command === 'clear') return { output: [], clear: true };
   if (command === 'help') return { output: ['COMMANDES DISPONIBLES', terminalCommands.join(' · ')] };
-  if (command === 'status') { const chapter=context.activeChapter==='chapter-zero'?'01 // NUIT ZÉRO':context.activeChapter==='chapter-two'?'02 // LES SEPT CORPS':'03 // L’ENFANT DU CIMETIÈRE'; return { output: [`CHAPITRE : ${chapter}`,`ACCÈS : ${context.accessLevel}`,`PREUVES : ${context.evidenceNodes.length} NŒUDS // ${context.evidenceRelations.length} RELATIONS`,context.spectralContactCount ? 'ACTIVITÉ SPECTRALE : TERMINAL COMPROMIS' : 'ACTIVITÉ SPECTRALE : INSTABLE'] }; }
+  if (command === 'status') { const chapter=context.activeChapter==='chapter-zero'?'01 // NUIT ZÉRO':context.activeChapter==='chapter-two'?'02 // LES SEPT CORPS':context.activeChapter==='chapter-three'?'03 // L’ENFANT DU CIMETIÈRE':'04 // VÉRITÉ ORIGINALE'; return { output: [`CHAPITRE : ${chapter}`,`ACCÈS : ${context.accessLevel}`,`PREUVES : ${context.evidenceNodes.length} NŒUDS // ${context.evidenceRelations.length} RELATIONS`,context.spectralContactCount ? 'ACTIVITÉ SPECTRALE : TERMINAL COMPROMIS' : 'ACTIVITÉ SPECTRALE : INSTABLE'] }; }
   if (command === 'whoami') return { output: ['IDENTITÉ : INCONNUE', `AUTORISATION : ${context.accessLevel}`, 'LOCALISATION : IMPOSSIBLE'] };
   if (command === 'access') return { output: [`NIVEAU ACTUEL : ${context.accessLevel}`, context.accessLevel === 'CIVIL' ? 'CONDITION TACTIQUE : TERMINER L’ENQUÊTE NUIT ZÉRO' : context.accessLevel === 'TACTIQUE' ? 'CONDITION OMEGA : STATUER SUR LE CORPS A7-04' : context.accessLevel === 'OMEGA' ? 'CONDITION NOIR ABSOLU : STATUER SUR LA PORTE DE CONTINUITÉ' : 'ACCÈS NOIR ABSOLU CONFIRMÉ'] };
   if (command === 'objectives') {
-    const objectives = context.activeChapter === 'chapter-three' ? chapterThreeObjectives : context.activeChapter === 'chapter-two' ? chapterTwoObjectives : chapterZeroObjectives;
+    const objectives = context.activeChapter === 'chapter-four' ? chapterFourObjectives : context.activeChapter === 'chapter-three' ? chapterThreeObjectives : context.activeChapter === 'chapter-two' ? chapterTwoObjectives : chapterZeroObjectives;
     const next = objectives.find((objective) => !context.completedObjectives.includes(objective.id));
     return { output: next ? [`OBJECTIF PRIORITAIRE : ${next.title.toUpperCase()}`, next.description.toUpperCase(), next.hint?.toUpperCase() ?? 'AUCUN INDICE DISPONIBLE'] : ['TOUS LES OBJECTIFS DU CHAPITRE SONT TERMINÉS.'] };
   }
@@ -74,6 +78,25 @@ export function executeCommand(raw: string, context: TerminalContext = emptyTerm
     return {output:['BALAYAGE DE L’ÉCHO R-0…','SOURCE 01 : NOYAU A7 // 14 %','SOURCE 02 : NŒUD MÉMORIEL 29 // 61 %','REGISTRE ECHO-R0-29 RÉCUPÉRÉ'],unlocks:['document-registre-enfant'],completedObjectives:['scan-child-echo'],evidenceNodes:['enfant-echo','noeud-memorial-29'],notification:'child-echo-located'};
   }
   if (['open child register','open registre enfant','open child echo'].includes(command)) return context.unlockedSecrets.includes('document-registre-enfant')?{output:['OUVERTURE : REGISTRE R-0'],navigateTo:'/archives/registre-enfant-cimetiere'}:{output:['ACCÈS REFUSÉ','LOCALISATION DE R-0 REQUISE.']};
+  if (['trace mirror 00','trace mirror00','trace original truth'].includes(command)) {
+    if (!context.discoveredClues.includes('clue-mirror-00')) return {output:['CHECKSUM INCONNU','CONSULTEZ VÉRITÉ ORIGINALE.']};
+    if (context.completedObjectives.includes('trace-mirror-00')) return {output:['CHECKSUM MIRROR-00 DÉJÀ TRACÉ','REGISTRE MIRROR-LEDGER-17 DISPONIBLE.']};
+    return {output:['TRACE DU CHECKSUM MIRROR-00…','17 RÉVISIONS DÉTECTÉES','PREMIÈRE SIGNATURE : J-1 // 03:42','REGISTRE MIRROR-LEDGER-17 RÉCUPÉRÉ'],unlocks:['document-registre-miroir'],completedObjectives:['trace-mirror-00'],evidenceNodes:['registre-miroir'],notification:'mirror-ledger-recovered'};
+  }
+  if (['open mirror ledger','open registre miroir'].includes(command)) return context.unlockedSecrets.includes('document-registre-miroir')?{output:['OUVERTURE : REGISTRE DES RÉVISIONS MIRROR'],navigateTo:'/archives/registre-revisions-miroir'}:{output:['ACCÈS REFUSÉ','CHECKSUM MIRROR-00 NON TRACÉ.']};
+  if (['verify vale signature','verify orin vale','authentifier vale'].includes(command)) {
+    if (!context.solvedPuzzles.includes('mirror-truth-invariants')) return {output:['SIGNATURE NON VÉRIFIABLE','FAITS INVARIANTS NON RECONSTRUITS.']};
+    if (context.completedObjectives.includes('verify-vale-signature')) return {output:['SIGNATURE ORIN VALE DÉJÀ CONFIRMÉE','DIRECTIVE VÉRITÉ SUPPORTABLE DISPONIBLE.']};
+    return {output:['AUTHENTIFICATION CRYPTOGRAPHIQUE…','SIGNATAIRE : ORIN_VALE','HORODATAGE : J-1 // 03:42','ANTÉRIORITÉ : 18 H 25 MIN','DIRECTIVE MIRROR-DOCTRINE-01 RÉCUPÉRÉE'],unlocks:['document-directive-verite'],completedObjectives:['verify-vale-signature'],evidenceNodes:['orin-vale'],evidenceRelations:['preuve-authentifie-vale','vale-signe-mirror-00'],transmissionId:'orin-vale-01',notification:'vale-signature-confirmed'};
+  }
+  if (['open truth directive','open directive verite','open directive supportable'].includes(command)) return context.unlockedSecrets.includes('document-directive-verite')?{output:['OUVERTURE : DIRECTIVE VÉRITÉ SUPPORTABLE'],navigateTo:'/archives/directive-verite-supportable'}:{output:['ACCÈS REFUSÉ','SIGNATURE ORIN VALE REQUISE.']};
+  if (['map mirror network','map reseau miroir','trace mirror network'].includes(command)) {
+    if (!context.completedObjectives.includes('read-truth-directive')) return {output:['CARTOGRAPHIE REFUSÉE','DIRECTIVE VÉRITÉ SUPPORTABLE NON CONSULTÉE.']};
+    if (context.completedObjectives.includes('map-mirror-network')) return {output:['RÉSEAU DU MIROIR DÉJÀ CARTOGRAPHIÉ','11 RELAIS // AUTORITÉ LOCALE DISPONIBLE.']};
+    return {output:['CARTOGRAPHIE DU RÉSEAU DU MIROIR…','11 RELAIS ACTIFS','REMPLACEMENT GLOBAL : 03:42','ORIN_VALE : CONNECTÉ','TROIS DIRECTIVES DE DIFFUSION DISPONIBLES'],completedObjectives:['map-mirror-network'],evidenceNodes:['reseau-miroir'],evidenceRelations:['doctrine-justifie-reseau','vale-dirige-reseau'],narrativeFlags:['mirror-network-mapped'],notification:'mirror-network-mapped'};
+  }
+  const truthDecisions:Record<string,string>={'broadcast truth':'broadcast','diffuser verite':'broadcast','preserve truth':'preserve','preserver archive':'preserve','fragment truth':'fragment','fragmenter verite':'fragment'};
+  if (truthDecisions[command]) return context.completedObjectives.includes('map-mirror-network')?{output:['DIRECTIVE MIRROR-00 CHARGÉE','CONFIRMATION LOCALE REQUISE.'],navigateTo:`/chapter-four?decision=${truthDecisions[command]}`}:{output:['DIRECTIVE INDISPONIBLE','RÉSEAU DU MIROIR NON CARTOGRAPHIÉ.']};
   if (isDecryptZero(command)) {
     if (!context.discoveredClues.includes('clue-z-2219') && !context.unlockedSecrets.includes('clue-z-2219')) return { output:['CODE INCONNU','AUCUNE RÉFÉRENCE Z-2219 DANS LES DOCUMENTS CONSULTÉS'] };
     if (context.completedObjectives.includes('decrypt-z-2219')) return { output:['FRAGMENT Z-2219 DÉJÀ DÉCHIFFRÉ','JOURNAL DE RESTAURATION 22:24 DISPONIBLE'] };

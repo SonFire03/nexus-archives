@@ -2,7 +2,7 @@
 
 > TERMINAL CLASSIFIÉ DU DIRECTOIRE
 
-Expérience narrative cyberpunk statique en français. Le visiteur infiltre les archives de VANTA, enquête sur la Nuit Zéro, confronte les identités concurrentes d’A7 puis recherche l’Enfant du Cimetière.
+Expérience narrative cyberpunk statique en français. Le visiteur infiltre les archives de VANTA, enquête sur la Nuit Zéro, confronte les identités concurrentes d’A7, recherche l’Enfant du Cimetière puis découvre qui fabrique la vérité publique.
 
 ## Aperçu
 
@@ -17,7 +17,8 @@ L’interface Omega V3 emploie un shell de centre de commandement, une grille re
 - Chapitre 01 jouable : consulter, déchiffrer, comparer et relier les preuves de la Nuit Zéro ;
 - Chapitre 02 jouable : localiser A7-03, infiltrer un registre HELIX, reconstruire une mémoire et statuer sur le Corps 04 ;
 - Chapitre 03 jouable : retrouver R-0, authentifier sa voix face aux imitations de NX-S et statuer sur la Porte de Continuité ;
-- décisions persistantes aux Chapitres 02 et 03, accordant successivement les accès OMEGA et NOIR ABSOLU ;
+- Chapitre 04 jouable : tracer MIRROR-00, reconstruire les faits invariants, démasquer Orin Vale et statuer sur la Vérité originale ;
+- décisions persistantes aux Chapitres 02 à 04, avec conséquences visibles dans les chapitres suivants ;
 - terminal contextuel, lecteur de documents paginé et comparateur officiel/classifié ;
 - tableau d’enquête SVG doublé d’une vue textuelle accessible ;
 - objectifs narratifs, contact NX-S et progression locale importable/exportable ;
@@ -45,7 +46,7 @@ npm run dev
 - `npm run lint` : analyse statique ;
 - `npm run typecheck` : validation TypeScript ;
 - `npm test` / `npm run test:watch` : tests ponctuels/continus ;
-- `npm run test:e2e` : parcours Chromium complets des Chapitres 01, 02 et 03 ;
+- `npm run test:e2e` : parcours Chromium complets des Chapitres 01 à 04 ;
 - `npm run test:e2e:ui` : ouvre l’interface Playwright ;
 - `npm run check` : lint, types, tests unitaires et build (E2E séparé).
 
@@ -61,11 +62,11 @@ Pour ajouter un opérateur, une armure ou une faction, compléter respectivement
 
 ## Documents et chapitres
 
-Ajouter un document dans `src/data/archives.ts` sans JSX, avec pages et blocs typés. Déclarer ses indices, effets et références, puis compléter le module `chapterZero.ts`, `chapterTwo.ts` ou `chapterThree.ts`. Un chapitre définit ses objectifs et conditions déterministes ; les tests d’intégrité doivent rester verts.
+Ajouter un document dans `src/data/archives.ts` sans JSX, avec pages et blocs typés. Déclarer ses indices, effets et références, puis compléter le module de chapitre correspondant, de `chapterZero.ts` à `chapterFour.ts`. Un chapitre définit ses objectifs et conditions déterministes ; les tests d’intégrité doivent rester verts.
 
 ## Progression locale
 
-La clé stable `nexus-archives:v1` contient un état de schéma V4. Les migrations V1 → V2 → V3 → V4 préservent documents, secrets, historique, réglages, puzzles et décisions, puis initialisent les drapeaux narratifs du Chapitre 03. Les imports JSON sont validés et limités en taille. Aucun cookie ni donnée personnelle n’est utilisé.
+La clé stable `nexus-archives:v1` contient un état de schéma V5. Les migrations V1 → V2 → V3 → V4 → V5 préservent documents, secrets, historique, réglages, puzzles et décisions, puis activent automatiquement le chapitre suivant. Les imports JSON sont validés et limités en taille. Aucun cookie ni donnée personnelle n’est utilisé.
 
 ## Tester le Chapitre 01
 
@@ -78,6 +79,10 @@ Lancer `npm run test:e2e -- chapter-two.spec.ts`. Le scénario part d’une sauv
 ## Tester le Chapitre 03
 
 Lancer `npm run test:e2e -- chapter-three.spec.ts`. Le scénario part d’une sauvegarde OMEGA, consulte le Programme R, localise R-0, authentifie trois fragments humains, démasque l’imitation de NX-S, contacte Mère Écho et confirme la persistance d’une décision NOIR ABSOLU.
+
+## Tester le Chapitre 04
+
+Lancer `npm run test:e2e -- chapter-four.spec.ts`. Le scénario migre une sauvegarde V4, ouvre MIRROR-00, trace les révisions, reconstruit quatre faits invariants, authentifie Orin Vale, cartographie les onze relais et confirme la persistance du destin de la Vérité originale.
 
 ## Accessibilité
 
@@ -106,6 +111,6 @@ Sauf mention contraire, le contenu narratif et visuel est réservé à son auteu
 ## Roadmap
 
 - illustrer la chambre HELIX K-13 et le Corps A7-04 ;
-- développer le Chapitre 04 à partir des conséquences de la Porte de Continuité ;
+- développer le Chapitre 05 à partir de la réaction du Directoire au destin de MIRROR-00 ;
 - réaliser un audit manuel multi-navigateurs et lecteur d’écran ;
 - ajouter une suite visuelle de non-régression.

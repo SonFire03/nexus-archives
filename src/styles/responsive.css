@@ -121,6 +121,10 @@
 }
 
 @media (max-width:700px) {
+  .truth-origin,.truth-grid,.truth-fragments,.truth-options { grid-template-columns:1fr; }
+  .truth-origin > * { border-right:0; border-bottom:1px solid var(--color-border-default); }
+  .truth-origin > *:last-child { border-bottom:0; text-align:left; }
+  .mirror-vitals { grid-template-columns:1fr 1fr; }
   .voice-analysis-grid,.gate-options { grid-template-columns:1fr; }
   .spectral-analysis-status { grid-template-columns:1fr; }
   .spectral-analysis-status > * { border-right:0; border-bottom:1px solid var(--color-border-default); text-align:left; }

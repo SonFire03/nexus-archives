@@ -1,5 +1,5 @@
-import { chapterCompletionRequirements, chapterThreeCompletionRequirements, chapterTwoCompletionRequirements } from '../data';
-import { applyNarrativeEffects, applyTerminalResult, canCompleteChapterThree, canCompleteChapterTwo, canCompleteChapterZero, completeChapterThree, completeChapterTwo, completeChapterZero, isDocumentAvailable } from './narrative';
+import { chapterCompletionRequirements, chapterFourCompletionRequirements, chapterThreeCompletionRequirements, chapterTwoCompletionRequirements } from '../data';
+import { applyNarrativeEffects, applyTerminalResult, canCompleteChapterFour, canCompleteChapterThree, canCompleteChapterTwo, canCompleteChapterZero, completeChapterFour, completeChapterThree, completeChapterTwo, completeChapterZero, isDocumentAvailable } from './narrative';
 import { defaultProgress, loadProgress, saveProgress } from './progress';
 import { archiveDocuments } from '../data/archives';
 
@@ -20,5 +20,13 @@ describe('progression narrative du Chapitre 01', () => {
     expect(complete.narrativeChoices['continuity-gate']).toBe('isolate');
     expect(complete.narrativeFlags).toContain('gate-isolate');
     expect(complete.accessLevel).toBe('NOIR ABSOLU');
+  });
+  it('refuse de terminer le Chapitre 04 sans cartographie du Miroir', () => { expect(canCompleteChapterFour(defaultProgress)).toBe(false); expect(completeChapterFour(defaultProgress,'fragment')).toBe(defaultProgress); });
+  it('archive le destin de MIRROR-00', () => {
+    const ready={...defaultProgress,accessLevel:'NOIR ABSOLU' as const,activeChapter:'chapter-four',completedChapters:['chapter-zero','chapter-two','chapter-three'],completedObjectives:chapterFourCompletionRequirements};
+    const complete=completeChapterFour(ready,'fragment');
+    expect(complete.completedChapters).toContain('chapter-four');
+    expect(complete.narrativeChoices['mirror-00']).toBe('fragment');
+    expect(complete.narrativeFlags).toContain('truth-fragment');
   });
 });

@@ -265,7 +265,72 @@ export const archiveDocuments: ArchiveDocument[] = [
     id: 'projet-ascendant', title: 'PROJET ASCENDANT', code: 'NX6-OMEGA', classification: 'NOIR ABSOLU', category: 'programme', date: '6 P.Z.', issuer: 'Directoire NEXUS', status: 'SCELLÉ', summary: 'Un corps destiné à une conscience collective.', pages: [{ id: 'abstract', title: 'Résumé', blocks: [{ type: 'redacted', text: 'Hôte collectif en attente.', revealSecret: 'ascendant' }] }],
   },
   {
-    id: 'verite-originale', title: 'VÉRITÉ ORIGINALE', code: 'MIRROR-00', classification: 'NOIR ABSOLU', category: 'incident', date: 'INCONNUE', issuer: 'Ordre du Miroir', status: 'SCELLÉ', summary: 'Une version antérieure à toutes les versions officielles.', pages: [{ id: 'truth', title: 'Archive', blocks: [{ type: 'redacted', text: 'La vérité originale a été remplacée avant la Nuit Zéro.', revealSecret: 'original-truth' }] }],
+    id:'verite-originale',title:'VÉRITÉ ORIGINALE',code:'MIRROR-00',classification:'NOIR ABSOLU',category:'incident',date:'18 H AVANT NUIT ZÉRO',issuer:'Ordre du Miroir',author:'ORIN_VALE',status:'INTÉGRITÉ 43 %',summary:'Première couverture de la Nuit Zéro, validée avant que l’incident ne commence.',chapterId:'chapter-four',
+    requirements:[{type:'chapter',value:'chapter-three'}],terminalCodes:['MIRROR-00'],
+    pages:[
+      {id:'premise',title:'Scénario préventif',blocks:[
+        {type:'warning',title:'HORODATAGE IMPOSSIBLE',text:'Cette archive décrit une attaque terroriste dix-huit heures avant l’activation du Projet Continuité.'},
+        {type:'metadata',entries:[{label:'CRÉATION',value:'J-1 // 03:17'},{label:'VALIDATION',value:'ORIN_VALE // 03:42'},{label:'INCIDENT',value:'J0 // 21:17'},{label:'DIFFUSION',value:'J+1 // 06:00'}]},
+        {type:'clue',clueId:'clue-mirror-00',label:'CHECKSUM TRAÇABLE',text:'La somme MIRROR-00 subsiste dans toutes les versions suivantes. Commande suggérée : trace mirror-00.'},
+      ]},
+      {id:'scenario',title:'Version préparée',blocks:[
+        {type:'paragraph',text:'Le texte prévoit une attaque contre un réacteur, une évacuation rendue impossible par les assaillants et la disparition héroïque d’une unité NEXUS.'},
+        {type:'table',headers:['ÉLÉMENT','VERSION PRÉPARÉE','FAIT OBSERVÉ'],rows:[['CAUSE','ATTAQUE TERRORISTE','PROJET CONTINUITÉ'],['ÉVACUATION','SABOTÉE PAR L’ENNEMI','SCELLÉE PAR LE DIRECTOIRE'],['A7','MORT AU COMBAT','UTILISÉ COMME ANCRE'],['BILAN','8 400','63 218']]},
+        {type:'evidence',nodeId:'mirror-00',title:'MENSONGE PRÉ-INCIDENT',text:'La couverture n’a pas été improvisée après la catastrophe. Elle faisait partie du protocole.'},
+      ]},
+      {id:'survival',title:'Origine de la copie',blocks:[
+        {type:'system-log',lines:['PORTE OUVERTE → COPIE RÉSEAU DISTRIBUÉE','PORTE SCELLÉE → CACHE CHŒUR ZÉRO EXFILTRÉ','R-0 ISOLÉE → CHECKSUM ANALOGIQUE CONSERVÉ','SOURCE ACTUELLE → DÉTERMINÉE PAR PROTOCOLE LOCAL'],spectral:true},
+        {type:'quote',text:'Une vérité originale n’est souvent que le premier mensonge à avoir reçu un numéro.',source:'Sera Nox'},
+      ]},
+    ],
+    references:[{type:'faction',id:'ordre-miroir',label:'Ordre du Miroir',route:'/factions/ordre-miroir'},{type:'archive',id:'rapport-nuit-zero',label:'Rapport Nuit Zéro',route:'/archives/rapport-nuit-zero'}],
+    onOpenEffects:[
+      {type:'activate-chapter',id:'chapter-four'},{type:'complete-objective',id:'open-original-truth'},
+      {type:'discover-clue',id:'clue-mirror-00'},{type:'add-evidence-node',id:'mirror-00'},
+      {type:'add-evidence-relation',id:'mirror-00-anticipe-nuit-zero'},{type:'narrative-event',id:'chapter-four-started'},
+    ],
+  },
+  {
+    id:'registre-revisions-miroir',title:'REGISTRE DES RÉVISIONS — MIRROR',code:'MIRROR-LEDGER-17',classification:'NOIR ABSOLU',category:'registre',date:'J-1 À 6 P.Z.',issuer:'Bureau de stabilité civile',author:'Système VALE-PRIME',status:'17 VERSIONS RÉCUPÉRÉES',summary:'Historique cryptographique des récits successifs de la Nuit Zéro.',chapterId:'chapter-four',
+    requirements:[{type:'secret',value:'document-registre-miroir'}],
+    pages:[
+      {id:'revisions',title:'Chaîne de révision',blocks:[
+        {type:'system-log',lines:['V00 // J-1 03:17 — SCÉNARIO PRÉVENTIF','V03 // J0 23:48 — BILAN RÉDUIT','V08 // 1 P.Z. — RESPONSABILITÉ TERRORISTE','V12 // 2 P.Z. — A7 DÉCLARÉ MORT','V17 // 6 P.Z. — ARCHIVE OMEGA ACTIVE']},
+        {type:'evidence',nodeId:'registre-miroir',title:'CONTINUITÉ DES MODIFICATIONS',text:'Chaque version conserve le checksum d’Orin Vale malgré le remplacement du contenu.'},
+      ]},
+      {id:'signature',title:'Signature pré-incident',blocks:[
+        {type:'metadata',entries:[{label:'SIGNATAIRE',value:'ORIN_VALE'},{label:'AUTORITÉ',value:'CONSERVATEUR DE LA VÉRITÉ'},{label:'DÉCALAGE',value:'-18 H 25 MIN'},{label:'RÉVOCATION',value:'AUCUNE'}]},
+        {type:'clue',clueId:'clue-vale-signature',label:'QUATRE FAITS INVARIANTS',text:'Six assertions peuvent être comparées. Quatre reposent sur des traces matérielles impossibles à réécrire.'},
+        {type:'warning',title:'RECONSTRUCTEUR REQUIS',text:'Les versions sont contradictoires. Isoler les faits présents dans les journaux matériels indépendants.'},
+      ]},
+    ],
+    references:[{type:'archive',id:'verite-originale',label:'MIRROR-00',route:'/archives/verite-originale'},{type:'faction',id:'ordre-miroir',label:'Ordre du Miroir',route:'/factions/ordre-miroir'}],
+    onOpenEffects:[
+      {type:'complete-objective',id:'read-mirror-ledger'},{type:'discover-clue',id:'clue-vale-signature'},
+      {type:'unlock-secret',id:'truth-reconstructor-online'},{type:'add-evidence-node',id:'registre-miroir'},
+      {type:'add-evidence-node',id:'orin-vale'},{type:'add-evidence-relation',id:'vale-signe-mirror-00'},
+      {type:'narrative-event',id:'truth-reconstructor-online'},
+    ],
+  },
+  {
+    id:'directive-verite-supportable',title:'DIRECTIVE — VÉRITÉ SUPPORTABLE',code:'MIRROR-DOCTRINE-01',classification:'NOIR ABSOLU',category:'ordre',date:'43 A.Z. // ACTIVE',issuer:'Directoire NEXUS',author:'Orin Vale',status:'APPLICATION CONTINUE',summary:'Doctrine autorisant le remplacement préventif des faits jugés socialement insoutenables.',chapterId:'chapter-four',
+    requirements:[{type:'secret',value:'document-directive-verite'}],
+    pages:[
+      {id:'doctrine',title:'Principe de stabilité',blocks:[
+        {type:'quote',text:'Une société survit grâce aux vérités qu’elle peut supporter.',source:'Orin Vale'},
+        {type:'paragraph',text:'Le Directoire ne définit pas la vérité comme la correspondance aux faits, mais comme le récit maintenant la continuité de VANTA avec le coût humain jugé minimal.'},
+        {type:'evidence',nodeId:'verite-supportable',title:'JUSTIFICATION INTERNE',text:'Le Miroir considère la mémoire publique comme une infrastructure critique modifiable.'},
+      ]},
+      {id:'network',title:'Réseau de remplacement',blocks:[
+        {type:'table',headers:['RELAIS','ZONE','FONCTION'],rows:[['M-01','COURONNE','ARCHIVES GOUVERNEMENTALES'],['M-04','VOILE','FLUX CIVILS'],['M-07','PROFONDEURS','INTERCEPTION ANALOGIQUE'],['M-11','CIMETIÈRE','INDEX DES MORTS']]},
+        {type:'clue',clueId:'clue-mirror-network',label:'ONZE RELAIS',text:'Le réseau complet peut remplacer les archives civiles en 03:42. Commande suggérée : map mirror network.'},
+      ]},
+    ],
+    references:[{type:'faction',id:'ordre-miroir',label:'Ordre du Miroir',route:'/factions/ordre-miroir'},{type:'archive',id:'registre-revisions-miroir',label:'Registre des révisions',route:'/archives/registre-revisions-miroir'}],
+    onOpenEffects:[
+      {type:'complete-objective',id:'read-truth-directive'},{type:'discover-clue',id:'clue-mirror-network'},
+      {type:'add-evidence-node',id:'verite-supportable'},{type:'add-evidence-relation',id:'doctrine-justifie-reseau'},
+    ],
   },
   {
     id: 'enfant-cimetiere', title: 'ENFANT DU CIMETIÈRE', code: 'ECHO-CHILD', classification: 'NOIR ABSOLU', category: 'identité', date: '29 A.Z.', issuer: 'Chœur Zéro', status: 'SCELLÉ', summary: 'Une voix sans dossier répond depuis le noyau A7.', pages: [{ id: 'voice', title: 'Voix', blocks: [{ type: 'redacted', text: 'Je me souviens de la neige.', revealSecret: 'enfant-cimetiere' }] }],

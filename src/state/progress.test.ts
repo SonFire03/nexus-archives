@@ -1,4 +1,4 @@
-import { defaultProgress, deriveAccessLevel, loadProgress, mergeUnique, migrateV1ToV2, migrateV2ToV3, migrateV3ToV4, saveProgress, STORAGE_KEY, validateProgress } from './progress';
+import { defaultProgress, deriveAccessLevel, loadProgress, mergeUnique, migrateV1ToV2, migrateV2ToV3, migrateV3ToV4, migrateV4ToV5, saveProgress, STORAGE_KEY, validateProgress } from './progress';
 
 describe('progression locale', () => {
   it('sauvegarde et recharge la progression', () => { saveProgress({ ...defaultProgress, introSeen: true }); expect(loadProgress().introSeen).toBe(true); });
@@ -17,4 +17,12 @@ describe('progression locale', () => {
     expect(migrateV3ToV4(v3)).toEqual(expect.objectContaining({version:4,activeChapter:'chapter-three',narrativeFlags:[],narrativeChoices:{'body-04':'isolate'}}));
   });
   it('accorde NOIR ABSOLU après le Chapitre 03', () => { expect(deriveAccessLevel({...defaultProgress,completedChapters:['chapter-zero','chapter-two','chapter-three']})).toBe('NOIR ABSOLU'); });
+  it('migre la V4 vers la V5 et active le Chapitre 04', () => {
+    const v2=migrateV1ToV2({version:1,introSeen:true,accessLevel:'NOIR ABSOLU',viewedDocuments:['porte-continuite'],unlockedSecrets:['chapter-three-decision'],terminalHistory:['verify nx-s'],completedObjectives:['decide-continuity-gate'],audioEnabled:false,reducedEffects:true,selectedTransmission:'nx-s-gate-final',lastVisitedRoute:'/chapter-three'});
+    v2.completedChapters=['chapter-zero','chapter-two'];
+    const v4=migrateV3ToV4(migrateV2ToV3(v2));
+    v4.completedChapters.push('chapter-three');
+    v4.narrativeChoices['continuity-gate']='isolate';
+    expect(migrateV4ToV5(v4)).toEqual(expect.objectContaining({version:5,activeChapter:'chapter-four',narrativeChoices:{'continuity-gate':'isolate'}}));
+  });
 });

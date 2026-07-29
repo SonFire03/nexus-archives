@@ -1,4 +1,4 @@
-import { archiveDocuments, archiveImages, armorImages, armors, chapterThreeObjectives, chapterTwoObjectives, evidenceNodes, evidenceRelations, factionImages, factions, locationImages, locations, operatorImages, operators, timeline, validateData, voiceFragments } from '.';
+import { archiveDocuments, archiveImages, armorImages, armors, chapterFourObjectives, chapterThreeObjectives, chapterTwoObjectives, evidenceNodes, evidenceRelations, factionImages, factions, locationImages, locations, operatorImages, operators, timeline, truthFragments, validateData, voiceFragments } from '.';
 
 describe('intégrité du canon NEXUS', () => {
   it('utilise des identifiants uniques et des relations valides', () => { expect(validateData()).toEqual([]); });
@@ -23,5 +23,10 @@ describe('intégrité du canon NEXUS', () => {
     expect(chapterThreeObjectives).toHaveLength(8);
     expect(new Set(chapterThreeObjectives.map(({id}) => id)).size).toBe(8);
     expect(voiceFragments.filter(({authentic}) => authentic)).toHaveLength(3);
+  });
+  it('déclare les huit objectifs et quatre faits invariants du Chapitre 04', () => {
+    expect(chapterFourObjectives).toHaveLength(8);
+    expect(new Set(chapterFourObjectives.map(({id}) => id)).size).toBe(8);
+    expect(truthFragments.filter(({invariant}) => invariant)).toHaveLength(4);
   });
 });

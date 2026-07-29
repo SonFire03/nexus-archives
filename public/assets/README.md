@@ -17,6 +17,9 @@ Ce dossier reçoit uniquement les médias locaux validés pour publication. Tous
 - `images/archives/archive-memory-node-29.webp` : futur schéma du Nœud mémoriel 29 ;
 - `images/archives/archive-continuity-gate.webp` : future interface de la Porte de Continuité ;
 - `images/archives/archive-mother-echo.webp` : future capture de surveillance de Mère Écho ;
+- `images/archives/archive-mirror-ledger.webp` : futur registre visuel des dix-sept révisions ;
+- `images/archives/archive-vale-signature.webp` : future empreinte cryptographique d’Orin Vale ;
+- `images/archives/archive-mirror-network.webp` : future carte des onze relais du Miroir ;
 - `images/zone-zero-surveillance.webp` : capture de Zone Zéro ;
 - `images/crimson-surveillance.webp` : portrait de surveillance de Crimson ;
 - `images/a7-medical-schema.svg` : schéma médical d’A7 ;

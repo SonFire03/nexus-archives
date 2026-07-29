@@ -228,6 +228,38 @@
 .gate-options strong { margin:var(--space-6) 0 var(--space-3); font:900 1.45rem var(--font-display); }
 .gate-options p { color:var(--color-text-secondary); font-size:.88rem; line-height:1.6; }
 
+/* Chapitre 04 — Vérité originale */
+.truth-origin { display:grid; grid-template-columns:1fr 2fr 1fr; border:1px solid var(--color-orange); background:linear-gradient(90deg,rgba(240,90,50,.08),rgba(16,19,26,.94)); margin-bottom:var(--space-5); }
+.truth-origin > * { padding:var(--space-4); border-right:1px solid var(--color-border-default); }
+.truth-origin > *:last-child { border-right:0; text-align:right; }
+.truth-origin span,.truth-origin em { color:var(--color-text-secondary); font:normal .75rem var(--font-data); letter-spacing:.08em; }
+.truth-origin strong { color:var(--color-orange); font:700 .85rem var(--font-data); }
+.truth-grid { display:grid; grid-template-columns:minmax(0,2fr) minmax(300px,.8fr); gap:var(--space-5); align-items:start; }
+.truth-fragments { display:grid; grid-template-columns:1fr 1fr; gap:var(--space-3); }
+.truth-fragments button { min-height:150px; padding:var(--space-4); text-align:left; border:1px solid var(--color-border-default); background:rgba(5,6,9,.68); color:var(--color-text-primary); }
+.truth-fragments button:hover,.truth-fragments button:focus-visible { border-color:var(--color-orange); background:rgba(255,156,66,.06); }
+.truth-fragments button.is-selected { border-color:var(--color-orange); box-shadow:inset 3px 0 0 var(--color-orange); }
+.truth-fragments span,.truth-fragments small { display:block; color:var(--color-cyan); font:.72rem var(--font-data); }
+.truth-fragments p { margin:var(--space-4) 0; line-height:1.55; }
+.truth-fragments small { color:var(--color-text-muted); }
+.truth-result,.truth-decision-result { padding:clamp(28px,5vw,72px); border:1px solid var(--color-orange); background:radial-gradient(circle at 70% 15%,rgba(255,156,66,.12),transparent 40%),var(--color-bg-panel); }
+.truth-result h2,.truth-decision-result h2 { max-width:18ch; font-size:clamp(1.8rem,4vw,4rem); }
+.truth-result blockquote,.truth-decision-result blockquote { max-width:70ch; margin:var(--space-8) 0; padding:var(--space-5); border-left:3px solid var(--color-orange); background:rgba(5,6,9,.65); }
+.truth-decision-result blockquote cite { display:block; margin-top:var(--space-3); color:var(--color-orange); }
+.mirror-vitals { display:grid; grid-template-columns:repeat(4,1fr); margin-bottom:var(--space-5); border:1px solid var(--color-border-strong); background:var(--color-bg-panel); }
+.mirror-vitals div { padding:var(--space-5); border-right:1px solid var(--color-border-default); }
+.mirror-vitals div:last-child { border-right:0; }
+.mirror-vitals span,.mirror-vitals strong { display:block; font-family:var(--font-data); }
+.mirror-vitals span { color:var(--color-text-muted); font-size:.72rem; }
+.mirror-vitals strong { margin-top:var(--space-2); color:var(--color-orange); }
+.truth-options { display:grid; grid-template-columns:repeat(3,1fr); gap:var(--space-4); margin-bottom:var(--space-5); }
+.truth-options button { min-height:220px; padding:var(--space-6); text-align:left; color:var(--color-text-primary); border:1px solid var(--color-border-default); background:var(--color-bg-panel); }
+.truth-options button:hover,.truth-options button:focus-visible,.truth-options button.is-selected { border-color:var(--color-orange); background:rgba(255,156,66,.07); }
+.truth-options button.is-selected { box-shadow:inset 0 3px 0 var(--color-orange); }
+.truth-options span,.truth-options strong { display:block; }
+.truth-options span { color:var(--color-orange); font:.72rem var(--font-data); }
+.truth-options strong { margin:var(--space-4) 0; font-size:1.15rem; }
+
 @media (max-width:1200px) {
   .operator-list--index { grid-template-columns:1fr; }
   .detail-grid { grid-template-columns:1fr; }
