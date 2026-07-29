@@ -1,5 +1,6 @@
 import { chapterZeroObjectives } from '../data/chapterZero';
 import { chapterTwoObjectives } from '../data/chapterTwo';
+import { chapterThreeObjectives } from '../data/chapterThree';
 import type { TerminalContext, TerminalResult } from '../types';
 
 export const terminalCommands = [
@@ -9,12 +10,15 @@ export const terminalCommands = [
   'scan nx-s','trace voss','protocol shadow','protocol ash','secrets',
   'scan signature a7-03','open seven bodies','open helix register','reconstruct memory',
   'verify memory crimson','trace body-04','wake subject','isolate subject','erase subject',
+  'scan child-echo','open child register','analyze voice','verify nx-s','open continuity gate',
+  'contact mother-echo','open gate','seal gate','isolate child',
 ];
 
 export const emptyTerminalContext: TerminalContext = {
   accessLevel:'CIVIL', viewedDocuments:[], unlockedSecrets:[], completedObjectives:[], activeChapter:'chapter-zero',
   discoveredClues:[], evidenceNodes:[], evidenceRelations:[], spectralContactCount:0,
   solvedPuzzles:[], narrativeChoices:{},
+  narrativeFlags:[],
 };
 
 export function normalizeCommand(raw: string): string {
@@ -29,6 +33,7 @@ const directRoutes: Record<string, string> = {
   'open report zero':'/archives/rapport-nuit-zero', 'open rapport zero':'/archives/rapport-nuit-zero',
   'open seven bodies':'/archives/dossier-sept-corps', 'open dossier sept corps':'/archives/dossier-sept-corps',
   'reconstruct memory':'/memory', 'reconstruire memoire':'/memory',
+  'analyze voice':'/spectral-analysis', 'analyser voix':'/spectral-analysis',
 };
 
 const isDecryptZero = (command: string) => ['decrypt z 2219','decrypt z2219','decrypt zero','decrypt nuit zero'].includes(command);
@@ -38,11 +43,11 @@ export function executeCommand(raw: string, context: TerminalContext = emptyTerm
   if (!command) return { output: [] };
   if (command === 'clear') return { output: [], clear: true };
   if (command === 'help') return { output: ['COMMANDES DISPONIBLES', terminalCommands.join(' · ')] };
-  if (command === 'status') return { output: [`CHAPITRE : ${context.activeChapter === 'chapter-zero' ? '01 // NUIT ZÉRO' : '02 // LES SEPT CORPS'}`,`ACCÈS : ${context.accessLevel}`,`PREUVES : ${context.evidenceNodes.length} NŒUDS // ${context.evidenceRelations.length} RELATIONS`,context.spectralContactCount ? 'ACTIVITÉ SPECTRALE : TERMINAL COMPROMIS' : 'ACTIVITÉ SPECTRALE : INSTABLE'] };
+  if (command === 'status') { const chapter=context.activeChapter==='chapter-zero'?'01 // NUIT ZÉRO':context.activeChapter==='chapter-two'?'02 // LES SEPT CORPS':'03 // L’ENFANT DU CIMETIÈRE'; return { output: [`CHAPITRE : ${chapter}`,`ACCÈS : ${context.accessLevel}`,`PREUVES : ${context.evidenceNodes.length} NŒUDS // ${context.evidenceRelations.length} RELATIONS`,context.spectralContactCount ? 'ACTIVITÉ SPECTRALE : TERMINAL COMPROMIS' : 'ACTIVITÉ SPECTRALE : INSTABLE'] }; }
   if (command === 'whoami') return { output: ['IDENTITÉ : INCONNUE', `AUTORISATION : ${context.accessLevel}`, 'LOCALISATION : IMPOSSIBLE'] };
-  if (command === 'access') return { output: [`NIVEAU ACTUEL : ${context.accessLevel}`, context.accessLevel === 'CIVIL' ? 'CONDITION TACTIQUE : TERMINER L’ENQUÊTE NUIT ZÉRO' : context.accessLevel === 'TACTIQUE' ? 'CONDITION OMEGA : STATUER SUR LE CORPS A7-04' : 'ACCÈS OMEGA CONFIRMÉ'] };
+  if (command === 'access') return { output: [`NIVEAU ACTUEL : ${context.accessLevel}`, context.accessLevel === 'CIVIL' ? 'CONDITION TACTIQUE : TERMINER L’ENQUÊTE NUIT ZÉRO' : context.accessLevel === 'TACTIQUE' ? 'CONDITION OMEGA : STATUER SUR LE CORPS A7-04' : context.accessLevel === 'OMEGA' ? 'CONDITION NOIR ABSOLU : STATUER SUR LA PORTE DE CONTINUITÉ' : 'ACCÈS NOIR ABSOLU CONFIRMÉ'] };
   if (command === 'objectives') {
-    const objectives = context.activeChapter === 'chapter-two' ? chapterTwoObjectives : chapterZeroObjectives;
+    const objectives = context.activeChapter === 'chapter-three' ? chapterThreeObjectives : context.activeChapter === 'chapter-two' ? chapterTwoObjectives : chapterZeroObjectives;
     const next = objectives.find((objective) => !context.completedObjectives.includes(objective.id));
     return { output: next ? [`OBJECTIF PRIORITAIRE : ${next.title.toUpperCase()}`, next.description.toUpperCase(), next.hint?.toUpperCase() ?? 'AUCUN INDICE DISPONIBLE'] : ['TOUS LES OBJECTIFS DU CHAPITRE SONT TERMINÉS.'] };
   }
@@ -63,6 +68,12 @@ export function executeCommand(raw: string, context: TerminalContext = emptyTerm
       unlocks:['document-registre-helix-k13'],completedObjectives:['scan-signature-a7-03'],evidenceNodes:['laboratoire-k13'],evidenceRelations:['signature-03-emet-k13'],notification:'signature-a7-03-located',
     };
   }
+  if (['scan child echo','scan child','scan enfant echo'].includes(command)) {
+    if (!context.discoveredClues.includes('clue-child-echo')) return {output:['ÉCHO INCONNU','CONSULTEZ LE PROGRAMME R — FIL ROUGE.']};
+    if (context.completedObjectives.includes('scan-child-echo')) return {output:['ÉCHO R-0 DÉJÀ LOCALISÉ','SOURCES : A7 // NŒUD MÉMORIEL 29']};
+    return {output:['BALAYAGE DE L’ÉCHO R-0…','SOURCE 01 : NOYAU A7 // 14 %','SOURCE 02 : NŒUD MÉMORIEL 29 // 61 %','REGISTRE ECHO-R0-29 RÉCUPÉRÉ'],unlocks:['document-registre-enfant'],completedObjectives:['scan-child-echo'],evidenceNodes:['enfant-echo','noeud-memorial-29'],notification:'child-echo-located'};
+  }
+  if (['open child register','open registre enfant','open child echo'].includes(command)) return context.unlockedSecrets.includes('document-registre-enfant')?{output:['OUVERTURE : REGISTRE R-0'],navigateTo:'/archives/registre-enfant-cimetiere'}:{output:['ACCÈS REFUSÉ','LOCALISATION DE R-0 REQUISE.']};
   if (isDecryptZero(command)) {
     if (!context.discoveredClues.includes('clue-z-2219') && !context.unlockedSecrets.includes('clue-z-2219')) return { output:['CODE INCONNU','AUCUNE RÉFÉRENCE Z-2219 DANS LES DOCUMENTS CONSULTÉS'] };
     if (context.completedObjectives.includes('decrypt-z-2219')) return { output:['FRAGMENT Z-2219 DÉJÀ DÉCHIFFRÉ','JOURNAL DE RESTAURATION 22:24 DISPONIBLE'] };
@@ -89,6 +100,19 @@ export function executeCommand(raw: string, context: TerminalContext = emptyTerm
     if (context.completedObjectives.includes('locate-body-04')) return {output:['CORPS 04 DÉJÀ LOCALISÉ','COORDONNÉES : K-13 // SOUS-NIVEAU 09']};
     return {output:['TRACE BIOLOGIQUE EN COURS…','CORPS 04 : VIABLE','COORDONNÉES : K-13 // SOUS-NIVEAU 09','TROIS PROTOCOLES DE DISPOSITION DISPONIBLES'],unlocks:['body-04-located'],completedObjectives:['locate-body-04'],evidenceNodes:['corps-a7-04'],evidenceRelations:['helix-maintient-corps-04'],notification:'body-04-located'};
   }
+  if (command === 'verify nx s' || command === 'verify nxs') {
+    if (!context.solvedPuzzles.includes('voice-authentication')) return {output:['VÉRIFICATION IMPOSSIBLE','VOIX R-0 NON AUTHENTIFIÉE.']};
+    if (context.completedObjectives.includes('verify-spectral-source')) return {output:['IMITATION NX-S DÉJÀ CONFIRMÉE','DOSSIER PORTE DE CONTINUITÉ DISPONIBLE.'],altered:true};
+    return {output:['COMPARAISON SPECTRALE…','3 FRAGMENTS : SOURCE HUMAINE R-0','2 FRAGMENTS : IMITATION NX-S','DEMANDE D’OUVERTURE : SOURCE SPECTRALE'],unlocks:['document-porte-continuite'],completedObjectives:['verify-spectral-source'],evidenceNodes:['voix-spectrale','porte-continuite'],evidenceRelations:['nxs-imite-enfant','voix-composee-par-nxs'],narrativeFlags:['nxs-child-imitation-confirmed'],notification:'nxs-imitation-confirmed',altered:true};
+  }
+  if (['open continuity gate','open porte continuite','open gate dossier'].includes(command)) return context.unlockedSecrets.includes('document-porte-continuite')?{output:['OUVERTURE : PORTE DE CONTINUITÉ'],navigateTo:'/archives/porte-continuite'}:{output:['ACCÈS REFUSÉ','AUTHENTIFICATION SPECTRALE REQUISE.']};
+  if (['contact mother echo','contact mere echo'].includes(command)) {
+    if (!context.completedObjectives.includes('read-continuity-gate')) return {output:['CONTACT REFUSÉ','DOSSIER DE LA PORTE NON CONSULTÉ.']};
+    if (context.completedObjectives.includes('contact-mother-echo')) return {output:['CANAL MÈRE ÉCHO DÉJÀ ARCHIVÉ','LA PORTE ATTEND VOTRE DÉCISION.']};
+    return {output:['OUVERTURE DU CANAL CHŒUR ZÉRO…','MÈRE ÉCHO : « NOUS AVONS OUBLIÉ QUE SA VOIX LUI APPARTENAIT. »','TÉMOIGNAGE ARCHIVÉ // DÉCISION AUTORISÉE'],unlocks:['document-temoignage-mere-echo'],completedObjectives:['contact-mother-echo'],evidenceNodes:['mere-echo'],evidenceRelations:['mere-echo-garde-porte'],transmissionId:'mother-echo-gate',notification:'mother-echo-contacted'};
+  }
+  const gateDecisions:Record<string,string>={'open gate':'open','ouvrir porte':'open','seal gate':'seal','sceller porte':'seal','isolate child':'isolate','isoler enfant':'isolate'};
+  if (gateDecisions[command]) return context.completedObjectives.includes('contact-mother-echo')?{output:['PROTOCOLE DE LA PORTE CHARGÉ','CONFIRMATION NOIR ABSOLU REQUISE.'],navigateTo:`/chapter-three?decision=${gateDecisions[command]}`}:{output:['PROTOCOLE INDISPONIBLE','TÉMOIGNAGE DE MÈRE ÉCHO REQUIS.']};
   const decisions: Record<string,string> = {'wake subject':'wake','reveiller sujet':'wake','isolate subject':'isolate','isoler sujet':'isolate','erase subject':'erase','effacer sujet':'erase'};
   if (decisions[command]) return context.completedObjectives.includes('locate-body-04') ? {output:['PROTOCOLE CHARGÉ','CONFIRMATION MANUELLE REQUISE.'],navigateTo:`/chapter-two?decision=${decisions[command]}`} : {output:['PROTOCOLE INDISPONIBLE','LOCALISATION DU CORPS 04 REQUISE.']};
   if (command === 'scan nx s' || command === 'scan nxs') {

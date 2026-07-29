@@ -1,4 +1,4 @@
-import { defaultProgress, deriveAccessLevel, loadProgress, mergeUnique, migrateV1ToV2, migrateV2ToV3, saveProgress, STORAGE_KEY, validateProgress } from './progress';
+import { defaultProgress, deriveAccessLevel, loadProgress, mergeUnique, migrateV1ToV2, migrateV2ToV3, migrateV3ToV4, saveProgress, STORAGE_KEY, validateProgress } from './progress';
 
 describe('progression locale', () => {
   it('sauvegarde et recharge la progression', () => { saveProgress({ ...defaultProgress, introSeen: true }); expect(loadProgress().introSeen).toBe(true); });
@@ -9,4 +9,12 @@ describe('progression locale', () => {
   it('migre la V1 sans perdre les données', () => { const migrated=migrateV1ToV2({ version:1,introSeen:true,accessLevel:'TACTIQUE',viewedDocuments:['sept-corps'],unlockedSecrets:['legacy'],terminalHistory:['help'],completedObjectives:['old'],audioEnabled:true,reducedEffects:false,selectedTransmission:null,lastVisitedRoute:'/archives' }); expect(migrated).toEqual(expect.objectContaining({version:2,introSeen:true,viewedDocuments:['dossier-sept-corps'],unlockedSecrets:['legacy'],terminalHistory:['help']})); });
   it('migre la V2 vers la V3 et active le Chapitre 02 sans perte', () => { const v2=migrateV1ToV2({version:1,introSeen:true,accessLevel:'TACTIQUE',viewedDocuments:['sept-corps'],unlockedSecrets:['legacy'],terminalHistory:['help'],completedObjectives:['old'],audioEnabled:true,reducedEffects:false,selectedTransmission:null,lastVisitedRoute:'/archives'}); v2.completedChapters=['chapter-zero']; const migrated=migrateV2ToV3(v2); expect(migrated).toEqual(expect.objectContaining({version:3,activeChapter:'chapter-two',viewedDocuments:['dossier-sept-corps'],solvedPuzzles:[],narrativeChoices:{}})); });
   it('accorde OMEGA après le Chapitre 02', () => { expect(deriveAccessLevel({...defaultProgress,completedChapters:['chapter-zero','chapter-two']})).toBe('OMEGA'); });
+  it('migre la V3 vers la V4 et prépare le Chapitre 03', () => {
+    const v2=migrateV1ToV2({version:1,introSeen:true,accessLevel:'OMEGA',viewedDocuments:['dossier-sept-corps'],unlockedSecrets:['chapter-two-decision'],terminalHistory:['scan signature a7-03'],completedObjectives:['decide-body-04'],audioEnabled:false,reducedEffects:true,selectedTransmission:null,lastVisitedRoute:'/chapter-two'});
+    v2.completedChapters=['chapter-zero','chapter-two'];
+    const v3=migrateV2ToV3(v2);
+    v3.narrativeChoices={'body-04':'isolate'};
+    expect(migrateV3ToV4(v3)).toEqual(expect.objectContaining({version:4,activeChapter:'chapter-three',narrativeFlags:[],narrativeChoices:{'body-04':'isolate'}}));
+  });
+  it('accorde NOIR ABSOLU après le Chapitre 03', () => { expect(deriveAccessLevel({...defaultProgress,completedChapters:['chapter-zero','chapter-two','chapter-three']})).toBe('NOIR ABSOLU'); });
 });

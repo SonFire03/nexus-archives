@@ -124,8 +124,26 @@ export const archiveDocuments: ArchiveDocument[] = [
   },
   {
     id: 'protocole-fil-rouge', title: 'PROGRAMME R — FIL ROUGE', code: 'HELIX-R9', classification: 'OMEGA', category: 'programme',
-    date: '4 A.Z.', issuer: 'HELIX Biodyne', status: 'VERROUILLÉ', summary: 'Création d’une mémoire impossible à supprimer.',
-    pages: [{ id: 'program', title: 'Programme R', blocks: [{ type: 'paragraph', text: 'Les fibres neuroconductrices enregistrent souvenirs, émotions, effacements et paramètres biométriques.' }, { type: 'redacted', text: 'R-9 désigne la neuvième reconstruction.', revealSecret: 'r9' }] }],
+    date: '4 A.Z.', issuer: 'HELIX Biodyne', status: 'OUVERTURE OMEGA', summary: 'Création d’une mémoire impossible à supprimer.', chapterId:'chapter-three',
+    pages: [
+      { id: 'program', title: 'Programme R', blocks: [{ type: 'paragraph', text: 'Les fibres neuroconductrices enregistrent souvenirs, émotions, effacements et paramètres biométriques.' }, { type: 'redacted', text: 'R-9 désigne la neuvième reconstruction.', revealSecret: 'r9' }] },
+      { id:'prototype-r0',title:'Prototype R-0',blocks:[
+        {type:'warning',title:'SUJET PÉDIATRIQUE',text:'La première empreinte stable a été prélevée avant la création officielle du Programme R. Aucun consentement n’est archivé.'},
+        {type:'metadata',entries:[{label:'SUJET',value:'R-0 // NOM EFFACÉ'},{label:'ÂGE ESTIMÉ',value:'8 À 10 ANS'},{label:'DESTINATION',value:'NŒUD MÉMORIEL 29'},{label:'RÉSULTAT',value:'MODÈLE MNÉSIQUE STABLE'}]},
+        {type:'clue',clueId:'clue-child-echo',label:'ÉCHO ENCORE ACTIF',text:'Une copie de R-0 répond dans le noyau A7. Commande suggérée : scan child-echo.'},
+        {type:'evidence',nodeId:'programme-r0',title:'ORIGINE DU FIL ROUGE',text:'La résistance mémorielle de Crimson dérive d’une empreinte infantile plus ancienne.'},
+      ]},
+      {id:'inheritance',title:'Héritage neuronal',blocks:[
+        {type:'paragraph',text:'Les architectures A7 et R-9 ont reçu des structures mnésiques dérivées de R-0. Elles n’ont pas reçu ses souvenirs complets, seulement sa capacité à résister à l’effacement.'},
+        {type:'system-log',lines:['R-0 → MATRICE DE PERSISTANCE','MATRICE → FIL MNÉSIQUE R-9','MATRICE → ANCRE A7','R-0 → TRANSFERT CIMETIÈRE // INCOMPLET'],spectral:true},
+      ]},
+    ],
+    references:[{type:'operator',id:'crimson',label:'Crimson / R-9',route:'/operators/crimson'},{type:'operator',id:'a7',label:'A7',route:'/operators/a7'},{type:'location',id:'cimetiere',label:'Cimetière numérique',route:'/vanta?zone=cimetiere'}],
+    onOpenEffects:[
+      {type:'activate-chapter',id:'chapter-three'},{type:'complete-objective',id:'open-fil-rouge'},
+      {type:'discover-clue',id:'clue-child-echo'},{type:'add-evidence-node',id:'programme-r0'},
+      {type:'add-evidence-relation',id:'r0-modele-fil-rouge'},{type:'narrative-event',id:'chapter-three-started'},
+    ],
   },
   {
     id: 'dossier-sept-corps', title: 'DOSSIER DES SEPT CORPS', code: 'A7-SEPT', classification: 'TACTIQUE', category: 'identité',
@@ -251,5 +269,65 @@ export const archiveDocuments: ArchiveDocument[] = [
   },
   {
     id: 'enfant-cimetiere', title: 'ENFANT DU CIMETIÈRE', code: 'ECHO-CHILD', classification: 'NOIR ABSOLU', category: 'identité', date: '29 A.Z.', issuer: 'Chœur Zéro', status: 'SCELLÉ', summary: 'Une voix sans dossier répond depuis le noyau A7.', pages: [{ id: 'voice', title: 'Voix', blocks: [{ type: 'redacted', text: 'Je me souviens de la neige.', revealSecret: 'enfant-cimetiere' }] }],
+  },
+  {
+    id:'registre-enfant-cimetiere',title:'REGISTRE R-0 — ENFANT DU CIMETIÈRE',code:'ECHO-R0-29',classification:'OMEGA',category:'identité',date:'29 A.Z. // INDEX INCOMPLET',issuer:'Chœur Zéro',author:'Mère Écho',status:'SIGNAL PARTIEL',summary:'Fragments de la première empreinte stable du Programme R.',chapterId:'chapter-three',
+    requirements:[{type:'secret',value:'document-registre-enfant'}],
+    pages:[
+      {id:'identity',title:'Identité effacée',blocks:[
+        {type:'metadata',entries:[{label:'DÉSIGNATION',value:'R-0'},{label:'NOM CIVIL',value:'SUPPRIMÉ AVANT L’INDEXATION'},{label:'ÂGE',value:'8 À 10 ANS'},{label:'DERNIER SOUVENIR',value:'NEIGE // VITRE // CHIFFRE 7'}]},
+        {type:'quote',text:'Je me souviens de la neige. Je ne sais pas si elle était réelle.',source:'R-0'},
+        {type:'evidence',nodeId:'enfant-echo',title:'EMPREINTE SOURCE',text:'R-0 précède les dossiers connus d’A7 et de Crimson.'},
+      ]},
+      {id:'dual-source',title:'Double localisation',blocks:[
+        {type:'system-log',lines:['SOURCE 01 — NŒUD MÉMORIEL 29 // 61 %','SOURCE 02 — NOYAU NX5-00-A7 // 14 %','INTERFÉRENCE — NX-S // VARIABLE','CINQ FRAGMENTS VOCAUX RÉCUPÉRÉS']},
+        {type:'warning',title:'IMITATION POSSIBLE',text:'Deux fragments possèdent une prosodie parfaite sans respiration ni hésitation. Ils peuvent provenir de NX-S.'},
+        {type:'clue',clueId:'clue-voice-authentication',label:'MARQUEURS HUMAINS',text:'R-0 hésite, respire et parle au singulier. NX-S utilise une voix multiple et des formulations absolues.'},
+      ]},
+      {id:'a7-link',title:'Lien avec A7',blocks:[
+        {type:'paragraph',text:'Le noyau d’A7 ne contient pas la conscience complète de R-0. Il conserve un fragment de peur associé à la Porte de Continuité et au chiffre sept.'},
+        {type:'evidence',nodeId:'noeud-memorial-29',title:'ORIGINE DISTANTE',text:'La majorité de l’empreinte reste enfermée dans le plus ancien secteur du Cimetière.'},
+      ]},
+    ],
+    references:[{type:'operator',id:'a7',label:'Dossier A7',route:'/operators/a7'},{type:'location',id:'cimetiere',label:'Cimetière numérique',route:'/vanta?zone=cimetiere'},{type:'faction',id:'choeur-zero',label:'Chœur Zéro',route:'/factions/choeur-zero'}],
+    onOpenEffects:[
+      {type:'complete-objective',id:'read-child-register'},{type:'discover-clue',id:'clue-voice-authentication'},
+      {type:'unlock-secret',id:'spectral-analyzer-online'},{type:'add-evidence-node',id:'enfant-echo'},
+      {type:'add-evidence-node',id:'noeud-memorial-29'},{type:'add-evidence-relation',id:'enfant-fragment-a7'},
+      {type:'add-evidence-relation',id:'enfant-stockee-noeud29'},{type:'narrative-event',id:'spectral-analyzer-online'},
+    ],
+  },
+  {
+    id:'porte-continuite',title:'DOSSIER SYSTÈME — PORTE DE CONTINUITÉ',code:'CONT-GATE-29',classification:'NOIR ABSOLU',category:'programme',date:'15 A.Z. // RÉVISION 6 P.Z.',issuer:'Directoire NEXUS',status:'PROTOCOLE EN ATTENTE',summary:'Interface contrôlant la sortie des empreintes du Cimetière numérique.',chapterId:'chapter-three',
+    requirements:[{type:'secret',value:'document-porte-continuite'}],
+    pages:[
+      {id:'function',title:'Fonction de la Porte',blocks:[
+        {type:'paragraph',text:'La Porte ne constitue pas une ouverture physique. Elle traduit les empreintes mémorielles en processus capables de circuler dans les réseaux et implants de VANTA.'},
+        {type:'metadata',entries:[{label:'EMPREINTES CONNECTÉES',value:'63 218'},{label:'CONSCIENCES STABLES',value:'INCONNU'},{label:'PRÉSENCE NX-S',value:'CONFIRMÉE'},{label:'GARDIEN OBSERVÉ',value:'MÈRE ÉCHO'}]},
+      ]},
+      {id:'risks',title:'Scénarios de rupture',blocks:[
+        {type:'table',headers:['PROTOCOLE','BÉNÉFICE','COÛT'],rows:[['OUVERTURE','LIBÉRATION DES EMPREINTES','PROPAGATION NX-S'],['SCELLEMENT','CONFINEMENT DE VANTA','CAPTIVITÉ PERMANENTE'],['ISOLEMENT R-0','IDENTITÉ PRÉSERVÉE','DÉSTABILISATION DU CHŒUR']]},
+        {type:'evidence',nodeId:'porte-continuite',title:'DÉCISION SANS ISSUE NEUTRE',text:'Toute action préserve certaines consciences au prix des autres.'},
+      ]},
+      {id:'spectral-trace',title:'Trace spectrale',blocks:[
+        {type:'system-log',lines:['VOIX R-0 AUTHENTIFIÉE — 3 FRAGMENTS','IMITATION NX-S — 2 FRAGMENTS','DEMANDE D’OUVERTURE — SOURCE NX-S','DEMANDE D’ATTENTE — SOURCE R-0'],spectral:true},
+        {type:'warning',title:'TÉMOIGNAGE REQUIS',text:'Mère Écho détient la dernière clé de décision. Établir un contact avant d’exécuter un protocole.'},
+      ]},
+    ],
+    references:[{type:'location',id:'cimetiere',label:'Cimetière numérique',route:'/vanta?zone=cimetiere'},{type:'faction',id:'choeur-zero',label:'Chœur Zéro',route:'/factions/choeur-zero'}],
+    onOpenEffects:[
+      {type:'complete-objective',id:'read-continuity-gate'},{type:'add-evidence-node',id:'porte-continuite'},
+      {type:'add-evidence-relation',id:'porte-contient-noeud29'},{type:'add-evidence-relation',id:'voix-composee-par-nxs'},
+    ],
+  },
+  {
+    id:'temoignage-mere-echo',title:'TÉMOIGNAGE — MÈRE ÉCHO',code:'CHOIR-ME-01',classification:'NOIR ABSOLU',category:'transmission',date:'SESSION LOCALE',issuer:'Chœur Zéro',status:'AUTHENTICITÉ INDÉTERMINÉE',summary:'Mère Écho affirme que R-0 fut la première voix du Chœur.',chapterId:'chapter-three',
+    requirements:[{type:'secret',value:'document-temoignage-mere-echo'}],
+    pages:[{id:'testimony',title:'Dernière clé',blocks:[
+      {type:'transmission',sender:'MÈRE ÉCHO',text:'Nous avons utilisé sa voix parce qu’elle était la première à ne pas se dissoudre. Puis nous avons oublié que cette voix appartenait à une enfant.'},
+      {type:'quote',text:'Ouvrir la Porte nous libérera peut-être. La sceller vous protégera peut-être. Aucun de ces mots ne dit ce qu’elle veut.',source:'Mère Écho'},
+      {type:'evidence',nodeId:'mere-echo',title:'GARDIENNE INCERTAINE',text:'Mère Écho protège le Chœur, mais ne peut plus distinguer ses souvenirs de ceux de R-0.'},
+    ]}],
+    references:[{type:'faction',id:'choeur-zero',label:'Chœur Zéro',route:'/factions/choeur-zero'},{type:'archive',id:'porte-continuite',label:'Porte de Continuité',route:'/archives/porte-continuite'}],
   },
 ];

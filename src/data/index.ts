@@ -7,6 +7,7 @@ export { transmissions } from './transmissions';
 export { archiveDocuments } from './archives';
 export { chapterZeroObjectives, chapterCompletionRequirements } from './chapterZero';
 export { chapterTwoObjectives, chapterTwoCompletionRequirements, memoryFragments, memorySolution, chapterTwoChoices } from './chapterTwo';
+export { chapterThreeObjectives, chapterThreeCompletionRequirements, voiceFragments, authenticVoiceIds, chapterThreeChoices } from './chapterThree';
 export { brandImages, operatorImages, armorImages, factionImages, locationImages, archiveImages } from './visualAssets';
 
 import { operators } from './operators';
@@ -17,14 +18,15 @@ import { timeline } from './timeline';
 import { archiveDocuments } from './archives';
 import { chapterZeroObjectives, evidenceNodes as chapterZeroEvidenceNodes, evidenceRelations as chapterZeroEvidenceRelations, narrativeEvents as chapterZeroEvents } from './chapterZero';
 import { chapterTwoEvidenceNodes, chapterTwoEvidenceRelations, chapterTwoEvents, chapterTwoObjectives } from './chapterTwo';
+import { chapterThreeEvidenceNodes, chapterThreeEvidenceRelations, chapterThreeEvents, chapterThreeObjectives } from './chapterThree';
 
-export const evidenceNodes = [...chapterZeroEvidenceNodes, ...chapterTwoEvidenceNodes];
-export const evidenceRelations = [...chapterZeroEvidenceRelations, ...chapterTwoEvidenceRelations];
-export const narrativeEvents = [...chapterZeroEvents, ...chapterTwoEvents];
+export const evidenceNodes = [...chapterZeroEvidenceNodes, ...chapterTwoEvidenceNodes, ...chapterThreeEvidenceNodes];
+export const evidenceRelations = [...chapterZeroEvidenceRelations, ...chapterTwoEvidenceRelations, ...chapterThreeEvidenceRelations];
+export const narrativeEvents = [...chapterZeroEvents, ...chapterTwoEvents, ...chapterThreeEvents];
 
 export function validateData(): string[] {
   const errors: string[] = [];
-  const collections = [operators, armors, factions, locations, timeline, archiveDocuments, evidenceNodes, evidenceRelations, chapterZeroObjectives, chapterTwoObjectives];
+  const collections = [operators, armors, factions, locations, timeline, archiveDocuments, evidenceNodes, evidenceRelations, chapterZeroObjectives, chapterTwoObjectives, chapterThreeObjectives];
   for (const collection of collections) {
     const ids = collection.map((item) => item.id);
     if (new Set(ids).size !== ids.length) errors.push('Identifiants dupliqués détectés.');

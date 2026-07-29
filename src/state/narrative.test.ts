@@ -1,5 +1,5 @@
-import { chapterCompletionRequirements, chapterTwoCompletionRequirements } from '../data';
-import { applyNarrativeEffects, applyTerminalResult, canCompleteChapterTwo, canCompleteChapterZero, completeChapterTwo, completeChapterZero, isDocumentAvailable } from './narrative';
+import { chapterCompletionRequirements, chapterThreeCompletionRequirements, chapterTwoCompletionRequirements } from '../data';
+import { applyNarrativeEffects, applyTerminalResult, canCompleteChapterThree, canCompleteChapterTwo, canCompleteChapterZero, completeChapterThree, completeChapterTwo, completeChapterZero, isDocumentAvailable } from './narrative';
 import { defaultProgress, loadProgress, saveProgress } from './progress';
 import { archiveDocuments } from '../data/archives';
 
@@ -12,4 +12,13 @@ describe('progression narrative du Chapitre 01', () => {
   it('persiste un chapitre terminé après rechargement', () => { const complete={...defaultProgress,completedChapters:['chapter-zero'],accessLevel:'TACTIQUE' as const}; saveProgress(complete); expect(loadProgress()).toEqual(complete); });
   it('refuse de terminer le Chapitre 02 avant toutes les preuves', () => { expect(canCompleteChapterTwo(defaultProgress)).toBe(false); expect(completeChapterTwo(defaultProgress,'isolate')).toBe(defaultProgress); });
   it('archive le choix du Corps 04 et accorde OMEGA', () => { const ready={...defaultProgress,accessLevel:'TACTIQUE' as const,activeChapter:'chapter-two',completedChapters:['chapter-zero'],completedObjectives:chapterTwoCompletionRequirements}; const complete=completeChapterTwo(ready,'isolate'); expect(complete.completedChapters).toContain('chapter-two'); expect(complete.completedObjectives).toContain('decide-body-04'); expect(complete.narrativeChoices['body-04']).toBe('isolate'); expect(complete.accessLevel).toBe('OMEGA'); });
+  it('refuse de terminer le Chapitre 03 avant le témoignage de Mère Écho', () => { expect(canCompleteChapterThree(defaultProgress)).toBe(false); expect(completeChapterThree(defaultProgress,'seal')).toBe(defaultProgress); });
+  it('archive le protocole de la Porte et accorde NOIR ABSOLU', () => {
+    const ready={...defaultProgress,accessLevel:'OMEGA' as const,activeChapter:'chapter-three',completedChapters:['chapter-zero','chapter-two'],completedObjectives:chapterThreeCompletionRequirements};
+    const complete=completeChapterThree(ready,'isolate');
+    expect(complete.completedChapters).toContain('chapter-three');
+    expect(complete.narrativeChoices['continuity-gate']).toBe('isolate');
+    expect(complete.narrativeFlags).toContain('gate-isolate');
+    expect(complete.accessLevel).toBe('NOIR ABSOLU');
+  });
 });

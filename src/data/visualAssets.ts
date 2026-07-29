@@ -52,4 +52,7 @@ export const archiveImages: Record<string, string> = {
   'projet-ascendant': image('archives/archive-ascendant.webp'),
   'verite-originale': image('archives/archive-original-truth.webp'),
   'enfant-cimetiere': image('archives/archive-child-cemetery.webp'),
+  'registre-enfant-cimetiere': image('archives/archive-child-cemetery.webp'),
+  'porte-continuite': image('archives/archive-ascendant.webp'),
+  'temoignage-mere-echo': image('archives/archive-child-cemetery.webp'),
 };

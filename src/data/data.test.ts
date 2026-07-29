@@ -1,4 +1,4 @@
-import { archiveDocuments, archiveImages, armorImages, armors, chapterTwoObjectives, evidenceNodes, evidenceRelations, factionImages, factions, locationImages, locations, operatorImages, operators, timeline, validateData } from '.';
+import { archiveDocuments, archiveImages, armorImages, armors, chapterThreeObjectives, chapterTwoObjectives, evidenceNodes, evidenceRelations, factionImages, factions, locationImages, locations, operatorImages, operators, timeline, validateData, voiceFragments } from '.';
 
 describe('intégrité du canon NEXUS', () => {
   it('utilise des identifiants uniques et des relations valides', () => { expect(validateData()).toEqual([]); });
@@ -19,4 +19,9 @@ describe('intégrité du canon NEXUS', () => {
     expect(archiveDocuments.every(({id}) => archiveImages[id]?.endsWith('.webp'))).toBe(true);
   });
   it('déclare les huit objectifs jouables du Chapitre 02', () => { expect(chapterTwoObjectives).toHaveLength(8); expect(new Set(chapterTwoObjectives.map(({id}) => id)).size).toBe(8); });
+  it('déclare les huit objectifs et les fragments stables du Chapitre 03', () => {
+    expect(chapterThreeObjectives).toHaveLength(8);
+    expect(new Set(chapterThreeObjectives.map(({id}) => id)).size).toBe(8);
+    expect(voiceFragments.filter(({authentic}) => authentic)).toHaveLength(3);
+  });
 });

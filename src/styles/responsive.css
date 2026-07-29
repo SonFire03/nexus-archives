@@ -121,6 +121,11 @@
 }
 
 @media (max-width:700px) {
+  .voice-analysis-grid,.gate-options { grid-template-columns:1fr; }
+  .spectral-analysis-status { grid-template-columns:1fr; }
+  .spectral-analysis-status > * { border-right:0; border-bottom:1px solid var(--color-border-default); text-align:left; }
+  .voice-fragments button { grid-template-columns:1fr; gap:var(--space-2); }
+  .gate-vitals { grid-template-columns:repeat(2,minmax(0,1fr)); }
   .memory-workspace,.decision-options { grid-template-columns:1fr; }
   .memory-fragments { grid-template-columns:1fr; }
   .memory-status { grid-template-columns:1fr; }

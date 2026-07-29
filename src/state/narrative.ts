@@ -2,6 +2,7 @@ import { accessOrder, deriveAccessLevel, mergeUnique } from './progress';
 import type { ArchiveDocument, NarrativeEffect, ProgressState, TerminalResult, UnlockRequirement } from '../types';
 import { chapterCompletionRequirements } from '../data/chapterZero';
 import { chapterTwoChoices, chapterTwoCompletionRequirements, type ChapterTwoChoice } from '../data/chapterTwo';
+import { chapterThreeChoices, chapterThreeCompletionRequirements, type ChapterThreeChoice } from '../data/chapterThree';
 
 export function requirementMet(requirement: UnlockRequirement, progress: ProgressState): boolean {
   if (requirement.type === 'access') return accessOrder.indexOf(progress.accessLevel) >= accessOrder.indexOf(requirement.value);
@@ -29,6 +30,7 @@ export function applyNarrativeEffects(progress: ProgressState, effects: Narrativ
     if (effect.type === 'transmission') next.selectedTransmission = effect.id;
     if (effect.type === 'activate-chapter') next.activeChapter = effect.id;
     if (effect.type === 'solve-puzzle') next.solvedPuzzles = mergeUnique(next.solvedPuzzles, [effect.id]);
+    if (effect.type === 'flag') next.narrativeFlags = mergeUnique(next.narrativeFlags, [effect.id]);
     if (effect.type === 'narrative-event') next.lastNarrativeEvent = effect.id;
   }
   next.accessLevel = deriveAccessLevel(next);
@@ -43,6 +45,7 @@ export function applyTerminalResult(progress: ProgressState, result: TerminalRes
     discoveredClues: mergeUnique(progress.discoveredClues, result.discoveredClues ?? []),
     evidenceNodes: mergeUnique(progress.evidenceNodes, result.evidenceNodes ?? []),
     evidenceRelations: mergeUnique(progress.evidenceRelations, result.evidenceRelations ?? []),
+    narrativeFlags: mergeUnique(progress.narrativeFlags, result.narrativeFlags ?? []),
     selectedTransmission: result.transmissionId ?? progress.selectedTransmission,
     lastNarrativeEvent: result.notification ?? progress.lastNarrativeEvent,
     spectralContactCount: progress.spectralContactCount + (result.spectralEvent ? 1 : 0),
@@ -80,7 +83,6 @@ export function completeChapterTwo(progress: ProgressState, choice: ChapterTwoCh
   if (progress.completedChapters.includes('chapter-two') || !canCompleteChapterTwo(progress) || !chapterTwoChoices.some((item) => item.id === choice)) return progress;
   const next: ProgressState = {
     ...progress,
-    activeChapter: 'chapter-two',
     completedObjectives: mergeUnique(progress.completedObjectives, ['decide-body-04']),
     completedChapters: mergeUnique(progress.completedChapters, ['chapter-two']),
     unlockedSecrets: mergeUnique(progress.unlockedSecrets, ['chapter-two-decision','document-protocole-fil-rouge']),
@@ -89,6 +91,28 @@ export function completeChapterTwo(progress: ProgressState, choice: ChapterTwoCh
     selectedTransmission: 'nx-s-body-04',
     spectralContactCount: progress.spectralContactCount + 1,
     lastNarrativeEvent: 'chapter-two-complete',
+    activeChapter: 'chapter-three',
   };
   return { ...next, accessLevel: deriveAccessLevel(next) };
+}
+
+export function canCompleteChapterThree(progress: ProgressState): boolean {
+  return chapterThreeCompletionRequirements.every((id) => progress.completedObjectives.includes(id));
+}
+
+export function completeChapterThree(progress: ProgressState, choice: ChapterThreeChoice): ProgressState {
+  if (progress.completedChapters.includes('chapter-three') || !canCompleteChapterThree(progress) || !chapterThreeChoices.some((item) => item.id === choice)) return progress;
+  const next: ProgressState = {
+    ...progress,
+    activeChapter:'chapter-three',
+    completedObjectives:mergeUnique(progress.completedObjectives,['decide-continuity-gate']),
+    completedChapters:mergeUnique(progress.completedChapters,['chapter-three']),
+    unlockedSecrets:mergeUnique(progress.unlockedSecrets,['chapter-three-decision','verite-enfant-r0']),
+    narrativeChoices:{...progress.narrativeChoices,'continuity-gate':choice},
+    narrativeFlags:mergeUnique(progress.narrativeFlags,[`gate-${choice}`]),
+    selectedTransmission:'nx-s-gate-final',
+    spectralContactCount:progress.spectralContactCount + 1,
+    lastNarrativeEvent:'chapter-three-complete',
+  };
+  return {...next,accessLevel:deriveAccessLevel(next)};
 }

@@ -16,4 +16,22 @@ describe('moteur contextuel du terminal', () => {
   it('localise A7-03 uniquement après découverte du dossier', () => { expect(executeCommand('scan signature a7-03').output).toContain('SIGNATURE INCONNUE'); const result=executeCommand('SCAN SIGNATURE A7-03',{...emptyTerminalContext,activeChapter:'chapter-two',discoveredClues:['clue-signature-a7-03']}); expect(result.completedObjectives).toContain('scan-signature-a7-03'); expect(result.unlocks).toContain('document-registre-helix-k13'); });
   it('vérifie Crimson uniquement après reconstruction', () => { expect(executeCommand('verify memory crimson').output).toContain('VÉRIFICATION IMPOSSIBLE'); const result=executeCommand('verify memory crimson',{...emptyTerminalContext,activeChapter:'chapter-two',solvedPuzzles:['memory-0417']}); expect(result.completedObjectives).toContain('verify-crimson-memory'); });
   it('conditionne la décision à la localisation du Corps 04', () => { expect(executeCommand('wake subject').output).toContain('PROTOCOLE INDISPONIBLE'); expect(executeCommand('wake subject',{...emptyTerminalContext,completedObjectives:['locate-body-04']}).navigateTo).toBe('/chapter-two?decision=wake'); });
+  it('localise l’enfant uniquement après le Programme R', () => {
+    expect(executeCommand('scan child-echo').output).toContain('ÉCHO INCONNU');
+    const result=executeCommand('SCAN CHILD-ECHO',{...emptyTerminalContext,activeChapter:'chapter-three',discoveredClues:['clue-child-echo']});
+    expect(result.completedObjectives).toContain('scan-child-echo');
+    expect(result.unlocks).toContain('document-registre-enfant');
+  });
+  it('confirme l’imitation NX-S après authentification vocale', () => {
+    expect(executeCommand('verify nx-s').output).toContain('VÉRIFICATION IMPOSSIBLE');
+    const result=executeCommand('VERIFY NX-S',{...emptyTerminalContext,activeChapter:'chapter-three',solvedPuzzles:['voice-authentication']});
+    expect(result.completedObjectives).toContain('verify-spectral-source');
+    expect(result.unlocks).toContain('document-porte-continuite');
+  });
+  it('conditionne le contact de Mère Écho et la décision finale', () => {
+    expect(executeCommand('contact mother-echo').output).toContain('CONTACT REFUSÉ');
+    const contact=executeCommand('contact mother-echo',{...emptyTerminalContext,completedObjectives:['read-continuity-gate']});
+    expect(contact.completedObjectives).toContain('contact-mother-echo');
+    expect(executeCommand('isolate child',{...emptyTerminalContext,completedObjectives:['contact-mother-echo']}).navigateTo).toBe('/chapter-three?decision=isolate');
+  });
 });

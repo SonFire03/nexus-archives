@@ -13,6 +13,10 @@ Ce dossier reçoit uniquement les médias locaux validés pour publication. Tous
 - `images/archives/archive-helix-k13.webp` : future chambre de stase HELIX du Chapitre 02 ;
 - `images/archives/archive-memory-a7-04.webp` : future visualisation de la mémoire 04:17 ;
 - `images/archives/archive-body-04.webp` : futur schéma biologique du Corps A7-04 ;
+- `images/archives/archive-child-r0.webp` : futur portrait mnésique de R-0 ;
+- `images/archives/archive-memory-node-29.webp` : futur schéma du Nœud mémoriel 29 ;
+- `images/archives/archive-continuity-gate.webp` : future interface de la Porte de Continuité ;
+- `images/archives/archive-mother-echo.webp` : future capture de surveillance de Mère Écho ;
 - `images/zone-zero-surveillance.webp` : capture de Zone Zéro ;
 - `images/crimson-surveillance.webp` : portrait de surveillance de Crimson ;
 - `images/a7-medical-schema.svg` : schéma médical d’A7 ;

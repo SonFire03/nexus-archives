@@ -198,6 +198,36 @@
 .decision-result cite { display:block; margin-top:var(--space-3); color:var(--color-text-secondary); font-size:.75rem; }
 .decision-result > div { display:flex; flex-wrap:wrap; gap:var(--space-3); }
 
+/* Chapitre 03 — authentification spectrale */
+.spectral-analysis-status,.gate-vitals { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); margin-bottom:var(--space-4); border:1px solid var(--color-spectral); background:linear-gradient(100deg,rgba(82,140,255,.1),var(--color-bg-elevated)); }
+.spectral-analysis-status > *,.gate-vitals > div { min-width:0; padding:var(--space-4); border-right:1px solid var(--color-border-default); }
+.spectral-analysis-status > *:last-child,.gate-vitals > div:last-child { border-right:0; }
+.spectral-analysis-status span,.spectral-analysis-status em,.gate-vitals span { color:var(--color-text-secondary); font-size:.72rem; font-style:normal; }
+.spectral-analysis-status strong,.gate-vitals strong { color:var(--color-spectral-bright); font:800 1.05rem var(--font-data); }
+.spectral-analysis-status em { text-align:right; }
+.voice-analysis-grid { display:grid; grid-template-columns:minmax(0,1.35fr) minmax(300px,.65fr); gap:var(--space-4); align-items:start; }
+.voice-fragments { display:grid; gap:var(--space-3); }
+.voice-fragments button { display:grid; grid-template-columns:90px 1fr 210px; align-items:center; gap:var(--space-4); min-height:86px; border:1px solid var(--color-border-default); padding:var(--space-4); background:var(--color-bg-base); color:var(--color-text-primary); text-align:left; }
+.voice-fragments button:hover,.voice-fragments button:focus-visible { border-color:var(--color-spectral); }
+.voice-fragments button.is-selected { border-color:var(--color-cyan); box-shadow:inset 3px 0 var(--color-cyan); background:rgba(79,216,232,.06); }
+.voice-fragments span { color:var(--color-spectral-bright); font-size:.72rem; }
+.voice-fragments p { margin:0; font-size:.88rem; line-height:1.5; }
+.voice-fragments small { color:var(--color-text-muted); font-size:.68rem; }
+.voice-result,.gate-result { max-width:1100px; border:1px solid var(--color-spectral); padding:clamp(24px,4vw,56px); background:radial-gradient(circle at 75% 20%,rgba(82,140,255,.14),var(--color-bg-elevated) 62%); }
+.voice-result h2,.gate-result h2 { font-size:clamp(2rem,4vw,4rem); }
+.voice-result > p:not(.eyebrow),.gate-result > p:not(.eyebrow) { max-width:68ch; color:var(--color-text-secondary); font-size:1rem; }
+.voice-result blockquote,.gate-result blockquote { margin:var(--space-8) 0; border-left:2px solid var(--color-spectral); padding:var(--space-5); color:var(--color-spectral-bright); font-size:1.1rem; }
+.gate-result cite { display:block; margin-top:var(--space-3); color:var(--color-text-secondary); font-size:.75rem; }
+.gate-vitals { grid-template-columns:repeat(4,minmax(0,1fr)); }
+.gate-vitals div { display:grid; gap:var(--space-2); }
+.gate-options { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--space-4); margin-block:var(--space-5); }
+.gate-options button { min-height:250px; display:flex; flex-direction:column; align-items:flex-start; border:1px solid var(--color-border-default); padding:var(--space-5); background:linear-gradient(145deg,var(--color-bg-panel),var(--color-bg-base)); color:var(--color-text-primary); text-align:left; }
+.gate-options button:hover,.gate-options button:focus-visible { border-color:var(--color-spectral); }
+.gate-options button.is-selected { border-color:var(--color-spectral-bright); box-shadow:inset 4px 0 var(--color-spectral); background:rgba(82,140,255,.08); }
+.gate-options span { color:var(--color-spectral-bright); font-size:.7rem; }
+.gate-options strong { margin:var(--space-6) 0 var(--space-3); font:900 1.45rem var(--font-display); }
+.gate-options p { color:var(--color-text-secondary); font-size:.88rem; line-height:1.6; }
+
 @media (max-width:1200px) {
   .operator-list--index { grid-template-columns:1fr; }
   .detail-grid { grid-template-columns:1fr; }

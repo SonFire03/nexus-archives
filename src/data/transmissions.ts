@@ -13,4 +13,7 @@ export const transmissions: Transmission[] = [
   {id:'nx-s-contact-01',sender:'NX-S',text:"Vous appelez cela une enquête. Vous ne faites que reconstruire un souvenir que j’ai déjà vécu.",trigger:'chapter-zero-complete'},
   {id:'crimson-body-04',sender:'CRIMSON // CANAL R-9',text:"A7-04 n’est pas une sauvegarde de secours. C’est une mission que nous avons choisi d’oublier.",trigger:'chapter-two'},
   {id:'nx-s-body-04',sender:'NX-S',text:"Vous avez choisi lequel devait continuer. C’est ainsi que le Directoire a commencé.",trigger:'chapter-two-complete'},
+  {id:'child-r0',sender:'R-0 // SOURCE UNIQUE',text:'Je me souviens de la neige. Je ne sais pas si elle était réelle.',trigger:'chapter-three'},
+  {id:'mother-echo-gate',sender:'MÈRE ÉCHO',text:'Nous avons oublié que la première voix du Chœur appartenait à une enfant.',trigger:'chapter-three'},
+  {id:'nx-s-gate-final',sender:'NX-S',text:'Vous appelez cela une porte parce que vous avez besoin de croire qu’elle possède deux côtés.',trigger:'chapter-three-complete'},
 ];

@@ -63,6 +63,7 @@ export type NarrativeEffect =
   | { type: 'transmission'; id: string }
   | { type: 'activate-chapter'; id: string }
   | { type: 'solve-puzzle'; id: string }
+  | { type: 'flag'; id: string }
   | { type: 'narrative-event'; id: string };
 export interface ArchiveComparisonDifference {
   id: string; label: string; official: string; classified: string;
@@ -93,25 +94,27 @@ export interface EvidenceRelation {
 }
 export interface NarrativeEvent { id: string; kind: 'document' | 'objective' | 'access' | 'spectral' | 'chapter'; title: string; message: string }
 export interface ProgressState {
-  version: 3; introSeen: boolean; accessLevel: AccessLevel; viewedDocuments: string[];
+  version: 4; introSeen: boolean; accessLevel: AccessLevel; viewedDocuments: string[];
   unlockedSecrets: string[]; terminalHistory: string[]; completedObjectives: string[];
   audioEnabled: boolean; volume: number; reducedEffects: boolean;
   selectedTransmission: string | null; lastVisitedRoute: string; activeChapter: string;
   completedChapters: string[]; discoveredClues: string[]; evidenceNodes: string[];
   evidenceRelations: string[]; spectralContactCount: number;
   lastNarrativeEvent: string | null; documentReadingProgress: Record<string, number>;
-  solvedPuzzles: string[]; narrativeChoices: Record<string, string>;
+  solvedPuzzles: string[]; narrativeChoices: Record<string, string>; narrativeFlags: string[];
 }
 export interface TerminalContext {
   accessLevel: AccessLevel; viewedDocuments: string[]; unlockedSecrets: string[];
   completedObjectives: string[]; activeChapter: string; discoveredClues: string[];
   evidenceNodes: string[]; evidenceRelations: string[]; spectralContactCount: number;
   solvedPuzzles: string[]; narrativeChoices: Record<string, string>;
+  narrativeFlags: string[];
 }
 export interface TerminalResult {
   output: string[]; navigateTo?: string; unlocks?: string[];
   completedObjectives?: string[]; discoveredClues?: string[];
   evidenceNodes?: string[]; evidenceRelations?: string[];
+  narrativeFlags?: string[];
   accessLevelChange?: AccessLevel; transmissionId?: string; notification?: string;
   clear?: boolean; reboot?: boolean; spectralEvent?: boolean; altered?: boolean;
 }
